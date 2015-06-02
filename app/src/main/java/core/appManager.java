@@ -1,7 +1,11 @@
 package core;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+
+import com.uni.mvpu.ActivityOrderList;
+import com.uni.mvpu.ActivitySync;
 
 import Entitys.OutletObject;
 import db.DbOpenHelper;
@@ -89,8 +93,11 @@ public class appManager {
 
     private  OutletObject activeOutletObject ;
 
-    public void showOrderList(OutletObject outletObject)
+    public void showOrderList(OutletObject outletObject, Context context)
     {
-
+        Intent intent = new Intent(context, ActivityOrderList.class);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        //intent.putExtra("w", selectedValue);
+        context.startActivity(intent);
     }
 }

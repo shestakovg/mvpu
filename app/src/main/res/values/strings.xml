@@ -2,6 +2,7 @@
     <string name="app_name">Мобильная торговля</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Настройки</string>
+    <string name="action_exit">Выход</string>
     <string name="title_activity_setup">Настройки</string>
     <string name="unknown_route">Неизвестный маршрут</string>
     <string name="unknown_employee">Неизвестный сотрудник</string>
@@ -9,4 +10,5 @@
     <string name="title_activity_activity_select_route">Выбор маршрута</string>
     <string name="no_connection">Нет связи с сервером</string>
     <string name="title_activity_activity_sync">Синхронизация</string>
+    <string name="title_activity_activity_order_list">Список заказов</string>
 </resources>

@@ -146,7 +146,8 @@ public class ActivityRoute extends ActionBarActivity {
     {
         if (outletsObjectList != null)
         {
-            appManager.getOurInstance().setActiveOutletObject(outletsObjectList.get(position));
+            selectedOutlet = outletsObjectList.get(position);
+            appManager.getOurInstance().setActiveOutletObject(selectedOutlet);
           //  Toast.makeText(this, selectedOutlet.outletId.toString(), Toast.LENGTH_SHORT).show();
             showPopupMenu(arg1,outletsObjectList.get(position) );
         }
@@ -181,6 +182,7 @@ public class ActivityRoute extends ActionBarActivity {
                                 Toast.makeText(getApplicationContext(),
                                         "Вы выбрали PopupMenu 1",
                                         Toast.LENGTH_SHORT).show();
+                                appManager.getOurInstance().showOrderList(selectedOutlet,ActivityRoute.this);
                                 return true;
                             case R.id.menu2:
                                 Toast.makeText(getApplicationContext(),
