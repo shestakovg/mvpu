@@ -49,10 +49,10 @@ public class Order implements Parcelable {
 
         dest.writeInt(this._id);
 
-        dest.writeInt(this.orderNumber);
-        dest.writeString(this.orderDescription);
-        //dest.writeDouble(this.orderSum);
-        dest.writeString(this.orderUUID.toString());
+//        dest.writeInt(this.orderNumber);
+//        dest.writeString(this.orderDescription);
+//        //dest.writeDouble(this.orderSum);
+//        dest.writeString(this.orderUUID.toString());
         //dest.writeString(DateFormat.format("dd.MM.yyyy", this.orderDate).toString());
     }
 
@@ -67,10 +67,11 @@ public class Order implements Parcelable {
     };
     private Order(Parcel parcel) {
 
-        this.orderNumber = parcel.readInt();
-        this.orderDescription = parcel.readString();
+        this._id = parcel.readInt();
+        this.orderDescription = "Order with _id "+ this._id;
         this.orderSum = 0;
-        this.orderUUID = parcel.readString();
+
+//        this.orderUUID = parcel.readString();
     }
 
     public static Order initOrderById(int idOrder)
