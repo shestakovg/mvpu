@@ -2,11 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="50dp">
-    <CheckBox
-        android:id="@+id/cbBoxListOrderItem"
+    <!--<CheckBox-->
+        <!--android:id="@+id/cbBoxListOrderItem"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content">-->
+    <!--</CheckBox>-->
+    <Button
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    </CheckBox>
+        android:layout_height="wrap_content"
+        android:text="Редактировать"
+        android:id="@+id/btnOrderListItem"/>
+    <!--<ImageButton-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/btnImgOrderListItem"-->
+        <!--android:src="@drawable/play"-->
+        <!--/>-->
     <LinearLayout
         android:id="@+id/linearLayout1"
         android:layout_width="match_parent"

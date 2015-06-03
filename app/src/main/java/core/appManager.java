@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.uni.mvpu.ActivityOrder;
 import com.uni.mvpu.ActivityOrderList;
 import com.uni.mvpu.ActivitySync;
 
+import Entitys.Order;
 import Entitys.OutletObject;
 import db.DbOpenHelper;
 
@@ -100,4 +102,14 @@ public class appManager {
         //intent.putExtra("w", selectedValue);
         context.startActivity(intent);
     }
+
+    public Intent getOrderActivityIntent(Order order, Context context)
+    {
+        Intent intent = new Intent(context, ActivityOrder.class);
+
+        intent.putExtra("ORDER_OBJECT", order);
+        return intent;
+    }
+
+
 }

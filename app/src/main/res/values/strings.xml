@@ -11,4 +11,5 @@
     <string name="no_connection">Нет связи с сервером</string>
     <string name="title_activity_activity_sync">Синхронизация</string>
     <string name="title_activity_activity_order_list">Список заказов</string>
+    <string name="title_activity_activity_order">ActivityOrder</string>
 </resources>

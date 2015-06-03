@@ -10,6 +10,7 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 import Adapters.orderListAdapter;
 import Entitys.Order;
@@ -58,7 +59,7 @@ public class ActivityOrderList extends ActionBarActivity {
     {
         for (int i=0;i<100;i++)
         {
-            Order order = new Order(i, i,null, new Date(), i* 1234);
+            Order order = new Order(i, i, UUID.randomUUID().toString(), new Date(), i* 1234);
             orders.add(order);
         }
 //        DbOpenHelper dbOpenHelper = new DbOpenHelper(this);

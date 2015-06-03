@@ -38,6 +38,10 @@
             android:name=".ActivityOrderList"
             android:label="@string/title_activity_activity_order_list" >
         </activity>
+        <activity
+            android:name=".ActivityOrder"
+            android:label="@string/title_activity_activity_order" >
+        </activity>
     </application>
 
 </manifest>
