@@ -10,7 +10,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import core.appManager;
+import sync.syncContracts;
 import sync.syncRoute;
+import sync.syncSku;
+import sync.syncSkuGroup;
 
 
 public class ActivitySync extends ActionBarActivity {
@@ -73,6 +76,17 @@ public class ActivitySync extends ActionBarActivity {
                         appManager.getOurInstance().setCurrentContext(this);
                         new syncRoute().execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(),"dictionary/getrouteset/"+appManager.getOurInstance().appSetupInstance.getRouteId()});
                         break; //Add other menu items
+                    case IDLI_DOCS:
+                        //appManager.getOurInstance().setCurrentContext(this);
+                        syncContracts sync = new syncContracts(this);
+                        sync.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getcontract/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
+                        break;
+                    case IDLI_PRODUCT:
+                        syncSkuGroup syncGroup = new syncSkuGroup(this);
+                        syncGroup.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getskugroup"});
+                        syncSku syncSku = new syncSku(this);
+                        syncSku.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getsku"});
+                        break;
                 }
             }
         }

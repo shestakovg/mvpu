@@ -24,6 +24,19 @@ public class DbCreateScript {
 
     private static String CREATE_ORDER_DETAIL = "create table orderDetail(_id integer primary key autoincrement, headerId int, orderUUID text, skuId text, qty1 int, qty2 int, _send int DEFAULT 0)";
     private static String CREATE_CREATE_ORDER_DETAIL_IDX = "CREATE INDEX idx_orderDetail_UUID ON orderDetail (orderUUID, skuId)";
+    private static String CREATE_CREATE_ORDER_DETAIL2_IDX = "CREATE INDEX idx_orderDetail_ID ON orderDetail (headerId, skuId)";
+
+    private static String CREATE_CONTRACT = "create table contracts (CustomerId text, PriceId text, PriceName text, LimitSum double, Reprieve text, PartnerId text)";
+    private static String CREATE_CONTRACT_IDX ="CREATE INDEX idx_contracts ON contracts (PartnerId)";
+
+    private static String CREATE_SKUGROUP = "create table skuGroup (GroupId text, GroupName text, GroupParentId text)";
+    private static String CREATE_SKUGROUP_IDX1 = "CREATE INDEX idx_skuGroup1 ON skuGroup (GroupId)";
+    private static String CREATE_SKUGROUP_IDX2 = "CREATE INDEX idx_skuGroup2 ON skuGroup (GroupParentId)";
+
+    private static String CREATE_SKU = "create table sku(SkuId text, SkuName text, SkuParentId text, QtyPack double, Article text)";
+    private static String CREATE_SKU_IDX1 = "CREATE INDEX idx_sku ON sku (SkuId)";
+    private static String CREATE_SKU_IDX2 = "CREATE INDEX idx_sku2 ON sku (SkuParentId)";
+
     public static  ArrayList<String> getCreateDataBaseScripts()
     {
         ArrayList<String> list = new ArrayList<String>();
@@ -35,6 +48,15 @@ public class DbCreateScript {
         list.add(CREATE_ORDER_HEADER_IDX);
         list.add(CREATE_ORDER_DETAIL);
         list.add(CREATE_CREATE_ORDER_DETAIL_IDX);
+        list.add(CREATE_CREATE_ORDER_DETAIL2_IDX);
+        list.add(CREATE_CONTRACT);
+        list.add(CREATE_CONTRACT_IDX);
+        list.add(CREATE_SKUGROUP);
+        list.add(CREATE_SKUGROUP_IDX1);
+        list.add(CREATE_SKUGROUP_IDX2);
+        list.add(CREATE_SKU);
+        list.add(CREATE_SKU_IDX1);
+        list.add(CREATE_SKU_IDX2);
         return list;
     }
 
@@ -42,12 +64,20 @@ public class DbCreateScript {
     private static String DROP_BASEPARAMS = "DROP TABLE IF EXISTS baseParams";
     private static String DROP_ROUTE = "DROP TABLE ROUTE";
     private static String DROP_ORDER_HEADER = "DROP TABLE orderHeader";
+    private static String DROP_DETAIL = "DROP TABLE orderDetail";
+    private static String DROP_CONTRACTS = "DROP TABLE contracts";
+    private static String DROP_SKUGROUP = "DROP TABLE skuGroup";
+    private static String DROP_SKU = "DROP TABLE sku";
     public static ArrayList<String>  getDropTableScripts()
     {
         ArrayList<String> list = new ArrayList<String>();
-        list.add(DROP_BASEPARAMS);
+        //list.add(DROP_BASEPARAMS);
         list.add(DROP_ROUTE);
         list.add(DROP_ORDER_HEADER);
+        list.add(DROP_DETAIL);
+        list.add(DROP_CONTRACTS);
+        list.add(DROP_SKUGROUP);
+        list.add(DROP_SKU);
         return list;
     }
 }
