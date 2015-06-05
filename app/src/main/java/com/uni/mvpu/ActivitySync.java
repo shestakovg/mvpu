@@ -11,9 +11,11 @@ import android.widget.ListView;
 
 import core.appManager;
 import sync.syncContracts;
+import sync.syncPrice;
 import sync.syncRoute;
 import sync.syncSku;
 import sync.syncSkuGroup;
+import sync.syncStock;
 
 
 public class ActivitySync extends ActionBarActivity {
@@ -87,6 +89,15 @@ public class ActivitySync extends ActionBarActivity {
                         syncSku syncSku = new syncSku(this);
                         syncSku.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getsku"});
                         break;
+                    case IDLI_PRICE:
+                        //appManager.getOurInstance().setCurrentContext(this);
+                        syncPrice syncPrice = new syncPrice(this);
+                        syncPrice.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getprice/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
+                        break;
+                    case IDLI_STOCK:
+                        syncStock syncSt= new syncStock(this);
+                        syncSt.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getbalancesku/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
+                        break; //Add other menu items
                 }
             }
         }

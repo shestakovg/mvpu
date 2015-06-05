@@ -107,4 +107,44 @@ public class syncSaveData {
         db.close();
         Toast.makeText(context, "Обновление номенклатуры завершено", Toast.LENGTH_SHORT).show();
     }
+
+    public static void savePrice(List<JSONObject> jsonObjects, Context context)
+    {
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        db.execSQL("delete from price");
+        for (JSONObject jsonObject: jsonObjects) {
+            try {
+                ContentValues values = new ContentValues();
+                values.put("SkuId", jsonObject.getString("SkuId"));
+                values.put("PriceId", jsonObject.getString("PriceId"));
+                values.put("Pric", jsonObject.getDouble("Pric"));
+                db.insert("price", null, values);
+            } catch (Exception e) {
+
+            }
+        }
+        db.close();
+        Toast.makeText(context, "Обновление цен завершено", Toast.LENGTH_SHORT).show();
+    }
+
+    public static void saveStock(List<JSONObject> jsonObjects, Context context)
+    {
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        db.execSQL("delete from stock");
+        for (JSONObject jsonObject: jsonObjects) {
+            try {
+                ContentValues values = new ContentValues();
+                values.put("SkuId", jsonObject.getString("SkuId"));
+                values.put("StockG", jsonObject.getDouble("StockG"));
+                values.put("StockR", jsonObject.getDouble("StockR"));
+                db.insert("stock", null, values);
+            } catch (Exception e) {
+
+            }
+        }
+        db.close();
+        Toast.makeText(context, "Обновление остатков завершено", Toast.LENGTH_SHORT).show();
+    }
 }

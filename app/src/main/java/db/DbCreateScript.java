@@ -37,6 +37,14 @@ public class DbCreateScript {
     private static String CREATE_SKU_IDX1 = "CREATE INDEX idx_sku ON sku (SkuId)";
     private static String CREATE_SKU_IDX2 = "CREATE INDEX idx_sku2 ON sku (SkuParentId)";
 
+
+    private static String CREATE_PRICE = "create table price (SkuId  text, PriceId text, Pric double)";
+    private static String CREATE_PRICE_IDX1 = "CREATE INDEX idx_price1 ON price (PriceId)";
+    private static String CREATE_PRICE_IDX2 = "CREATE INDEX idx_price2 ON price (SkuId, PriceId)";
+
+    private static String CREATE_STOCK = "create table stock(SkuId text, StockG double, StockR double)";
+    private static String CREATE_STOCK_IDX1 = "CREATE INDEX idx_stock ON stock (SkuId)";
+
     public static  ArrayList<String> getCreateDataBaseScripts()
     {
         ArrayList<String> list = new ArrayList<String>();
@@ -57,6 +65,11 @@ public class DbCreateScript {
         list.add(CREATE_SKU);
         list.add(CREATE_SKU_IDX1);
         list.add(CREATE_SKU_IDX2);
+        list.add(CREATE_PRICE);
+        list.add(CREATE_PRICE_IDX1);
+        list.add(CREATE_PRICE_IDX2);
+        list.add(CREATE_STOCK);
+        list.add(CREATE_STOCK_IDX1);
         return list;
     }
 
@@ -68,6 +81,8 @@ public class DbCreateScript {
     private static String DROP_CONTRACTS = "DROP TABLE contracts";
     private static String DROP_SKUGROUP = "DROP TABLE skuGroup";
     private static String DROP_SKU = "DROP TABLE sku";
+    private static String DROP_PRICE = "DROP TABLE price";
+    private static String DROP_STOCK = "DROP TABLE stock";
     public static ArrayList<String>  getDropTableScripts()
     {
         ArrayList<String> list = new ArrayList<String>();
@@ -78,6 +93,8 @@ public class DbCreateScript {
         list.add(DROP_CONTRACTS);
         list.add(DROP_SKUGROUP);
         list.add(DROP_SKU);
+        list.add(DROP_PRICE);
+        list.add(DROP_STOCK);
         return list;
     }
 }
