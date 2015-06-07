@@ -8,7 +8,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import java.util.ArrayList;
+
+import Entitys.priceType;
 import core.appManager;
 import sync.syncContracts;
 import sync.syncPrice;
@@ -91,8 +95,14 @@ public class ActivitySync extends ActionBarActivity {
                         break;
                     case IDLI_PRICE:
                         //appManager.getOurInstance().setCurrentContext(this);
-                        syncPrice syncPrice = new syncPrice(this);
-                        syncPrice.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getprice/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
+                        ArrayList<priceType> priceList = appManager.getOurInstance().getPriceType(this);
+                        Toast.makeText(this, "В маршруте "+appManager.getOurInstance().appSetupInstance.getRouteId()+" используется "+priceList.size()+" вида цен. " +
+                                "Обновление займет длительное время", Toast.LENGTH_SHORT).show();
+                        for (priceType price : priceList) {
+                            Toast.makeText(this, "Обновление цен по прайс листу "+price.getPriceName(), Toast.LENGTH_SHORT).show();
+                            syncPrice syncPrice = new syncPrice(this, price);
+                            syncPrice.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getprice/" + price.getPriceId()});
+                        }
                         break;
                     case IDLI_STOCK:
                         syncStock syncSt= new syncStock(this);

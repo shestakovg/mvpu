@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import Entitys.priceType;
 import core.appManager;
 
 /**
@@ -17,9 +18,11 @@ import core.appManager;
  */
 public class syncPrice extends AsyncTask<String, Void, List<JSONObject>> {
     private Context context;
+    private priceType price;
 
-    public syncPrice(Context context) {
+    public syncPrice(Context context, priceType price) {
         this.context = context;
+        this.price = price;
     }
 
     @Override
@@ -43,7 +46,7 @@ public class syncPrice extends AsyncTask<String, Void, List<JSONObject>> {
         }
         else
         {
-            syncSaveData.savePrice(jsonObjects, context);
+            syncSaveData.savePrice(jsonObjects, context, price);
         }
     }
 }

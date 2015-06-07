@@ -1,23 +1,34 @@
 package com.uni.mvpu;
 
 import android.os.Parcelable;
+import android.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import Entitys.Order;
+import Entitys.OrderExtra;
+import interfaces.IOrder;
 
 
-public class ActivityOrder extends ActionBarActivity {
+public class ActivityOrder extends  ActionBarActivity implements IOrder  {
     private Order orderObject;
+    private OrderExtra orderExtra;
+    private FragmentOrderSkuGroup fragGroup;
+    private FragmentOrderSku  fragSku;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
         Bundle data = getIntent().getExtras();
         orderObject = (Order) data.getParcelable("ORDER_OBJECT");
+        orderExtra = OrderExtra.intInstanceFromDb(orderObject);
         setTitle(orderObject.orderDescription);
+
+        fragGroup =(FragmentOrderSkuGroup) getFragmentManager().findFragmentById(R.id.fragmentGroup);
+        fragSku =(FragmentOrderSku) getFragmentManager().findFragmentById(R.id.fragmentSku);
+        fragGroup.fillListViewGroupSku();
     }
 
     @Override
@@ -40,5 +51,17 @@ public class ActivityOrder extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    public OrderExtra getOrderExtra() {
+        return orderExtra;
+    }
+
+
+    public void refreshSku(String skuGroup) {
+        if (fragSku!=null) {
+            fragSku.fillSku(orderExtra, skuGroup);
+        }
     }
 }

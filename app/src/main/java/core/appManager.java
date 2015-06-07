@@ -1,15 +1,27 @@
 package core;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.annotation.NonNull;
 
 import com.uni.mvpu.ActivityOrder;
 import com.uni.mvpu.ActivityOrderList;
 import com.uni.mvpu.ActivitySync;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.UUID;
+
 import Entitys.Order;
 import Entitys.OutletObject;
+import Entitys.priceType;
 import db.DbOpenHelper;
 
 /**
@@ -99,7 +111,7 @@ public class appManager {
     {
         Intent intent = new Intent(context, ActivityOrderList.class);
         //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        //intent.putExtra("w", selectedValue);
+        intent.putExtra("outletid", outletObject.outletId);
         context.startActivity(intent);
     }
 
@@ -111,5 +123,35 @@ public class appManager {
         return intent;
     }
 
+    public ArrayList<priceType> getPriceType(Context context)
+    {
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery("select distinct PriceId, PriceName from contracts", null);
+        cursor.moveToFirst();
+        ArrayList<priceType> result = new ArrayList<>();
+        for (int i = 0; i < cursor.getCount(); i++)
+        {
+            result.add(new priceType(cursor.getString(0), cursor.getString(1)));
+            cursor.moveToNext();
+        }
+        db.close();
+        return result;
+    }
+
+    public void addNewOrder(Context context, String outletid, int orderNumber, Calendar orderDate)
+    {
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("orderUUID", UUID.randomUUID().toString());
+        values.put("outletId", outletid);
+        values.put("orderNumber", orderNumber);
+        values.put("orderDate", wputils.getDateTime(orderDate));
+        values.put("_send",0);
+        db.insert("orderHeader", null, values);
+        db.close();
+    }
 
 }
+

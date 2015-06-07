@@ -9,8 +9,19 @@ public class OrderExtra extends Order {
 
     }
 
-//    public static OrderExtra intInstanceFromDb()
-//    {
-//
-//    }
+    public OrderExtra(Order order) {
+        //super(order._id, );
+        _id = order._id;
+        fillOrderExtra();
+    }
+
+    public void fillOrderExtra()
+    {
+
+    }
+
+    public static OrderExtra intInstanceFromDb(Order order)
+    {
+        return new OrderExtra();
+    }
 }

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TableRow android:orientation="vertical"
+            android:showDividers="middle|beginning|end"
+            android:layout_width="fill_parent">
+
+            <LinearLayout
+                android:orientation="horizontal" android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                >
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnGroupUp"
+                    android:text="Наверх"
+                    android:textStyle="bold"
+                    android:background="@drawable/round_shape_btn"
+                    android:typeface="sans"
+                    android:textColor="@android:color/background_light" />
+                    <!--<TextView-->
+                        <!--android:layout_width="fill_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:id="@+id/tetxViewSelectedGroup"-->
+                        <!--android:text="Текущая группа"-->
+                        <!--android:textColor="#ff5641ff"-->
+                        <!--android:textStyle="bold"-->
+                        <!--android:layout_gravity="center" />-->
+
+            </LinearLayout>
+        </TableRow>
+        <TableRow android:showDividers="middle|beginning|end">
+                    <ListView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/listViewSku"
+                        android:background="@android:color/darker_gray" />
+
+        </TableRow>
+    </TableLayout>
+</LinearLayout>

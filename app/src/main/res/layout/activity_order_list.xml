@@ -17,11 +17,21 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Добавить" />
-                <Button
+                    android:id="@+id/btnAddNewOrder"
+                    android:text="Добавить"
+                     />
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Удалить"/>
+                    android:id="@+id/textViewOrderDate"
+                    android:text="Текущая дата"
+                    android:textSize="22sp"
+                    />
+                <!--<Button-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="Удалить"/>-->
             </LinearLayout>
         </TableRow>
         <TableRow>

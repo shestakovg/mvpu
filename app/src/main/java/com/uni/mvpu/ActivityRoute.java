@@ -37,7 +37,7 @@ public class ActivityRoute extends ActionBarActivity {
     private ListView listRoute;
     private  SimpleAdapter sa;
     private List<OutletObject> outletsObjectList;
-    private String[] outletsId;
+    //private String[] outletsId;
     private OutletObject selectedOutlet;
     private String routeWhere = "";
     private String[] daysString = {"Все торговые точки", "Понедельник", "Вторник", "Среда", "Четверг","Пятница","Суббота","Воскресенье"};
@@ -179,21 +179,21 @@ public class ActivityRoute extends ActionBarActivity {
                         switch (item.getItemId()) {
 
                             case R.id.menuOrders:
-                                Toast.makeText(getApplicationContext(),
-                                        "Вы выбрали PopupMenu 1",
-                                        Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getApplicationContext(),
+//                                        "Вы выбрали PopupMenu 1",
+//                                        Toast.LENGTH_SHORT).show();
                                 appManager.getOurInstance().showOrderList(selectedOutlet,ActivityRoute.this);
                                 return true;
-                            case R.id.menu2:
-                                Toast.makeText(getApplicationContext(),
-                                        "Вы выбрали PopupMenu 2",
-                                        Toast.LENGTH_SHORT).show();
-                                return true;
-                            case R.id.menu3:
-                                Toast.makeText(getApplicationContext(),
-                                        "Вы выбрали PopupMenu 3",
-                                        Toast.LENGTH_SHORT).show();
-                                return true;
+//                            case R.id.menu2:
+//                                Toast.makeText(getApplicationContext(),
+//                                        "Вы выбрали PopupMenu 2",
+//                                        Toast.LENGTH_SHORT).show();
+//                                return true;
+//                            case R.id.menu3:
+//                                Toast.makeText(getApplicationContext(),
+//                                        "Вы выбрали PopupMenu 3",
+//                                        Toast.LENGTH_SHORT).show();
+//                                return true;
                             default:
                                 return false;
                         }

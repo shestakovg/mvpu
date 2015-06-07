@@ -9,6 +9,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import Entitys.priceType;
 import db.DbOpenHelper;
 
 /**
@@ -108,7 +109,7 @@ public class syncSaveData {
         Toast.makeText(context, "Обновление номенклатуры завершено", Toast.LENGTH_SHORT).show();
     }
 
-    public static void savePrice(List<JSONObject> jsonObjects, Context context)
+    public static void savePrice(List<JSONObject> jsonObjects, Context context, priceType price)
     {
         DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
@@ -125,7 +126,7 @@ public class syncSaveData {
             }
         }
         db.close();
-        Toast.makeText(context, "Обновление цен завершено", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "Обновление прайса "+price.getPriceName()+" завершено", Toast.LENGTH_SHORT).show();
     }
 
     public static void saveStock(List<JSONObject> jsonObjects, Context context)
