@@ -22,6 +22,7 @@ public class AppSettings {
     private final String PARAM_EMPLOYEE_ID = "EMPLOYEE_ID";
     private final String PARAM_EMPLOYEE_NAME = "EMPLOYEE_NAME";
 
+    private final String PARAM_PRICEID_DEFAULT = "75a9d60f-cd75-11e4-826a-240a64c9314e";
 
     public String getServiceUrl() {
         return serviceUrl;
@@ -138,5 +139,10 @@ public class AppSettings {
         }
         db.close();
     }
+
+    public String getDefaultPrice(){
+        return PARAM_PRICEID_DEFAULT;
+    }
+
 }
 

@@ -2,81 +2,106 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textViewOrderSkuName"
-            android:text="Current sku"
-            android:textStyle="bold"
-            android:textSize="22dp"
-            android:textIsSelectable="false"
-            android:typeface="sans"
-            android:singleLine="true"
-            android:focusableInTouchMode="false"
-            android:textColor="#ff000000" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Цена:"/>
-        <TextView
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/textViewPrice"
-            android:text="Price"
-            android:textStyle="bold" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ост гл:"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textViewMWH"
-            android:text="StockMWH:"
-            android:numeric="decimal"
-            android:textStyle="bold"
-            android:textColor="@android:color/background_dark" />
-        <TextView
-            android:inputType="numberSigned"
-            android:ems="10"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/editMWH"
-            android:textStyle="bold"
-            android:singleLine="false"
-            android:gravity="center|right"
-            android:textColor="#ff423aff"
-            android:text="" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ост розн:"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textViewRWH"
-            android:text="StockRWH:"
-            android:textStyle="bold"
-            android:textColor="@android:color/background_dark" />
-        <TextView
-            android:inputType="numberSigned"
-            android:ems="10"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/editRWH"
-            android:textStyle="bold"
-            android:textColor="#ff423aff"
-            android:text=""
-            android:singleLine="false"
-            android:gravity="right" />
-    </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:orientation="horizontal">
+                <Button
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:id="@+id/btnEditSkuRow"
+                    android:background="@android:drawable/ic_delete" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="       "/>
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textViewOrderSkuName"
+                    android:text="Current sku"
+                    android:textStyle="bold"
+                    android:textSize="22dp"
+                    android:textIsSelectable="false"
+                    android:typeface="sans"
+                    android:singleLine="true"
+                    android:focusableInTouchMode="false"
+                    android:textColor="#ff000000" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Цена:"/>
+                <TextView
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textViewPrice"
+                    android:text="Price"
+                    android:textStyle="bold" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ост гл:"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textViewMWH"
+                    android:text="StockMWH:"
+                    android:numeric="decimal"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/background_dark" />
+                <TextView
+                    android:inputType="numberSigned"
+                    android:ems="10"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/editMWH"
+                    android:textStyle="bold|italic"
+                    android:singleLine="false"
+                    android:gravity="center"
+                    android:textColor="#ff423aff"
+                    android:text="111"
+                    android:textSize="20dp"
+                    android:editable="true" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ост розн:"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textViewRWH"
+                    android:text="StockRWH:"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/background_dark" />
+                <TextView
+                    android:inputType="numberSigned"
+                    android:ems="10"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/editRWH"
+                    android:textStyle="bold|italic"
+                    android:textColor="#ff423aff"
+                    android:text="222"
+                    android:singleLine="false"
+                    android:textSize="20dp"
+                    android:gravity="center" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Стоимость: "/>
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textViewSum"
+                    android:text="Sum"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/background_dark" />
+            </LinearLayout>
 </LinearLayout>

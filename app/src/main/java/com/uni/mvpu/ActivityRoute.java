@@ -118,13 +118,15 @@ public class ActivityRoute extends ActionBarActivity {
         outletsObjectList = new ArrayList<OutletObject>();
         DbOpenHelper dbOpenHelper = new DbOpenHelper(this);
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select outletId , outletName , VisitDay  , VisitDayId ,VisitOrder , CustomerId ,CustomerName, partnerId, partnerName, address from route" + routeWhere + " order by VisitDayId,outletName ", null);
+        Cursor cursor = db.rawQuery("select r.outletId , r.outletName , r.VisitDay  , r.VisitDayId ,r.VisitOrder , r.CustomerId , " +
+                "r.CustomerName, r.partnerId, r.partnerName, r.address, con.PriceId, COALESCE(con.PriceName,'') as PriceName from route r   " +
+                "left join contracts con on r.partnerId = con.partnerId  " + routeWhere + " order by VisitDayId,outletName ", null);
         cursor.moveToFirst();
         for (int i = 0; i < cursor.getCount(); i++)
         {
             Map<String, Object> map= new HashMap<String, Object>();
             map.put("name", cursor.getString(cursor.getColumnIndex("outletName")));
-            map.put("adress", cursor.getString(cursor.getColumnIndex("address")) + "  Δενό: "+cursor.getString(cursor.getColumnIndex("VisitDay")));
+            map.put("adress", cursor.getString(cursor.getColumnIndex("address")) + "  Δενό: " + cursor.getString(cursor.getColumnIndex("VisitDay")));
             items.add(map);
             OutletObject ob = new OutletObject();
             ob.customerId = UUID.fromString(cursor.getString(cursor.getColumnIndex("CustomerId")));
@@ -134,6 +136,15 @@ public class ActivityRoute extends ActionBarActivity {
             ob.outletName = cursor.getString(cursor.getColumnIndex("outletName"));
             ob.partnerName = cursor.getString(cursor.getColumnIndex("partnerName"));
             ob.outletAddress = cursor.getString(cursor.getColumnIndex("address"));
+            ob.priceName = cursor.getString(cursor.getColumnIndex("PriceName"));
+            if (!ob.priceName.isEmpty())
+            {
+                ob.priceId = UUID.fromString(cursor.getString(cursor.getColumnIndex("PriceId")));
+            }
+            else
+            {
+                ob.priceId = UUID.fromString(appManager.getOurInstance().appSetupInstance.getDefaultPrice());
+            }
             outletsObjectList.add(ob);
             cursor.moveToNext();
         }

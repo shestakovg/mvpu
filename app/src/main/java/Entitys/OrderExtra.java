@@ -22,6 +22,6 @@ public class OrderExtra extends Order {
 
     public static OrderExtra intInstanceFromDb(Order order)
     {
-        return new OrderExtra();
+        return new OrderExtra(order);
     }
 }

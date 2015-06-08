@@ -29,18 +29,33 @@ public class ActivitySync extends ActionBarActivity {
     private final String IDLI_PRICE = "Цены";
     private final String IDLI_DOCS = "Договора";
     private final String IDLI_STOCK = "Остатки";
-    private String[] mSyncOptions = {IDLI_ROUTE, IDLI_PRODUCT, IDLI_PRICE, IDLI_DOCS, IDLI_STOCK};
+    private String[] mSyncOptions = {IDLI_ROUTE, IDLI_PRODUCT,  IDLI_DOCS, IDLI_STOCK};
     private ArrayAdapter listAdapter;
-
+    private ArrayList<priceType> priceList;
+    private ArrayList<String> priceNameList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        priceList = appManager.getOurInstance().getPriceType(this);
+        ArrayList<String> arrList = new ArrayList<>();
+        priceNameList = new ArrayList<>();
+        for (String curStr: mSyncOptions){
+            arrList.add(curStr);
+        }
+
+        for (priceType price : priceList)
+        {
+            arrList.add("Прайс: "+price.getPriceName());
+            priceNameList.add("Прайс: "+price.getPriceName());
+        }
+        String[] syncOptions =        arrList.toArray(new String[arrList.size()] );
         setContentView(R.layout.activity_sync);
         listSyncOptions = (ListView) findViewById(R.id.listViewSyncOptions);
-        listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, mSyncOptions);
+        listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, syncOptions);
         listSyncOptions.setAdapter(listAdapter);
         listSyncOptions.setItemsCanFocus(false);
         listSyncOptions.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+
 
     }
 
@@ -75,7 +90,14 @@ public class ActivitySync extends ActionBarActivity {
             boolean checked = checkedItems.valueAt(i);
             if (checked)
             {
-                //String cuurentItem =  listAdapter.getItem(position).toString();
+                String cuurentItem =  listAdapter.getItem(position).toString();
+                int itemIndex = priceNameList.indexOf(cuurentItem);
+                if (itemIndex>=0)
+                {
+                    Toast.makeText(this, "Обновление цен по прайс листу "+priceList.get(itemIndex).getPriceName(), Toast.LENGTH_SHORT).show();
+                    syncPrice syncPrice = new syncPrice(this, priceList.get(itemIndex));
+                    syncPrice.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getprice/" + priceList.get(itemIndex).getPriceId()});
+                }
                 switch (listAdapter.getItem(position).toString())
                 {
                     case IDLI_ROUTE:
@@ -93,17 +115,17 @@ public class ActivitySync extends ActionBarActivity {
                         syncSku syncSku = new syncSku(this);
                         syncSku.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getsku"});
                         break;
-                    case IDLI_PRICE:
-                        //appManager.getOurInstance().setCurrentContext(this);
-                        ArrayList<priceType> priceList = appManager.getOurInstance().getPriceType(this);
-                        Toast.makeText(this, "В маршруте "+appManager.getOurInstance().appSetupInstance.getRouteId()+" используется "+priceList.size()+" вида цен. " +
-                                "Обновление займет длительное время", Toast.LENGTH_SHORT).show();
-                        for (priceType price : priceList) {
-                            Toast.makeText(this, "Обновление цен по прайс листу "+price.getPriceName(), Toast.LENGTH_SHORT).show();
-                            syncPrice syncPrice = new syncPrice(this, price);
-                            syncPrice.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getprice/" + price.getPriceId()});
-                        }
-                        break;
+//                    case IDLI_PRICE:
+//                        //appManager.getOurInstance().setCurrentContext(this);
+//                        //ArrayList<priceType> priceList = appManager.getOurInstance().getPriceType(this);
+//                        Toast.makeText(this, "В маршруте "+appManager.getOurInstance().appSetupInstance.getRouteName()+" используется "+priceList.size()+" вида цен. " +
+//                                "Обновление займет длительное время", Toast.LENGTH_SHORT).show();
+//                        for (priceType price : priceList) {
+//                            Toast.makeText(this, "Обновление цен по прайс листу "+price.getPriceName(), Toast.LENGTH_SHORT).show();
+//                            syncPrice syncPrice = new syncPrice(this, price);
+//                            syncPrice.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getprice/" + price.getPriceId()});
+//                        }
+//                        break;
                     case IDLI_STOCK:
                         syncStock syncSt= new syncStock(this);
                         syncSt.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getbalancesku/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
