@@ -115,6 +115,7 @@ public class syncSaveData {
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
         db.execSQL("delete from price where PriceId='" + price + "'");
 
+
         for (JSONObject jsonObject: jsonObjects) {
             try {
                 ContentValues values = new ContentValues();
