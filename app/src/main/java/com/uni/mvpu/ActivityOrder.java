@@ -1,7 +1,10 @@
 package com.uni.mvpu;
 
+import android.content.res.Configuration;
 import android.os.Parcelable;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -24,16 +27,37 @@ public class ActivityOrder extends  ActionBarActivity implements IOrder  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        currentOutlet = appManager.getOurInstance().getActiveOutletObject();
+//        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//            setContentView(R.layout.activity_order_wide);}
+//        else
+//        {
+//            setContentView(R.layout.activity_order);
+//        }
         setContentView(R.layout.activity_order);
+//        FragmentManager fragmentManager = getFragmentManager();
+//        FragmentTransaction ft = fragmentManager.beginTransaction();
+//        FragmentOrderSku fragSku = new FragmentOrderSku();
+//        ft.add(R.id.containerOrder, fragSku, "fragmentSku");
+//        ft.addToBackStack(null);
+//        ft.commit();
+
+        currentOutlet = appManager.getOurInstance().getActiveOutletObject();
+
         Bundle data = getIntent().getExtras();
         orderObject = (Order) data.getParcelable("ORDER_OBJECT");
         orderExtra = OrderExtra.intInstanceFromDb(orderObject);
-        setTitle(getOutletObject().outletName+"  Заказ №: "+ orderObject.orderNumber);
+        setTitle(getOutletObject().outletName+"Вид цен: "+getOutletObject().priceName+ "   Заказ №: "+ orderObject.orderNumber);
 
-        fragGroup =(FragmentOrderSkuGroup) getFragmentManager().findFragmentById(R.id.fragmentGroup);
-        fragSku =(FragmentOrderSku) getFragmentManager().findFragmentById(R.id.fragmentSku);
+        fragGroup = (FragmentOrderSkuGroup) getFragmentManager().findFragmentById(R.id.fragmentGroup);
         fragGroup.fillListViewGroupSku();
+        fragSku = (FragmentOrderSku) getFragmentManager().findFragmentById(R.id.fragmentSku);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        //fragGroup.upToRootGroup();
+        super.onConfigurationChanged(newConfig);
+
     }
 
     @Override
@@ -65,7 +89,7 @@ public class ActivityOrder extends  ActionBarActivity implements IOrder  {
 
 
     public void refreshSku(String skuGroup) {
-        if (fragSku!=null) {
+        if (fragSku!=null && fragSku.isInLayout()) {
             fragSku.fillSku(orderExtra, skuGroup);
         }
     }

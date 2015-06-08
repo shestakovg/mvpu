@@ -113,7 +113,8 @@ public class syncSaveData {
     {
         DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
-        db.execSQL("delete from price");
+        db.execSQL("delete from price where PriceId='" + price + "'");
+
         for (JSONObject jsonObject: jsonObjects) {
             try {
                 ContentValues values = new ContentValues();
@@ -126,7 +127,7 @@ public class syncSaveData {
             }
         }
         db.close();
-        Toast.makeText(context, "Обновление прайса "+price.getPriceName()+" завершено", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "Обновление прайса "+price.getPriceName()+" завершено", Toast.LENGTH_LONG).show();
     }
 
     public static void saveStock(List<JSONObject> jsonObjects, Context context)

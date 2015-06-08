@@ -1,6 +1,7 @@
 package com.uni.mvpu;
 
 import android.app.Fragment;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -57,9 +58,10 @@ public class FragmentOrderSkuGroup extends Fragment {
         skuGroupStack = new ArrayList<>();
         //listRoute.setItemsCanFocus(false);
         lvGroup.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        skuGroupStack.add(
-                new groupSku(new UUID(0L, 0L).toString(), new UUID(0L, 0L).toString(), "")
-        );
+        if (skuGroupStack.size()==0)
+            skuGroupStack.add(
+                    new groupSku(new UUID(0L, 0L).toString(), new UUID(0L, 0L).toString(), "")
+            );
         //fillListViewGroupSku();
         lvGroup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                            @Override
@@ -80,6 +82,20 @@ public class FragmentOrderSkuGroup extends Fragment {
         outState.putInt("SELECTED_LEVEL", groupSkuList.size());
         outState.putString("LAST_LEVEL",groupSkuList.get(groupSkuList.size()-1).getParentId());
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
+
+    public void upToRootGroup()
+    {
+        skuGroupStack.clear();
+        skuGroupStack.add(
+                new groupSku(new UUID(0L, 0L).toString(), new UUID(0L, 0L).toString(), "")
+        );
+        fillListViewGroupSku();
     }
 
     public void fillListViewGroupSku()
