@@ -45,7 +45,7 @@ public class ActivityOrder extends  ActionBarActivity implements IOrder  {
 
         Bundle data = getIntent().getExtras();
         orderObject = (Order) data.getParcelable("ORDER_OBJECT");
-        orderExtra = OrderExtra.intInstanceFromDb(orderObject);
+        orderExtra = OrderExtra.intInstanceFromDb(orderObject, this);
         setTitle(getOutletObject().outletName+"Вид цен: "+getOutletObject().priceName+ "   Заказ №: "+ orderObject.orderNumber);
 
         fragGroup = (FragmentOrderSkuGroup) getFragmentManager().findFragmentById(R.id.fragmentGroup);

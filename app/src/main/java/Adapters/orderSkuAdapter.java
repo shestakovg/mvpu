@@ -173,6 +173,7 @@ public class orderSkuAdapter extends BaseAdapter {
                 if (!dlgEditRWH.getText().toString().trim().isEmpty())
                     sku.setQtyRWH(Integer.parseInt(dlgEditRWH.getText().toString()));
                 //
+                sku.saveDb(context);
                 currentAdapter.notifyDataSetChanged();
                 dlgEditQty.dismiss();
             }
@@ -200,6 +201,7 @@ public class orderSkuAdapter extends BaseAdapter {
                     public void onClick(DialogInterface dialog, int id) {
                         sku.setQtyMWH(0);
                         sku.setQtyRWH(0);
+                        sku.deleteDb(context);
                         currentAdapter.notifyDataSetChanged();
                         dialog.cancel();
                     }

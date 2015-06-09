@@ -23,8 +23,8 @@ public class DbCreateScript {
     private static String CREATE_ORDER_HEADER_IDX = "CREATE INDEX idx_orderHeader_UUID ON orderHeader (orderUUID)";
 
     private static String CREATE_ORDER_DETAIL = "create table orderDetail(_id integer primary key autoincrement, headerId integer DEFAULT 0, orderUUID text, skuId text, qty1 integer, qty2 integer, _send integer DEFAULT 0)";
-    private static String CREATE_CREATE_ORDER_DETAIL_IDX = "CREATE INDEX idx_orderDetail_UUID ON orderDetail (orderUUID, skuId)";
-    private static String CREATE_CREATE_ORDER_DETAIL2_IDX = "CREATE INDEX idx_orderDetail_ID ON orderDetail (headerId, skuId)";
+    private static String CREATE_CREATE_ORDER_DETAIL_IDX = "CREATE UNIQUE INDEX idx_orderDetail_UUID ON orderDetail (orderUUID, skuId)";
+    private static String CREATE_CREATE_ORDER_DETAIL2_IDX = "CREATE UNIQUE INDEX idx_orderDetail_ID ON orderDetail (headerId, skuId)";
 
     private static String CREATE_CONTRACT = "create table contracts (CustomerId text, PriceId text, PriceName text, LimitSum double, Reprieve text, PartnerId text)";
     private static String CREATE_CONTRACT_IDX ="CREATE INDEX idx_contracts ON contracts (PartnerId)";

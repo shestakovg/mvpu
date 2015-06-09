@@ -58,7 +58,7 @@ public class orderListAdapter extends BaseAdapter {
         }
         Order order = getOrder( position);
         ((TextView) view.findViewById(R.id.txtViewListOrderName)).setText(order.orderDescription);
-        ((TextView) view.findViewById(R.id.txtViewListOrderSum)).setText("Сумма: "+Double.toString(order.orderSum));
+        ((TextView) view.findViewById(R.id.txtViewListOrderSum)).setText("Сумма: "+String.format("%.2f",order.orderSum));
         Button btn = (Button) view.findViewById(R.id.btnOrderListItem);
         btn.setTag(position);
         btn.setOnClickListener(new View.OnClickListener() {

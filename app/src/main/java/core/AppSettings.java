@@ -84,7 +84,7 @@ public class AppSettings {
     }
 
     public AppSettings() {
-        this.serviceUrl = "http://192.168.1.102:8100";
+        this.serviceUrl = "http://192.168.0.108:8100";
         this.routeName =  "Неизв";
         this.routeId = UUID.randomUUID();
         this.employeeName = "Неизвестный сотрудник";

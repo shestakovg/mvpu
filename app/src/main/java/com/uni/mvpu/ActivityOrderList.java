@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -65,10 +66,6 @@ public class ActivityOrderList extends ActionBarActivity {
                 //olAdapter = new orderListAdapter(this, orders);
         // настраиваем список
         lvMain = (ListView) findViewById(R.id.lvOrderList);
-
-        fillOrders();
-
-
         btnAddOrder = (Button) findViewById(R.id.btnAddNewOrder);
         btnAddOrder.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,6 +73,13 @@ public class ActivityOrderList extends ActionBarActivity {
                 onClickAddNewOrder(v);
             }
         });
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        //Toast.makeText(this,"onPostResume", Toast.LENGTH_SHORT).show();
+        fillOrders();
     }
 
     @Override
@@ -99,6 +103,21 @@ public class ActivityOrderList extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+    private double getOrderSum(SQLiteDatabase db , int orderId)
+    {
+        double result = 0;
+        String query="select sum(coalesce(d.qty1,0) * coalesce(p.pric,0) + coalesce(d.qty2,0) * coalesce(p.pric,0)) as orderSumma from orderHeader h " +
+                " inner join orderDetail d on d.headerid= h._id" +
+                " left join price p on d.skuId = p.skuId" +
+                " where h._id = ? and p.priceId= ?";
+        Cursor cursor = db.rawQuery(query, new String[] {Integer.toString(orderId), appManager.getOurInstance().getActiveOutletObject().priceId.toString()});
+        cursor.moveToFirst();
+        for (int i = 0; i < cursor.getCount(); i++) {
+            result = cursor.getDouble(0);
+            cursor.moveToNext();
+        }
+        return  result;
+    }
 
     private void fillOrders()
     {
@@ -112,8 +131,8 @@ public class ActivityOrderList extends ActionBarActivity {
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
 
 
-        Cursor cursor = db.rawQuery("select  _id,  orderUUID,DATETIME(orderDate) as orderDate,  outletId,  orderNumber , notes , " +
-                " responseText, _1CDocNumber1,  _1CDocNumber2, _send from orderHeader where outletId = ? and DATETIME(orderDate) = ?",
+        Cursor cursor = db.rawQuery("select  h._id,  h.orderUUID,DATETIME(h.orderDate) as orderDate,  h.outletId,  h.orderNumber , h.notes , " +
+                " h.responseText, h._1CDocNumber1,  h._1CDocNumber2, h._send from orderHeader h where outletId = ? and DATETIME(orderDate) = ?",
                 new String[] {outletid, wputils.getDateTime(orderDate)});
         //, wputils.getDateTime(orderDate)
         cursor.moveToFirst();
@@ -130,7 +149,7 @@ public class ActivityOrderList extends ActionBarActivity {
                     new Date(orderDate.get(Calendar.YEAR)-1900,
                             orderDate.get(Calendar.MONTH), orderDate.get(Calendar.DAY_OF_MONTH)),
                     0);
-
+            order.orderSum = getOrderSum(db, order._id);
             orders.add(order);
             cursor.moveToNext();
         }

@@ -45,7 +45,7 @@ public class FragmentOrderSku extends Fragment {
         DbOpenHelper dbOpenHelper = new DbOpenHelper(parentView.getContext());
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select s.SkuId, s.SkuName, st.StockG, st.StockR, COALESCE( p.Pric,0) pric, COALESCE(od.qty1, 0) as QtyMWH, " +
-                        "  COALESCE(od.qty2, 0) as QtyRWH from sku as s" +
+                        "  COALESCE(od.qty2, 0) as QtyRWH, case when od.skuId is null then 0 else 1 end existPosition, od._id as detailId  from sku as s" +
                         "            left join  stock st on s.skuId = st.skuId  " +
                         "            left join price p on s.skuId = p.skuId and p.PriceId = '" +locOutlet.priceId.toString()+"' "+
                         "            left join orderDetail od on od.skuId= s.skuId and od.headerId = ?  "+
@@ -56,7 +56,9 @@ public class FragmentOrderSku extends Fragment {
         cursor.moveToFirst();
         for (int i=0;i<cursor.getCount();i++)
         {
-            orderSku sku =  new orderSku(cursor.getString(cursor.getColumnIndex("SkuName")));
+            boolean exist = false;
+            if (cursor.getInt(cursor.getColumnIndex("existPosition"))==1) exist = true;
+            orderSku sku =  new orderSku(cursor.getString(cursor.getColumnIndex("SkuName")), exist);
             sku.skuId = cursor.getString(cursor.getColumnIndex("SkuId"));
             sku.stockG = cursor.getDouble(cursor.getColumnIndex("StockG"));
             sku.stockR = cursor.getDouble(cursor.getColumnIndex("StockR"));
@@ -65,6 +67,7 @@ public class FragmentOrderSku extends Fragment {
             sku.headerId = ((IOrder) getActivity()).getOrderExtra()._id;
             sku.setQtyMWH(cursor.getInt(cursor.getColumnIndex("QtyMWH")));
             sku.setQtyRWH(cursor.getInt(cursor.getColumnIndex("QtyRWH")));
+            sku._id = cursor.getLong(cursor.getColumnIndex("detailId"));
             skuList.add(sku);
             cursor.moveToNext();
         }
