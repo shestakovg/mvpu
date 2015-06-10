@@ -25,8 +25,8 @@ public class OrderExtra extends Order {
     {
         DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select orderUUID, outletId, orderNumber, notes, _1CDocNumber1, _1CDocNumber2, responseText    " +
-            " from orderHeader h where _id = ?", new String[]{Integer.toString(this._id)});
+        Cursor cursor = db.rawQuery("select  h.orderUUID, h.outletId, h.orderNumber, h.notes, h._1CDocNumber1, h._1CDocNumber2, h.responseText    " +
+            " from orderHeader h where h._id = ?", new String[]{Integer.toString(this._id)});
         cursor.moveToFirst();
         for (int i=0; i<cursor.getCount(); i++)
         {
@@ -36,6 +36,7 @@ public class OrderExtra extends Order {
             this._1CDocNumber1 = cursor.getString(cursor.getColumnIndex("_1CDocNumber1"));
             this._1CDocNumber2 = cursor.getString(cursor.getColumnIndex("_1CDocNumber2"));
             this.responseText = cursor.getString(cursor.getColumnIndex("responseText"));
+            this.outletId =  cursor.getString(cursor.getColumnIndex("outletId"));
             cursor.moveToNext();
         }
         db.close();

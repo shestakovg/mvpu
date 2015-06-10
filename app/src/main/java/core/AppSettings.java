@@ -14,6 +14,9 @@ import db.DbOpenHelper;
 /**
  * Created by g.shestakov on 26.05.2015.
  */
+
+
+
 public class AppSettings {
 
     private final String PARAM_SERVICE_URL = "SERVICE_URL";

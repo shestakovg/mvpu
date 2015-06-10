@@ -21,6 +21,8 @@ import android.widget.PopupMenu;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
@@ -48,6 +50,7 @@ public class ActivityRoute extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        fillWhereCondition(Calendar.getInstance().get(Calendar.DAY_OF_WEEK) -Calendar.getInstance().getFirstDayOfWeek());
         setContentView(R.layout.activity_route);
         listRoute = (ListView) findViewById(R.id.listViewRoute);
         sa = new SimpleAdapter(this, createRouteList(), android.R.layout.simple_expandable_list_item_2,
@@ -158,7 +161,7 @@ public class ActivityRoute extends ActionBarActivity {
         if (outletsObjectList != null)
         {
             selectedOutlet = outletsObjectList.get(position);
-            appManager.getOurInstance().setActiveOutletObject(selectedOutlet);
+            //appManager.getOurInstance().setActiveOutletObject(selectedOutlet);
           //  Toast.makeText(this, selectedOutlet.outletId.toString(), Toast.LENGTH_SHORT).show();
             showPopupMenu(arg1,outletsObjectList.get(position) );
         }
@@ -193,7 +196,7 @@ public class ActivityRoute extends ActionBarActivity {
 //                                Toast.makeText(getApplicationContext(),
 //                                        "Вы выбрали PopupMenu 1",
 //                                        Toast.LENGTH_SHORT).show();
-                                appManager.getOurInstance().showOrderList(selectedOutlet,ActivityRoute.this);
+                                appManager.getOurInstance().showOrderList(selectedOutlet, ActivityRoute.this);
                                 return true;
 //                            case R.id.menu2:
 //                                Toast.makeText(getApplicationContext(),

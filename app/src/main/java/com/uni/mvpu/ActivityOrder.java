@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.UUID;
+
 import Entitys.Order;
 import Entitys.OrderExtra;
 import Entitys.OutletObject;
@@ -41,16 +43,18 @@ public class ActivityOrder extends  ActionBarActivity implements IOrder  {
 //        ft.addToBackStack(null);
 //        ft.commit();
 
-        currentOutlet = appManager.getOurInstance().getActiveOutletObject();
+        currentOutlet = OutletObject.getInstance(UUID.fromString(getIntent().getStringExtra("OUTLETID")), this);
+                //appManager.getOurInstance().getActiveOutletObject();
 
         Bundle data = getIntent().getExtras();
         orderObject = (Order) data.getParcelable("ORDER_OBJECT");
         orderExtra = OrderExtra.intInstanceFromDb(orderObject, this);
-        setTitle(getOutletObject().outletName+"Вид цен: "+getOutletObject().priceName+ "   Заказ №: "+ orderObject.orderNumber);
+        setTitle(getOutletObject().outletName+"    Вид цен: "+getOutletObject().priceName+ "   Заказ №: "+ orderExtra.orderNumber);
 
         fragGroup = (FragmentOrderSkuGroup) getFragmentManager().findFragmentById(R.id.fragmentGroup);
         fragGroup.fillListViewGroupSku();
         fragSku = (FragmentOrderSku) getFragmentManager().findFragmentById(R.id.fragmentSku);
+        fragSku.displayTotal();
     }
 
     @Override
@@ -90,12 +94,12 @@ public class ActivityOrder extends  ActionBarActivity implements IOrder  {
 
     public void refreshSku(String skuGroup) {
         if (fragSku!=null && fragSku.isInLayout()) {
-            fragSku.fillSku(orderExtra, skuGroup);
+            fragSku.fillSku( skuGroup);
         }
     }
 
     @Override
     public OutletObject getOutletObject() {
-        return appManager.getOurInstance().getActiveOutletObject();
+        return currentOutlet;
     }
 }

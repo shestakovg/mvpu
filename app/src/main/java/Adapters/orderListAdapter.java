@@ -14,6 +14,7 @@ import com.uni.mvpu.R;
 import java.util.ArrayList;
 
 import Entitys.Order;
+import core.OrderListMode;
 import core.appManager;
 
 /**
@@ -23,12 +24,22 @@ public class orderListAdapter extends BaseAdapter {
     Context context;
     LayoutInflater lInflater;
     ArrayList<Order> orders;
-
-    public orderListAdapter(Context context, ArrayList<Order> orders) {
+    private OrderListMode orderMode;
+    private String outletId="";
+    public orderListAdapter(Context context, ArrayList<Order> orders, String outletId) {
         this.context = context;
         this.orders = orders;
         lInflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        if (outletId.isEmpty()) {
+            orderMode = OrderListMode.orderByDay;
+        }
+        else
+        {
+            orderMode = OrderListMode.ordersByOutlets;
+            this.outletId = outletId;
+        }
     }
 
     @Override
@@ -74,7 +85,7 @@ public class orderListAdapter extends BaseAdapter {
     public void btnOrderListItemClick(View view)
     {
         int position = (Integer) view.getTag();
-        context.startActivity(appManager.getOurInstance().getOrderActivityIntent(((Order) getItem(position)), context));
+        context.startActivity(appManager.getOurInstance().getOrderActivityIntent(((Order) getItem(position)), context,((Order) getItem(position)).outletId));
         //Toast.makeText(context,((Order) getItem(position)).orderDescription, Toast.LENGTH_SHORT).show();
     }
 }

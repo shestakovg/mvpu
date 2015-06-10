@@ -24,19 +24,21 @@ import java.util.ArrayList;
 import Entitys.OrderExtra;
 import Entitys.OutletObject;
 import Entitys.orderSku;
+import interfaces.IOrderTotal;
 
 /**
  * Created by shestakov.g on 06.06.2015.
  */
-public class orderSkuAdapter extends BaseAdapter {
+public class orderSkuAdapter extends BaseAdapter  {
     Context context;
     LayoutInflater lInflater;
     orderSkuAdapter currentAdapter;
     private ArrayList<orderSku> skuList;
     private OutletObject outlet;
     private OrderExtra orderExtra;
+    private IOrderTotal orderTotal;
 
-    public orderSkuAdapter(Context context,  ArrayList<orderSku> skuList,OutletObject outlet, OrderExtra orderExtra) {
+    public orderSkuAdapter(Context context,  ArrayList<orderSku> skuList,OutletObject outlet, OrderExtra orderExtra, IOrderTotal orderTotal) {
         this.context = context;
         this.skuList = skuList;
         this.lInflater = (LayoutInflater) context
@@ -44,6 +46,7 @@ public class orderSkuAdapter extends BaseAdapter {
         this.outlet = outlet;
         this.orderExtra = orderExtra;
         this.currentAdapter = this;
+        this.orderTotal = orderTotal;
     }
 
 
@@ -167,14 +170,25 @@ public class orderSkuAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
 
-                if (!dlgEditMWH.getText().toString().trim().isEmpty())
+                if (!dlgEditMWH.getText().toString().trim().isEmpty()) {
                     sku.setQtyMWH(Integer.parseInt(dlgEditMWH.getText().toString()));
+                }
+                else
+                {
+                    if (sku.qtyMWH>0) sku.setQtyMWH(0);
+                }
 
-                if (!dlgEditRWH.getText().toString().trim().isEmpty())
+                if (!dlgEditRWH.getText().toString().trim().isEmpty()) {
                     sku.setQtyRWH(Integer.parseInt(dlgEditRWH.getText().toString()));
+                }
+                else
+                {
+                    if (sku.qtyRWH>0) sku.setQtyRWH(0);
+                }
                 //
                 sku.saveDb(context);
                 currentAdapter.notifyDataSetChanged();
+                orderTotal.displayTotal();
                 dlgEditQty.dismiss();
             }
         });
@@ -203,6 +217,7 @@ public class orderSkuAdapter extends BaseAdapter {
                         sku.setQtyRWH(0);
                         sku.deleteDb(context);
                         currentAdapter.notifyDataSetChanged();
+                        orderTotal.displayTotal();
                         dialog.cancel();
                     }
                 });

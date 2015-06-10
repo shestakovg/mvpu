@@ -97,29 +97,38 @@ public class appManager {
 //    }
 
 
-    public OutletObject getActiveOutletObject() {
-        return activeOutletObject;
-    }
+//    public OutletObject getActiveOutletObject() {
+//        return activeOutletObject;
+//    }
+//
+//    public void setActiveOutletObject(OutletObject activeOutletObject) {
+//        this.activeOutletObject = activeOutletObject;
+//    }
 
-    public void setActiveOutletObject(OutletObject activeOutletObject) {
-        this.activeOutletObject = activeOutletObject;
-    }
-
-    private  OutletObject activeOutletObject ;
+    //private  OutletObject activeOutletObject ;
 
     public void showOrderList(OutletObject outletObject, Context context)
     {
         Intent intent = new Intent(context, ActivityOrderList.class);
         //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra("outletid", outletObject.outletId);
+        intent.putExtra("outletid", outletObject.outletId.toString());
         context.startActivity(intent);
     }
 
-    public Intent getOrderActivityIntent(Order order, Context context)
+    public void showOrderListByDay(Context context)
+    {
+        Intent intent = new Intent(context, ActivityOrderList.class);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("outletid", "");
+        context.startActivity(intent);
+    }
+
+    public Intent getOrderActivityIntent(Order order, Context context, String outletId)
     {
         Intent intent = new Intent(context, ActivityOrder.class);
 
         intent.putExtra("ORDER_OBJECT", order);
+        intent.putExtra("OUTLETID", outletId);
         return intent;
     }
 

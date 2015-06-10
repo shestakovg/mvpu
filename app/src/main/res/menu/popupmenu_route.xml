@@ -5,17 +5,17 @@
             android:id="@+id/menuOrders"
             android:icon="@drawable/document_32"
             android:title="Перейти к заказам"/>
-        <item
-            android:id="@+id/menu2"
-            android:title="menu item 2"/>
-        <item
-            android:id="@+id/menu3"
-            android:title="menu item 3">
-            <menu>
-                <item
-                    android:id="@+id/submenu"
-                    android:title="Подменю"/>
-            </menu>
-        </item>
+        <!--<item-->
+            <!--android:id="@+id/menu2"-->
+            <!--android:title="menu item 2"/>-->
+        <!--<item-->
+            <!--android:id="@+id/menu3"-->
+            <!--android:title="menu item 3">-->
+            <!--<menu>-->
+                <!--<item-->
+                    <!--android:id="@+id/submenu"-->
+                    <!--android:title="Подменю"/>-->
+            <!--</menu>-->
+        <!--</item>-->
     </group>
 </menu>

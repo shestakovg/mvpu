@@ -25,6 +25,8 @@ import java.util.UUID;
 
 import Adapters.orderListAdapter;
 import Entitys.Order;
+import Entitys.OutletObject;
+import core.OrderListMode;
 import core.appManager;
 import core.wputils;
 import db.DbOpenHelper;
@@ -44,12 +46,23 @@ public class ActivityOrderList extends ActionBarActivity {
 
     //ArrayList<Order> orders = new ArrayList<Order>();
     orderListAdapter olAdapter;
+
+    private OrderListMode orderMode;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_list);
 
-        outletid = appManager.getOurInstance().getActiveOutletObject().outletId.toString();
+        outletid = getIntent().getStringExtra("outletid");
+        if (outletid == "") {
+            orderMode = OrderListMode.orderByDay;
+        }
+            else
+        {
+            orderMode = OrderListMode.ordersByOutlets;
+        }
+                //appManager.getOurInstance().getActiveOutletObject().outletId.toString();
         // getIntent().getStringExtra("outletid");
         tvOrderDate = (TextView) findViewById(R.id.textViewOrderDate);
         orderDate = Calendar.getInstance();
@@ -79,7 +92,13 @@ public class ActivityOrderList extends ActionBarActivity {
     protected void onPostResume() {
         super.onPostResume();
         //Toast.makeText(this,"onPostResume", Toast.LENGTH_SHORT).show();
-        fillOrders();
+        if (orderMode == OrderListMode.ordersByOutlets) {
+            fillOrders();
+        }
+        else
+        {
+
+        }
     }
 
     @Override
@@ -103,14 +122,16 @@ public class ActivityOrderList extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    private double getOrderSum(SQLiteDatabase db , int orderId)
+    private double getOrderSum(SQLiteDatabase db , int orderId )
     {
         double result = 0;
         String query="select sum(coalesce(d.qty1,0) * coalesce(p.pric,0) + coalesce(d.qty2,0) * coalesce(p.pric,0)) as orderSumma from orderHeader h " +
-                " inner join orderDetail d on d.headerid= h._id" +
-                " left join price p on d.skuId = p.skuId" +
-                " where h._id = ? and p.priceId= ?";
-        Cursor cursor = db.rawQuery(query, new String[] {Integer.toString(orderId), appManager.getOurInstance().getActiveOutletObject().priceId.toString()});
+                " inner join orderDetail d on d.headerid = h._id " +
+                " inner join route r on r.outletId = h.outletId "+
+                " inner join contracts con on  con.PartnerId = r.partnerId "+
+                " inner join price p on p.priceId = con.PriceId and d.skuId = p.skuId" +
+                " where h._id = ?";
+        Cursor cursor = db.rawQuery(query, new String[] {Integer.toString(orderId)});
         cursor.moveToFirst();
         for (int i = 0; i < cursor.getCount(); i++) {
             result = cursor.getDouble(0);
@@ -121,11 +142,6 @@ public class ActivityOrderList extends ActionBarActivity {
 
     private void fillOrders()
     {
-//        for (int i=0;i<100;i++)
-//        {
-//            Order order = new Order(i, i, UUID.randomUUID().toString(), new Date(), i* 1234);
-//            orders.add(order);
-//        }
         ArrayList<Order> orders = new ArrayList<>();
         DbOpenHelper dbOpenHelper = new DbOpenHelper(this);
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
@@ -150,11 +166,12 @@ public class ActivityOrderList extends ActionBarActivity {
                             orderDate.get(Calendar.MONTH), orderDate.get(Calendar.DAY_OF_MONTH)),
                     0);
             order.orderSum = getOrderSum(db, order._id);
+            order.outletId = cursor.getString(cursor.getColumnIndex("outletId"));
             orders.add(order);
             cursor.moveToNext();
         }
         db.close();
-        olAdapter = new orderListAdapter(this, orders);
+        olAdapter = new orderListAdapter(this, orders,outletid );
         lvMain.setAdapter(olAdapter);
     }
 
