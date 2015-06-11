@@ -23,6 +23,7 @@ import Entitys.Order;
 import Entitys.OutletObject;
 import Entitys.priceType;
 import db.DbOpenHelper;
+import sync.sendOrders;
 
 /**
  * Created by g.shestakov on 26.05.2015.
@@ -160,6 +161,12 @@ public class appManager {
         values.put("_send",0);
         db.insert("orderHeader", null, values);
         db.close();
+    }
+
+    public void sendDataToServer(Context context)
+    {
+        sendOrders so = new  sendOrders(context);
+        so.execute();
     }
 
 }

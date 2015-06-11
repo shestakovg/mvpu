@@ -1,8 +1,12 @@
 package core;
 
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Formatter;
 import java.util.Locale;
 
 /**
@@ -18,4 +22,23 @@ public class wputils {
         return dateFormat.format(new Date(year - 1900,
                 calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)));
     }
+
+    public static String decodeCyrilicString(String s)
+    {
+        if (s.length()==0) s="без комментариев";
+        char[] ch_array = s.toCharArray();
+        CharBuffer charbuf = CharBuffer.wrap(ch_array);
+        ByteBuffer bytebuf = Charset.forName("Cp1251").encode(charbuf);
+        byte[] byte_array = bytebuf.array();
+        String res="";
+        for (int j=0; j < byte_array.length; j++)
+        {
+            Formatter fmt = new Formatter();
+            fmt.format("%X",byte_array[j]);
+            res=res+fmt.toString()+" ";
+            //System.out.print(fmt+" ");
+        }
+        return res;
+    }
+
 }

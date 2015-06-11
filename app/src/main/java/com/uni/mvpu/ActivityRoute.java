@@ -109,6 +109,7 @@ public class ActivityRoute extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            appManager.getOurInstance().sendDataToServer(this);
             return true;
         }
 

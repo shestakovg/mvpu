@@ -77,7 +77,7 @@ public class ActivityOrderList extends ActionBarActivity {
             }
         });
                 //olAdapter = new orderListAdapter(this, orders);
-        // настраиваем список
+        // ??????????? ??????
         lvMain = (ListView) findViewById(R.id.lvOrderList);
         btnAddOrder = (Button) findViewById(R.id.btnAddNewOrder);
         if (orderMode == OrderListMode.orderByDay)
@@ -115,6 +115,7 @@ public class ActivityOrderList extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            appManager.getOurInstance().sendDataToServer(this);
             return true;
         }
 
@@ -229,7 +230,7 @@ public class ActivityOrderList extends ActionBarActivity {
 //            myMonth = monthOfYear;
 //            myDay = dayOfMonth;
             orderDate = new GregorianCalendar (year, monthOfYear, dayOfMonth);
-            tvOrderDate.setText(DateFormat.format("Дата заказа: dd.MM.yyyy",orderDate));
+            tvOrderDate.setText(DateFormat.format("???? ??????: dd.MM.yyyy",orderDate));
 
             updateOrderList();
         }
