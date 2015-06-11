@@ -57,6 +57,12 @@
                 android:layout_height="wrap_content"
                 android:text="Заказ"
                 android:id="@+id/btnOrderDisplayAllRows"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Параметры"
+                android:id="@+id/btnOrderParamsDialog"/>
+
         </LinearLayout>
 
         <LinearLayout

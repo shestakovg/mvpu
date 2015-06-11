@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <TableRow
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            >
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Тип продажи"-->
+                <!--android:textStyle="bold" />-->
+            <!--<Spinner-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:id="@+id/spinerOrderPayType"-->
+                <!--android:spinnerMode="dialog"-->
+                <!--android:labelFor="@android:drawable/arrow_down_float"-->
+                <!--android:textAlignment="center">-->
+
+            <!--</Spinner>-->
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/radioGroupPayType">
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Кредит"
+                    android:id="@+id/radioBtnCredit"/>
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Факт"
+                    android:id="@+id/radioBtnFact"/>
+            </RadioGroup>
+
+
+        </LinearLayout>
+    </TableRow>
+    <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="350dp"
+                android:layout_height="fill_parent">
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/checkboxAutoLoad"
+                    android:text="Самовывоз"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Примечание"
+                    android:textStyle="bold" />
+                <EditText
+                    android:layout_width="380dp"
+                    android:layout_height="180dp"
+                    android:inputType="textMultiLine"
+                    android:ems="10"
+                    android:id="@+id/editTextOrderNote" />
+
+            </LinearLayout>
+    </TableRow>
+    <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="350dp"
+                android:layout_height="fill_parent"
+                android:showDividers="middle|beginning|end|none"
+                android:gravity="center">
+                <Button
+                    android:layout_width="150dp"
+                    android:layout_height="fill_parent"
+                    android:text="ОК"
+                    android:id="@+id/btnDialogOrderParamsOK"
+                    />
+                <Button
+                    android:layout_width="150dp"
+                    android:layout_height="fill_parent"
+                    android:text="Отмена"
+                    android:id="@+id/btnDialogOrderParamsCancel"
+                    />
+            </LinearLayout>
+    </TableRow>
+    </TableLayout>
+</LinearLayout>

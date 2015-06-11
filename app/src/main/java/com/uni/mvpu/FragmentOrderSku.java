@@ -46,6 +46,15 @@ public class FragmentOrderSku extends Fragment implements IOrderTotal{
                     }
                 }
         );
+
+        ((Button) parentView.findViewById(R.id.btnOrderParamsDialog)).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ((IOrder) getActivity()).showOrderParams();
+                    }
+                }
+        );
         return parentView;
     }
 

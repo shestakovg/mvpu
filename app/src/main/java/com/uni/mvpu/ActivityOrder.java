@@ -1,5 +1,7 @@
 package com.uni.mvpu;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Parcelable;
 import android.app.Fragment;
@@ -9,12 +11,21 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
 
 import java.util.UUID;
 
 import Entitys.Order;
 import Entitys.OrderExtra;
 import Entitys.OutletObject;
+import Entitys.orderSku;
 import core.appManager;
 import interfaces.IOrder;
 
@@ -24,8 +35,8 @@ public class ActivityOrder extends  ActionBarActivity implements IOrder  {
     private OrderExtra orderExtra;
     private FragmentOrderSkuGroup fragGroup;
     private FragmentOrderSku  fragSku;
-
     private OutletObject currentOutlet;
+    private Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +91,7 @@ public class ActivityOrder extends  ActionBarActivity implements IOrder  {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            showOrderParamsDialog();
             return true;
         }
 
@@ -102,4 +114,62 @@ public class ActivityOrder extends  ActionBarActivity implements IOrder  {
     public OutletObject getOutletObject() {
         return currentOutlet;
     }
-}
+
+    @Override
+    public void showOrderParams() {
+        showOrderParamsDialog();
+    }
+
+    private void showOrderParamsDialog()
+    {
+        final OrderExtra currnentOrder = orderExtra;
+        //Toast.makeText(context, sku.skuName, Toast.LENGTH_SHORT ).show();
+        final Dialog dlgOrderParams =  new Dialog(this);
+        dlgOrderParams.setTitle("Параметры заказа");
+        dlgOrderParams.setContentView(R.layout.dialog_order_params);
+        dlgOrderParams.setCancelable(true);
+        if (currnentOrder.payType == 0 )
+            ((RadioGroup) dlgOrderParams.findViewById(R.id.radioGroupPayType)).check(R.id.radioBtnCredit);
+        else
+            ((RadioGroup) dlgOrderParams.findViewById(R.id.radioGroupPayType)).check(R.id.radioBtnFact);
+        final CheckBox checkBoxAutoLoad = (CheckBox) dlgOrderParams.findViewById(R.id.checkboxAutoLoad);
+        checkBoxAutoLoad.setChecked(currnentOrder.autoLoad);
+        ((EditText)dlgOrderParams.findViewById(R.id.editTextOrderNote)).setText(currnentOrder.notes);
+        Button btnOk =(Button) dlgOrderParams.findViewById(R.id.btnDialogOrderParamsOK);
+        btnOk.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //currnentOrder.payType
+                        if
+                           (((RadioGroup) dlgOrderParams.findViewById(R.id.radioGroupPayType)).getCheckedRadioButtonId()== R.id.radioBtnCredit)
+                            currnentOrder.payType = 0;
+                        else
+                            currnentOrder.payType = 1;
+                        currnentOrder.autoLoad = checkBoxAutoLoad.isChecked();
+                        currnentOrder.notes = ((EditText)dlgOrderParams.findViewById(R.id.editTextOrderNote)).getText().toString();
+                        currnentOrder.saveOrderParamsDb(getBaseContext());
+                        dlgOrderParams.dismiss();
+                    }
+                }
+        );
+        ((Button) dlgOrderParams.findViewById(R.id.btnDialogOrderParamsCancel)).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dlgOrderParams.dismiss();
+                    }
+                }
+
+        );
+            //        (RadioButton) dlgOrderParams.findViewById(R.id.radioBtnCredit).
+//        Spinner spinner = (Spinner) dlgOrderParams.findViewById(R.id.spinerOrderPayType);
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, new String[] {"Кредит","Факт"});
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        spinner.setAdapter(adapter);
+//        spinner.setPrompt("Тип продажи");
+
+
+            dlgOrderParams.show();
+        }
+    }

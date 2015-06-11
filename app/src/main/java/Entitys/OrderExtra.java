@@ -11,6 +11,8 @@ import db.DbOpenHelper;
  */
 public class OrderExtra extends Order {
 
+    public boolean autoLoad = false;
+    public int payType = 0;
     public OrderExtra() {
 
     }
@@ -25,7 +27,8 @@ public class OrderExtra extends Order {
     {
         DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select  h.orderUUID, h.outletId, h.orderNumber, h.notes, h._1CDocNumber1, h._1CDocNumber2, h.responseText    " +
+        Cursor cursor = db.rawQuery("select  h.orderUUID, h.outletId, h.orderNumber, h.notes, h._1CDocNumber1, h._1CDocNumber2, " +
+                " h.responseText, h.payType , h.autoLoad    " +
             " from orderHeader h where h._id = ?", new String[]{Integer.toString(this._id)});
         cursor.moveToFirst();
         for (int i=0; i<cursor.getCount(); i++)
@@ -37,6 +40,8 @@ public class OrderExtra extends Order {
             this._1CDocNumber2 = cursor.getString(cursor.getColumnIndex("_1CDocNumber2"));
             this.responseText = cursor.getString(cursor.getColumnIndex("responseText"));
             this.outletId =  cursor.getString(cursor.getColumnIndex("outletId"));
+            this.payType = cursor.getInt(cursor.getColumnIndex("payType"));
+            this.autoLoad = (cursor.getInt(cursor.getColumnIndex("autoLoad")) > 0 ? true : false);
             cursor.moveToNext();
         }
         db.close();
@@ -45,5 +50,16 @@ public class OrderExtra extends Order {
     public static OrderExtra intInstanceFromDb(Order order, Context context)
     {
         return new OrderExtra(order, context);
+    }
+
+    public void saveOrderParamsDb(Context context)
+    {
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        String dmlQuery = "update orderHeader set _send =0, payType =  "+this.payType+", autoLoad = "+(this.autoLoad ? 1 :0)+
+                ", notes = '"+this.notes+"' "+
+                " where _id = "+this._id;
+        db.execSQL(dmlQuery);
+        db.close();
     }
 }

@@ -10,5 +10,5 @@ public interface IOrder {
     OrderExtra getOrderExtra();
     void refreshSku(String skuGroup);
     OutletObject getOutletObject();
-
+    void showOrderParams();
 }
