@@ -12,8 +12,10 @@ import android.widget.Toast;
 import com.uni.mvpu.R;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import Entitys.Order;
+import Entitys.OutletObject;
 import core.OrderListMode;
 import core.appManager;
 
@@ -68,8 +70,10 @@ public class orderListAdapter extends BaseAdapter {
             view = lInflater.inflate(R.layout.lv_item_oder, parent, false);
         }
         Order order = getOrder( position);
-        ((TextView) view.findViewById(R.id.txtViewListOrderName)).setText(order.orderDescription);
+        OutletObject olObj = OutletObject.getInstance(UUID.fromString(order.outletId) ,  context);
+                ((TextView) view.findViewById(R.id.txtViewListOrderName)).setText(order.orderDescription);
         ((TextView) view.findViewById(R.id.txtViewListOrderSum)).setText("—ÛÏÏ‡: "+String.format("%.2f",order.orderSum));
+        ((TextView) view.findViewById(R.id.tvListOrderOutletName)).setText(olObj.outletName+"  "+olObj.outletAddress);
         Button btn = (Button) view.findViewById(R.id.btnOrderListItem);
         btn.setTag(position);
         btn.setOnClickListener(new View.OnClickListener() {

@@ -55,7 +55,7 @@ public class ActivityOrderList extends ActionBarActivity {
         setContentView(R.layout.activity_order_list);
 
         outletid = getIntent().getStringExtra("outletid");
-        if (outletid == "") {
+        if (outletid.isEmpty()) {
             orderMode = OrderListMode.orderByDay;
         }
             else
@@ -80,6 +80,10 @@ public class ActivityOrderList extends ActionBarActivity {
         // настраиваем список
         lvMain = (ListView) findViewById(R.id.lvOrderList);
         btnAddOrder = (Button) findViewById(R.id.btnAddNewOrder);
+        if (orderMode == OrderListMode.orderByDay)
+        {
+            btnAddOrder.setVisibility(View.INVISIBLE);
+        }
         btnAddOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,13 +96,7 @@ public class ActivityOrderList extends ActionBarActivity {
     protected void onPostResume() {
         super.onPostResume();
         //Toast.makeText(this,"onPostResume", Toast.LENGTH_SHORT).show();
-        if (orderMode == OrderListMode.ordersByOutlets) {
-            fillOrders();
-        }
-        else
-        {
-
-        }
+        updateOrderList();
     }
 
     @Override
@@ -127,11 +125,11 @@ public class ActivityOrderList extends ActionBarActivity {
         double result = 0;
         String query="select sum(coalesce(d.qty1,0) * coalesce(p.pric,0) + coalesce(d.qty2,0) * coalesce(p.pric,0)) as orderSumma from orderHeader h " +
                 " inner join orderDetail d on d.headerid = h._id " +
-                " inner join route r on r.outletId = h.outletId "+
+                " inner join (select outletId outletId,partnerId from  route) r on r.outletId = h.outletId "+
                 " inner join contracts con on  con.PartnerId = r.partnerId "+
                 " inner join price p on p.priceId = con.PriceId and d.skuId = p.skuId" +
                 " where h._id = ?";
-        Cursor cursor = db.rawQuery(query, new String[] {Integer.toString(orderId)});
+        Cursor cursor = db.rawQuery(query, new String[]{Integer.toString(orderId)});
         cursor.moveToFirst();
         for (int i = 0; i < cursor.getCount(); i++) {
             result = cursor.getDouble(0);
@@ -150,6 +148,41 @@ public class ActivityOrderList extends ActionBarActivity {
         Cursor cursor = db.rawQuery("select  h._id,  h.orderUUID,DATETIME(h.orderDate) as orderDate,  h.outletId,  h.orderNumber , h.notes , " +
                 " h.responseText, h._1CDocNumber1,  h._1CDocNumber2, h._send from orderHeader h where outletId = ? and DATETIME(orderDate) = ?",
                 new String[] {outletid, wputils.getDateTime(orderDate)});
+        //, wputils.getDateTime(orderDate)
+        cursor.moveToFirst();
+        maxOrderNumber = cursor.getCount();
+//        this._id = _id;
+//        this.orderNumber = orderNumber;
+//        this.orderUUID = orderUUID;
+//        this.orderDate = orderDate;
+//        this.orderSum = orderSum;
+        for (int i = 0; i < cursor.getCount(); i++) {
+            Order order = new Order( cursor.getInt(cursor.getColumnIndex("_id"))
+                    , cursor.getInt(cursor.getColumnIndex("orderNumber"))
+                    , cursor.getString(cursor.getColumnIndex("orderUUID")),
+                    new Date(orderDate.get(Calendar.YEAR)-1900,
+                            orderDate.get(Calendar.MONTH), orderDate.get(Calendar.DAY_OF_MONTH)),
+                    0);
+            order.orderSum = getOrderSum(db, order._id);
+            order.outletId = cursor.getString(cursor.getColumnIndex("outletId"));
+            orders.add(order);
+            cursor.moveToNext();
+        }
+        db.close();
+        olAdapter = new orderListAdapter(this, orders,outletid );
+        lvMain.setAdapter(olAdapter);
+    }
+
+    private void fillOrdersByDay()
+    {
+        ArrayList<Order> orders = new ArrayList<>();
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(this);
+        SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
+
+
+        Cursor cursor = db.rawQuery("select  h._id,  h.orderUUID,DATETIME(h.orderDate) as orderDate,  h.outletId,  h.orderNumber , h.notes , " +
+                        " h.responseText, h._1CDocNumber1,  h._1CDocNumber2, h._send from orderHeader h where   DATETIME(orderDate) = ?",
+                new String[] { wputils.getDateTime(orderDate)});
         //, wputils.getDateTime(orderDate)
         cursor.moveToFirst();
         maxOrderNumber = cursor.getCount();
@@ -197,7 +230,8 @@ public class ActivityOrderList extends ActionBarActivity {
 //            myDay = dayOfMonth;
             orderDate = new GregorianCalendar (year, monthOfYear, dayOfMonth);
             tvOrderDate.setText(DateFormat.format("Дата заказа: dd.MM.yyyy",orderDate));
-            fillOrders();
+
+            updateOrderList();
         }
     };
 
@@ -205,5 +239,16 @@ public class ActivityOrderList extends ActionBarActivity {
     {
         appManager.getOurInstance().addNewOrder(this, outletid, maxOrderNumber+1, orderDate);
         fillOrders();
+    }
+
+    private void updateOrderList()
+    {
+        if (orderMode == OrderListMode.ordersByOutlets) {
+            fillOrders();
+        }
+        else
+        {
+            fillOrdersByDay();
+        }
     }
 }

@@ -7,6 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
+
+import core.appManager;
 
 
 /**
@@ -46,6 +49,16 @@ public class MainActivityFragment extends Fragment {
                 btnSyncServer(v);
             }
         });
+        ((Button) parentView.findViewById(R.id.btnMyOrders)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnMyOrders(v);
+            }
+        });
+        String versionName ="Версия:  "+BuildConfig.VERSION_NAME;
+                //parentView.getContext().getPackageManager().getPackageInfo(parentView.getContext().getPackageName(), 0).versionName;
+        ((TextView) parentView.findViewById(R.id.textViewVersion)).setText(versionName);
+        ((TextView) parentView.findViewById(R.id.textViewRoute)).setText(appManager.getOurInstance().appSetupInstance.getRouteName());
         return parentView;
     }
 
@@ -65,6 +78,11 @@ public class MainActivityFragment extends Fragment {
         startActivity(intent);
     }
 
+    private void btnMyOrders(View v)
+    {
+        appManager.getOurInstance().showOrderListByDay(getActivity());
+
+    }
     private void btnSyncServer(View v)
     {
         Intent intent = new Intent(getActivity(), ActivitySync.class);

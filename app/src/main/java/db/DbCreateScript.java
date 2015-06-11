@@ -15,8 +15,8 @@ public class DbCreateScript {
     // Create table
     private static String CREATE_BASEPARAMS="create table IF NOT EXISTS baseParams (ParamId text, paramValue text, PRIMARY KEY(ParamId ASC)) ";
     private static String CREATE_ROUTE="create table if not exists route (outletId text, outletName text, VisitDay text , VisitDayId int,VisitOrder int, CustomerId text,CustomerName text, partnerId text, partnerName text, address text)";
-    private static String CREATE_ROUTE_IDX = "CREATE INDEX idx_route_outlet ON route (outletId)";
-    private static String CREATE_ROUTE_IDX_DAY = "CREATE INDEX idx_route_day ON route (VisitDay)";
+    private static String CREATE_ROUTE_IDX = "CREATE  INDEX idx_route_outlet ON route (outletId)";
+    private static String CREATE_ROUTE_IDX_DAY = "CREATE  INDEX idx_route_day ON route (VisitDay)";
 
     private static String CREATE_ORDER_HEADER = "create table orderHeader(_id integer primary key autoincrement, orderUUID text, outletId text, " +
             " orderDate DATETIME DEFAULT CURRENT_TIMESTAMP, orderNumber integer DEFAULT 0, notes text, responseText text, _1CDocNumber1 text,  _1CDocNumber2 text, _send integer DEFAULT 0)";

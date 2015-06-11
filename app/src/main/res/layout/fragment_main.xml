@@ -16,7 +16,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:rowCount="5"
+        android:rowCount="7"
         android:columnCount="2">
 
         <ImageView
@@ -28,23 +28,41 @@
             android:src="@drawable/seller"
             />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Маршрут"
+            android:id="@+id/textViewRoute"
+            android:layout_row="2"
+            android:layout_column="0" />
+
         <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Приступить к работе"
             android:id="@+id/btnBeginWork"
-            android:layout_row="1"
+            android:layout_row="3"
             android:layout_column="0"
             android:textSize="25dp"
             android:textStyle="bold"
             android:typeface="sans" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Версия программы: "
+            android:id="@+id/textViewVersion"
+            android:layout_row="1"
+            android:layout_column="0" />
 
         <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Настройки"
             android:id="@+id/btnSetup"
-            android:layout_row="2"
+            android:layout_row="5"
             android:layout_column="0"
             android:layout_gravity="center_horizontal"
             android:textSize="25dp"
@@ -54,12 +72,21 @@
             android:layout_height="wrap_content"
             android:text="Синхронизация"
             android:id="@+id/btnSyncServer"
-            android:layout_row="3"
+            android:layout_row="6"
             android:layout_column="0"
             android:layout_gravity="center_horizontal"
             android:textSize="25dp"
             android:textStyle="bold" />
-
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Мои заказы"
+            android:id="@+id/btnMyOrders"
+            android:layout_row="4"
+            android:layout_column="0"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:typeface="sans" />
 
     </GridLayout>
 </RelativeLayout>
