@@ -230,7 +230,7 @@ public class ActivityOrderList extends ActionBarActivity {
 //            myMonth = monthOfYear;
 //            myDay = dayOfMonth;
             orderDate = new GregorianCalendar (year, monthOfYear, dayOfMonth);
-            tvOrderDate.setText(DateFormat.format("???? ??????: dd.MM.yyyy",orderDate));
+            tvOrderDate.setText(DateFormat.format("Дата заказа: dd.MM.yyyy",orderDate));
 
             updateOrderList();
         }

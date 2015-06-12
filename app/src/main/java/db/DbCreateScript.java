@@ -86,7 +86,7 @@ public class DbCreateScript {
     public static ArrayList<String>  getDropTableScripts()
     {
         ArrayList<String> list = new ArrayList<String>();
-        //list.add(DROP_BASEPARAMS);
+        list.add(DROP_BASEPARAMS);
         list.add(DROP_ROUTE);
         list.add(DROP_ORDER_HEADER);
         list.add(DROP_DETAIL);

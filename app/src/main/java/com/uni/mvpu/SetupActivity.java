@@ -63,20 +63,26 @@ public class SetupActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void onClickBtnSave(View v)
+    private void saveSetup()
     {
         Toast.makeText(this, "SAVE", Toast.LENGTH_SHORT).show();
 
-        m_appManager.appSetupInstance.setServiceUrl(txtServiceLink.getText().toString());
+        m_appManager.appSetupInstance.setServiceUrl(txtServiceLink.getText().toString().trim());
         m_appManager.appSetupInstance.setRouteName(txtRouteName.getText().toString());
         m_appManager.appSetupInstance.setEmployeeName(txtEmployeeName.getText().toString());
         m_appManager.appSetupInstance.saveSetup(this);
         m_appManager.appSetupInstance.readSetup(this);
+    }
+
+    public void onClickBtnSave(View v)
+    {
+        saveSetup();
         finish();
     }
 
     public void onClickSelectRoute(View v)
     {
+        saveSetup();
         Intent intent = new Intent(this, ActivitySelectRoute.class);
         //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         //intent.putExtra("w", selectedValue);

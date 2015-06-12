@@ -58,8 +58,14 @@ public class MainActivityFragment extends Fragment {
         String versionName ="Версия:  "+BuildConfig.VERSION_NAME;
                 //parentView.getContext().getPackageManager().getPackageInfo(parentView.getContext().getPackageName(), 0).versionName;
         ((TextView) parentView.findViewById(R.id.textViewVersion)).setText(versionName);
-        ((TextView) parentView.findViewById(R.id.textViewRoute)).setText(appManager.getOurInstance().appSetupInstance.getRouteName());
+
         return parentView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((TextView) parentView.findViewById(R.id.textViewRoute)).setText(appManager.getOurInstance().appSetupInstance.getRouteName());
     }
 
     private void btnSetupClick(View v)

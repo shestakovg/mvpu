@@ -25,7 +25,7 @@ import java.util.List;
  * Created by g.shestakov on 26.05.2015.
  */
 public class ServiceManager {
-    private  String SERVICE_URI = "http://192.168.1.102:8100/dictionary/";
+    private  String SERVICE_URI = "";
 
     public Exception getLastException() {
         return lastException;

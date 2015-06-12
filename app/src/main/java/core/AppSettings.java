@@ -87,8 +87,8 @@ public class AppSettings {
     }
 
     public AppSettings() {
-        this.serviceUrl = "http://192.168.0.108:8100";
-        this.routeName =  "Неизв";
+        this.serviceUrl = "http://winserver:8100";
+        this.routeName =  "Выберите маршрут";
         this.routeId = UUID.randomUUID();
         this.employeeName = "Неизвестный сотрудник";
         this.employeeID = UUID.randomUUID();
@@ -103,7 +103,7 @@ public class AppSettings {
 //        db.execSQL("delete from baseParams where ParamId='"+PARAM_ROUTE_ID+"'");
 //        db.execSQL("delete from baseParams where ParamId='"+PARAM_ROUTE_NAME+"'");
 
-        saveParamSetup(db, PARAM_SERVICE_URL, getServiceUrl());
+        saveParamSetup(db, PARAM_SERVICE_URL, getServiceUrl().trim());
         saveParamSetup(db, PARAM_ROUTE_ID, routeId.toString());
         saveParamSetup(db, PARAM_ROUTE_NAME, getRouteName());
         saveParamSetup(db, PARAM_EMPLOYEE_ID, employeeID.toString());
