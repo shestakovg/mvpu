@@ -26,6 +26,7 @@ import java.util.UUID;
 import Adapters.orderListAdapter;
 import Entitys.Order;
 import Entitys.OutletObject;
+import core.AppSettings;
 import core.OrderListMode;
 import core.appManager;
 import core.wputils;
@@ -127,8 +128,8 @@ public class ActivityOrderList extends ActionBarActivity {
         String query="select sum(coalesce(d.qty1,0) * coalesce(p.pric,0) + coalesce(d.qty2,0) * coalesce(p.pric,0)) as orderSumma from orderHeader h " +
                 " inner join orderDetail d on d.headerid = h._id " +
                 " inner join (select outletId outletId,partnerId from  route) r on r.outletId = h.outletId "+
-                " inner join contracts con on  con.PartnerId = r.partnerId "+
-                " inner join price p on p.priceId = con.PriceId and d.skuId = p.skuId" +
+                " left  join contracts con on  con.PartnerId = r.partnerId "+
+                " inner join price p on p.priceId = coalesce(con.PriceId,'"+ AppSettings.PARAM_PRICEID_DEFAULT+"') and d.skuId = p.skuId" +
                 " where h._id = ?";
         Cursor cursor = db.rawQuery(query, new String[]{Integer.toString(orderId)});
         cursor.moveToFirst();
@@ -172,6 +173,7 @@ public class ActivityOrderList extends ActionBarActivity {
         db.close();
         olAdapter = new orderListAdapter(this, orders,outletid );
         lvMain.setAdapter(olAdapter);
+        showTotal(orders);
     }
 
     private void fillOrdersByDay()
@@ -209,6 +211,7 @@ public class ActivityOrderList extends ActionBarActivity {
         db.close();
         olAdapter = new orderListAdapter(this, orders,outletid );
         lvMain.setAdapter(olAdapter);
+        showTotal(orders);
     }
 
     public void onClickDate(View view) {
@@ -253,5 +256,15 @@ public class ActivityOrderList extends ActionBarActivity {
         {
             fillOrdersByDay();
         }
+    }
+
+    private void showTotal(ArrayList<Order> orders)
+    {
+        double totalSum =0;
+        for (Order order:orders)
+        {
+            totalSum += order.orderSum;
+        }
+        ((TextView) findViewById(R.id.tvListOrdersSum)).setText(String.format("%.2f",   totalSum));
     }
 }

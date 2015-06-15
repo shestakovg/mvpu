@@ -1,5 +1,7 @@
 package com.uni.mvpu;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
@@ -81,9 +83,32 @@ public class ActivitySync extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private int getCheckedItems()
+    {
+        int result =0;
+        for (int i=0; i<listSyncOptions.getCheckedItemPositions().size();i++)
+        {
+            int position = listSyncOptions.getCheckedItemPositions().keyAt(i);
+            boolean checked = listSyncOptions.getCheckedItemPositions().valueAt(i);
+            if (checked) result++;
+        }
+        return result;
+    }
     public void onBtnClickStartSync(View view)
     {
         SparseBooleanArray checkedItems = listSyncOptions.getCheckedItemPositions();
+        ProgressDialog pd = new ProgressDialog(this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
+        int syncQty = getCheckedItems();
+        if (syncQty>0) {
+            pd.setMax(syncQty);
+            pd.setTitle("Синхронизация");
+            pd.setMessage("Синхронизация");
+           // pd.setCancelable(false);
+            pd.setProgress(0);
+            pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            pd.show();
+        }
+
         for (int i=0; i<checkedItems.size();i++)
         {
             int position = checkedItems.keyAt(i);
@@ -95,24 +120,25 @@ public class ActivitySync extends ActionBarActivity {
                 if (itemIndex>=0)
                 {
                     Toast.makeText(this, "Обновление цен по прайс листу "+priceList.get(itemIndex).getPriceName(), Toast.LENGTH_SHORT).show();
-                    syncPrice syncPrice = new syncPrice(this, priceList.get(itemIndex));
+                    syncPrice syncPrice = new syncPrice(this, priceList.get(itemIndex), pd);
                     syncPrice.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getprice/" + priceList.get(itemIndex).getPriceId()});
                 }
                 switch (listAdapter.getItem(position).toString())
                 {
                     case IDLI_ROUTE:
-                        appManager.getOurInstance().setCurrentContext(this);
-                        new syncRoute().execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(),"dictionary/getrouteset/"+appManager.getOurInstance().appSetupInstance.getRouteId()});
+                        //appManager.getOurInstance().setCurrentContext(this);
+                        syncRoute syncr = new syncRoute(this, pd);
+                        syncr.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(),"dictionary/getrouteset/"+appManager.getOurInstance().appSetupInstance.getRouteId()});
                         break; //Add other menu items
                     case IDLI_DOCS:
                         //appManager.getOurInstance().setCurrentContext(this);
-                        syncContracts sync = new syncContracts(this);
+                        syncContracts sync = new syncContracts(this, pd);
                         sync.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getcontract/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
                         break;
                     case IDLI_PRODUCT:
-                        syncSkuGroup syncGroup = new syncSkuGroup(this);
+                        syncSkuGroup syncGroup = new syncSkuGroup(this, pd);
                         syncGroup.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getskugroup"});
-                        syncSku syncSku = new syncSku(this);
+                        syncSku syncSku = new syncSku(this, pd);
                         syncSku.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getsku"});
                         break;
 //                    case IDLI_PRICE:
@@ -127,7 +153,7 @@ public class ActivitySync extends ActionBarActivity {
 //                        }
 //                        break;
                     case IDLI_STOCK:
-                        syncStock syncSt= new syncStock(this);
+                        syncStock syncSt= new syncStock(this, pd);
                         syncSt.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getbalancesku/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
                         break; //Add other menu items
                 }

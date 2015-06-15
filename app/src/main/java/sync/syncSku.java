@@ -1,5 +1,6 @@
 package sync;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
@@ -13,9 +14,11 @@ import java.util.List;
 /**
  * Created by g.shestakov on 04.06.2015.
  */
-public class syncSku extends AsyncTask<String, Void, List<JSONObject>> {
+public class syncSku extends AsyncTask<String, Integer, List<JSONObject>> {
     Context context;
-    public syncSku(Context context) {
+    ProgressDialog pd;
+    public syncSku(Context context, ProgressDialog pd) {
+        this.pd =pd;
         this.context = context;
     }
 
@@ -23,6 +26,7 @@ public class syncSku extends AsyncTask<String, Void, List<JSONObject>> {
     @Override
     protected List<JSONObject> doInBackground(String... params) {
         ServiceManager4 serviceManager = new ServiceManager4(params[0]);
+        publishProgress(1);
         return serviceManager.CallDataServiceMultiply(params[1]);
     }
 
@@ -40,5 +44,14 @@ public class syncSku extends AsyncTask<String, Void, List<JSONObject>> {
             return;
         }
         syncSaveData.saveSku(jsonObjects, context);
+        if (pd.getProgress() == pd.getMax())
+            this.pd.dismiss();
+    }
+
+    @Override
+    protected void onProgressUpdate(Integer... values) {
+        super.onProgressUpdate(values);
+        this.pd.incrementProgressBy(values[0]);
+        this.pd.incrementSecondaryProgressBy(values[0]);
     }
 }

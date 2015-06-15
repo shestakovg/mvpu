@@ -3,6 +3,7 @@ package sync;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.widget.Toast;
 
 import org.json.JSONObject;
@@ -114,7 +115,6 @@ public class syncSaveData {
         DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
         db.execSQL("delete from price where PriceId='" + price.getPriceId() + "'");
-
 
         for (JSONObject jsonObject: jsonObjects) {
             try {

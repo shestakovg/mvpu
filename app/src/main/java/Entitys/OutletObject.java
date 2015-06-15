@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.util.UUID;
 
+import core.appManager;
 import db.DbOpenHelper;
 
 /**
@@ -17,12 +18,12 @@ public class OutletObject {
     public String outletName;
     public int dayOfWeek;
     public String dayOfWeekStr;
-    public UUID customerId;
+    public UUID customerId = new UUID(0L, 0L);
     public String customerName;
-    public UUID priceId;
+    public UUID priceId = new UUID(0L, 0L);
     public String priceName;
     public String outletAddress;
-    public UUID partnerId;
+    public UUID partnerId = new UUID(0L, 0L);
     public String partnerName;
 
     public static OutletObject getInstance( UUID outletId, Context context)
@@ -44,8 +45,14 @@ public class OutletObject {
             ob.dayOfWeekStr = cursor.getString(cursor.getColumnIndex("VisitDay"));
             ob.customerId =UUID.fromString(cursor.getString(cursor.getColumnIndex("CustomerId")));
             ob.customerName = cursor.getString(cursor.getColumnIndex("CustomerName"));
-            ob.priceId =UUID.fromString(cursor.getString(cursor.getColumnIndex("PriceId")));
-            ob.priceName = cursor.getString(cursor.getColumnIndex("PriceName"));
+            if  (cursor.getString(cursor.getColumnIndex("PriceId"))!=null)
+                ob.priceId =UUID.fromString(cursor.getString(cursor.getColumnIndex("PriceId")));
+            else
+                ob.priceId = UUID.fromString(appManager.getOurInstance().appSetupInstance.getDefaultPrice());
+            if  (cursor.getString(cursor.getColumnIndex("PriceName"))!=null)
+                ob.priceName = cursor.getString(cursor.getColumnIndex("PriceName"));
+            else
+                ob.priceName = "Вид 1";
             ob.outletAddress= cursor.getString(cursor.getColumnIndex("address"));
             ob.partnerId =UUID.fromString(cursor.getString(cursor.getColumnIndex("partnerId")));
             ob.partnerName = cursor.getString(cursor.getColumnIndex("partnerName"));

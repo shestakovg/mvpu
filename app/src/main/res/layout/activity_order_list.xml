@@ -34,6 +34,31 @@
                     <!--android:text="Удалить"/>-->
             </LinearLayout>
         </TableRow>
+        <TableRow
+            android:layout_height="40dp">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="right"
+                android:background="@android:color/holo_blue_dark">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Всего:  "
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/background_light" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvListOrdersSum"
+                    android:text="0.00"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/background_light" />
+            </LinearLayout>
+        </TableRow>
         <TableRow>
             <ListView
                 android:id="@+id/lvOrderList"
@@ -41,6 +66,7 @@
                 android:layout_height="wrap_content">
             </ListView>
         </TableRow>
+
     </TableLayout>
 
 </RelativeLayout>
