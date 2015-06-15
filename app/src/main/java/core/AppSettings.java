@@ -87,7 +87,7 @@ public class AppSettings {
     }
 
     public AppSettings() {
-        this.serviceUrl = "http://winserver:8100";
+        this.serviceUrl = "http://25.106.227.22:8100";
         this.routeName =  "Выберите маршрут";
         this.routeId = UUID.randomUUID();
         this.employeeName = "Неизвестный сотрудник";

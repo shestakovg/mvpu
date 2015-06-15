@@ -24,6 +24,7 @@ import Entitys.branch;
 import Entitys.routeObject;
 import core.appManager;
 import sync.ServiceManager;
+import sync.ServiceManager4;
 
 public class ActivitySelectRoute extends ActionBarActivity {
     private ListView listView;
@@ -133,7 +134,7 @@ public class ActivitySelectRoute extends ActionBarActivity {
         private ProgressDialog dialog;
         @Override
         protected List<JSONObject> doInBackground(String... params) {
-            ServiceManager serviceManager = new ServiceManager(params[0]);
+            ServiceManager4 serviceManager = new ServiceManager4(params[0]);
             return serviceManager.CallDataServiceMultiply(params[1]);
         }
 

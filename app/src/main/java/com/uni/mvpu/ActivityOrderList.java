@@ -182,7 +182,9 @@ public class ActivityOrderList extends ActionBarActivity {
 
 
         Cursor cursor = db.rawQuery("select  h._id,  h.orderUUID,DATETIME(h.orderDate) as orderDate,  h.outletId,  h.orderNumber , h.notes , " +
-                        " h.responseText, h._1CDocNumber1,  h._1CDocNumber2, h._send from orderHeader h where   DATETIME(orderDate) = ?",
+                        " h.responseText, h._1CDocNumber1,  h._1CDocNumber2, h._send from orderHeader h " +
+                        " inner join route r on r.outletId = h.outletId" +
+                        " where   DATETIME(h.orderDate) = ?",
                 new String[] { wputils.getDateTime(orderDate)});
         //, wputils.getDateTime(orderDate)
         cursor.moveToFirst();

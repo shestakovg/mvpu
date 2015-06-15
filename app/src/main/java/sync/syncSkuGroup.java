@@ -21,7 +21,7 @@ public class syncSkuGroup extends AsyncTask<String, Void, List<JSONObject>> {
 
     @Override
     protected List<JSONObject> doInBackground(String... params) {
-        ServiceManager serviceManager = new ServiceManager(params[0]);
+        ServiceManager4 serviceManager = new ServiceManager4(params[0]);
         return serviceManager.CallDataServiceMultiply(params[1]);
     }
 

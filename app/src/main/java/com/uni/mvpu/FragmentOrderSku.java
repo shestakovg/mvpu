@@ -76,7 +76,7 @@ public class FragmentOrderSku extends Fragment implements IOrderTotal{
         final OutletObject locOutlet = ((IOrder) getActivity()).getOutletObject();
         DbOpenHelper dbOpenHelper = new DbOpenHelper(parentView.getContext());
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select s.SkuId, s.SkuName, st.StockG, st.StockR, COALESCE( p.Pric,0) pric, COALESCE(od.qty1, 0) as QtyMWH, " +
+        Cursor cursor = db.rawQuery("select  s.SkuId, s.SkuName, st.StockG, st.StockR, COALESCE( p.Pric,0) pric, COALESCE(od.qty1, 0) as QtyMWH, " +
                         "  COALESCE(od.qty2, 0) as QtyRWH, case when od.skuId is null then 0 else 1 end existPosition, od._id as detailId  from sku as s" +
                         "            left join  stock st on s.skuId = st.skuId  " +
                         "            left join price p on s.skuId = p.skuId and p.PriceId = '" +locOutlet.priceId.toString()+"' "+

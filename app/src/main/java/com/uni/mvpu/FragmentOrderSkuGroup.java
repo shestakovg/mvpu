@@ -102,7 +102,7 @@ public class FragmentOrderSkuGroup extends Fragment {
     {
 
 
-        saGroupSku = new SimpleAdapter(parentView.getContext(), fillGroupList(skuGroupStack.get(skuGroupStack.size()-1)), android.R.layout.simple_expandable_list_item_2,
+        saGroupSku = new SimpleAdapter(parentView.getContext(), fillGroupList(skuGroupStack.get(skuGroupStack.size()-1)), android.R.layout.simple_expandable_list_item_1,
                 new String[] {"name", "descr"},
                 new int[] {android.R.id.text1, android.R.id.text2}
         );
