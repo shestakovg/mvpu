@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -74,6 +75,12 @@ public class orderListAdapter extends BaseAdapter {
                 ((TextView) view.findViewById(R.id.txtViewListOrderName)).setText(order.orderDescription);
         ((TextView) view.findViewById(R.id.txtViewListOrderSum)).setText("—ÛÏÏ‡: "+String.format("%.2f",order.orderSum));
         ((TextView) view.findViewById(R.id.tvListOrderOutletName)).setText(olObj.outletName+"  "+olObj.outletAddress);
+        ImageView orderSended = (ImageView) view.findViewById(R.id.ivImage);
+        //orderSended.setImageResource(R.drawable.document_16);
+        if (order.sended)
+            orderSended.setImageResource(R.drawable.read);
+        else
+            orderSended.setImageResource(R.drawable.unread);
         Button btn = (Button) view.findViewById(R.id.btnOrderListItem);
         btn.setTag(position);
         btn.setOnClickListener(new View.OnClickListener() {

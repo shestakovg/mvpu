@@ -22,6 +22,7 @@ public class Order implements Parcelable {
     public String _1CDocNumber2="";
     public String  notes="";
     public String outletId;
+    public Boolean sended = false;
 
     public Order(int _id, int orderNumber, String orderUUID, Date orderDate, double orderSum) {
         //this.orderDescription = orderDescription;

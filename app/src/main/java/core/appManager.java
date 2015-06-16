@@ -1,5 +1,6 @@
 package core;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -163,9 +164,9 @@ public class appManager {
         db.close();
     }
 
-    public void sendDataToServer(Context context)
+    public void sendDataToServer(Context context, Activity owner)
     {
-        sendOrders so = new  sendOrders(context);
+        sendOrders so = new  sendOrders(context, owner);
         so.execute();
     }
 

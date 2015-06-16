@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import core.appManager;
+import sync.downloadNewVwersion;
 
 
 public class SetupActivity extends ActionBarActivity {
@@ -88,5 +89,13 @@ public class SetupActivity extends ActionBarActivity {
         //intent.putExtra("w", selectedValue);
         startActivity(intent);
         refreshSetup();
+    }
+
+    public void onClickDownloadVersion(View v)
+    {
+//        Intent intent = new Intent(this, ActivitygetVersion.class);
+//        startActivity(intent);
+        downloadNewVwersion dnld= new downloadNewVwersion(this);
+        dnld.execute("");
     }
 }

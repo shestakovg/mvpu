@@ -78,6 +78,7 @@ public class AppSettings {
 
     private UUID employeeID;
 
+    public String version;
     public AppSettings(String serviceUrl, String routeName, String employeeName, UUID routeId, UUID employeeID) {
         this.serviceUrl = serviceUrl;
         this.routeName = routeName;

@@ -31,9 +31,10 @@ import core.OrderListMode;
 import core.appManager;
 import core.wputils;
 import db.DbOpenHelper;
+import interfaces.IUpdateOrderList;
 
 
-public class ActivityOrderList extends ActionBarActivity {
+public class ActivityOrderList extends ActionBarActivity implements IUpdateOrderList {
     private int maxOrderNumber = 0;
     private String outletid;
     private TextView tvOrderDate;
@@ -116,7 +117,8 @@ public class ActivityOrderList extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            appManager.getOurInstance().sendDataToServer(this);
+            appManager.getOurInstance().sendDataToServer(this, this);
+           // updateOrderList();
             return true;
         }
 
@@ -167,6 +169,7 @@ public class ActivityOrderList extends ActionBarActivity {
                     0);
             order.orderSum = getOrderSum(db, order._id);
             order.outletId = cursor.getString(cursor.getColumnIndex("outletId"));
+            order.sended = cursor.getInt(cursor.getColumnIndex("_send")) == 1;
             orders.add(order);
             cursor.moveToNext();
         }
@@ -185,7 +188,7 @@ public class ActivityOrderList extends ActionBarActivity {
 
         Cursor cursor = db.rawQuery("select  h._id,  h.orderUUID,DATETIME(h.orderDate) as orderDate,  h.outletId,  h.orderNumber , h.notes , " +
                         " h.responseText, h._1CDocNumber1,  h._1CDocNumber2, h._send from orderHeader h " +
-                        " inner join route r on r.outletId = h.outletId" +
+                        " inner join (select distinct outletId from  route) r on r.outletId = h.outletId" +
                         " where   DATETIME(h.orderDate) = ?",
                 new String[] { wputils.getDateTime(orderDate)});
         //, wputils.getDateTime(orderDate)
@@ -205,6 +208,7 @@ public class ActivityOrderList extends ActionBarActivity {
                     0);
             order.orderSum = getOrderSum(db, order._id);
             order.outletId = cursor.getString(cursor.getColumnIndex("outletId"));
+            order.sended = cursor.getInt(cursor.getColumnIndex("_send")) == 1;
             orders.add(order);
             cursor.moveToNext();
         }
@@ -266,5 +270,10 @@ public class ActivityOrderList extends ActionBarActivity {
             totalSum += order.orderSum;
         }
         ((TextView) findViewById(R.id.tvListOrdersSum)).setText(String.format("%.2f",   totalSum));
+    }
+
+    @Override
+    public void UpdateList() {
+        updateOrderList();
     }
 }

@@ -12,4 +12,8 @@
     <string name="title_activity_activity_sync">Синхронизация</string>
     <string name="title_activity_activity_order_list">Список заказов</string>
     <string name="title_activity_activity_order">ActivityOrder</string>
+    <string name="send_order_dialog">Отправка заказов</string>
+    <string name="send_current_order_dialog">Отправлен  заказ  </string>
+    <string name="send_order_dialog_finish">Отправка заказов завершена</string>
+    <string name="title_activity_activityget_version">ActivitygetVersion</string>
 </resources>

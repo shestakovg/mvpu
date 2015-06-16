@@ -40,12 +40,13 @@
         </activity>
         <activity
             android:name=".ActivityOrder"
-            android:screenOrientation="landscape"
-            android:label="@string/title_activity_activity_order" >
+            android:label="@string/title_activity_activity_order"
+            android:screenOrientation="landscape" >
+        </activity>
+        <activity
+            android:name=".ActivitygetVersion"
+            android:label="@string/title_activity_activityget_version" >
         </activity>
     </application>
 
-</manifest>
-
-
-    <!--android:screenOrientation="landscape"-->
+</manifest> <!-- android:screenOrientation="landscape" -->

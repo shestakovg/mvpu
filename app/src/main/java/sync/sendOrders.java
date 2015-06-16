@@ -1,5 +1,6 @@
 package sync;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.database.Cursor;
@@ -7,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.Toast;
+
+import com.uni.mvpu.R;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -22,17 +25,20 @@ import Entitys.sendResult;
 import core.appManager;
 import core.wputils;
 import db.DbOpenHelper;
+import interfaces.IUpdateOrderList;
 
 /**
  * Created by g.shestakov on 11.06.2015.
  */
-public class sendOrders  extends AsyncTask<String, Void, List<JSONObject>> {
+public class sendOrders  extends AsyncTask<String, Integer, List<JSONObject>> {
     Context context;
     View view;
     String message="";
     private ProgressDialog pd;
-    public sendOrders(Context context) {
+    private Activity ownerActivity;
+    public sendOrders(Context context, Activity ownerActivity) {
         this.context = context;
+        this.ownerActivity = ownerActivity;
     }
 
     public sendOrders(Context context, View view) {
@@ -51,16 +57,32 @@ public class sendOrders  extends AsyncTask<String, Void, List<JSONObject>> {
     protected void onPreExecute() {
         super.onPreExecute();
         pd = new ProgressDialog(context);
-        pd.setTitle("Отправка заказов");
-        pd.setMessage("Отправка заказов");
+        pd.setTitle(this.context.getString(R.string.send_order_dialog));
+        pd.setMessage(this.context.getString(R.string.send_order_dialog));
         pd.show();
     }
 
     @Override
     protected void onPostExecute(List<JSONObject> jsonObjects) {
         super.onPostExecute(jsonObjects);
-        pd.setMessage("Заказы отправлены");
+        pd.setMessage(this.context.getString(R.string.send_order_dialog_finish));
+        try {
+            Thread.sleep(1500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         pd.dismiss();
+        if (this.ownerActivity!=null)
+            ((IUpdateOrderList) this.ownerActivity).UpdateList();
+    }
+
+    @Override
+    protected void onProgressUpdate(Integer... values) {
+        super.onProgressUpdate(values);
+        this.pd.setMessage(this.context.getString(R.string.send_current_order_dialog)+" № " + values[0].toString());
+        Toast.makeText(this.context,
+                            this.context.getString(R.string.send_current_order_dialog) +" № " + values[0].toString()
+                        , Toast.LENGTH_SHORT).show();
     }
 
     private sendResult sendHeaders()
@@ -100,11 +122,12 @@ public class sendOrders  extends AsyncTask<String, Void, List<JSONObject>> {
                 int responceCode=response.getStatusLine().getStatusCode();
                 if (responceCode!= HttpStatus.SC_OK) {
                     result.setFail();
+
                     //Toast.makeText(context, response.getStatusLine().getReasonPhrase(), Toast.LENGTH_LONG).show();
                 }
                 else
                 {
-//                    //Отправим позиции
+//                    //???????? ???????
                     sendResult detailResult = sendOrderDetail(cursor.getInt(cursor.getColumnIndex("_id")));
                     if (detailResult.getResult())
                     {
@@ -112,7 +135,8 @@ public class sendOrders  extends AsyncTask<String, Void, List<JSONObject>> {
                         wcf.CallSingle("/dictionary/marcorder/" + cursor.getString(cursor.getColumnIndex("orderUUID")));
                         setOrderAsSend(cursor.getInt(cursor.getColumnIndex("_id")));
                         result.incRecordTransfer();
-                       // pd.setMessage("Отправлено заказов: "+i);
+                        publishProgress(i+1);
+                       // pd.setMessage("?????????? ???????: "+i);
                     }
 
                 }
