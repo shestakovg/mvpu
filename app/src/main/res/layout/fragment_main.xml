@@ -46,7 +46,8 @@
             android:layout_column="0"
             android:textSize="25dp"
             android:textStyle="bold"
-            android:typeface="sans" />
+            android:typeface="sans"
+             />
 
 
         <TextView
@@ -66,7 +67,8 @@
             android:layout_column="0"
             android:layout_gravity="center_horizontal"
             android:textSize="25dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            />
         <Button
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
