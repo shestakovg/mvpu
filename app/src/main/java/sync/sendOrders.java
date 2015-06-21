@@ -94,7 +94,8 @@ public class sendOrders  extends AsyncTask<String, Integer, List<JSONObject>> {
             HttpPost request = new HttpPost(appManager.getOurInstance().appSetupInstance.getServiceUrl()+"/dictionary/saveheader");
             request.setHeader("Accept", "application/json");
             request.setHeader("Content-type", "application/json");
-            Cursor cursor = db.rawQuery("select  h._id,  h.orderUUID,DATETIME(h.orderDate) as orderDate,  h.outletId,  h.orderNumber ,coalesce( h.notes,' ') notes," +
+            Cursor cursor = db.rawQuery("select  h._id,  h.orderUUID,DATETIME(h.orderDate) as orderDate,DATETIME(h.deliveryDate) as deliveryDate," +
+                    "  h.outletId,  h.orderNumber ,coalesce( h.notes,' ') notes," +
                                 "  coalesce(h.payType,0) payType ,coalesce(h.autoLoad,0) autoLoad from orderHeader h where  h._send=0", null);
             cursor.moveToFirst();
 
@@ -108,6 +109,7 @@ public class sendOrders  extends AsyncTask<String, Integer, List<JSONObject>> {
                         .key("orderUUID").value(cursor.getString(cursor.getColumnIndex("orderUUID")))
                             .key("outletId").value(cursor.getString(cursor.getColumnIndex("outletId")))
                         .key("orderDate").value(cursor.getString(cursor.getColumnIndex("orderDate")))
+                        .key("deliveryDate").value(cursor.getString(cursor.getColumnIndex("deliveryDate")))
                         .key("orderNumber").value(cursor.getInt(cursor.getColumnIndex("orderNumber")))
                         .key("notes").value(wputils.decodeCyrilicString(cursor.getString(cursor.getColumnIndex("notes"))))
                         .key("payType").value(cursor.getInt(cursor.getColumnIndex("payType")))

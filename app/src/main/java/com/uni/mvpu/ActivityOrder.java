@@ -1,5 +1,6 @@
 package com.uni.mvpu;
 
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Configuration;
@@ -9,17 +10,24 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
+import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.UUID;
 
 import Entitys.Order;
@@ -27,16 +35,33 @@ import Entitys.OrderExtra;
 import Entitys.OutletObject;
 import Entitys.orderSku;
 import core.appManager;
+import core.wputils;
 import interfaces.IOrder;
 
 
 public class ActivityOrder extends  ActionBarActivity implements IOrder  {
+    int DIALOG_DATE = 1;
     private Order orderObject;
     private OrderExtra orderExtra;
     private FragmentOrderSkuGroup fragGroup;
     private FragmentOrderSku  fragSku;
     private OutletObject currentOutlet;
     private Context context;
+
+    private TextView tvDeliveryDate;
+
+    DatePickerDialog.OnDateSetListener myCallBack = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear,
+                              int dayOfMonth) {
+
+            orderExtra.deliveryDate = new GregorianCalendar (year, monthOfYear, dayOfMonth);
+                    //wputils.getCalendarFromDate(new Date(year, monthOfYear,dayOfMonth));
+            orderExtra.saveOrderParamsDb(getBaseContext());
+            displayDeliveryDate();
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +91,35 @@ public class ActivityOrder extends  ActionBarActivity implements IOrder  {
         fragGroup.fillListViewGroupSku();
         fragSku = (FragmentOrderSku) getFragmentManager().findFragmentById(R.id.fragmentSku);
         fragSku.displayTotal();
+
+        tvDeliveryDate = (TextView) findViewById(R.id.tvDeliveyDateSku);
+
+
+        tvDeliveryDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialog(DIALOG_DATE);
+            }
+        });
+        displayDeliveryDate();
+    }
+
+    protected Dialog onCreateDialog(int id) {
+        if (id == DIALOG_DATE) {
+
+            Calendar cal =orderExtra.deliveryDate;
+            //cal.setTime(orderExtra.deliveryDate);
+
+            DatePickerDialog tpd = new DatePickerDialog(this, myCallBack,  cal.get(Calendar.YEAR),
+                    cal.get(Calendar.MONTH),  cal.get(Calendar.DAY_OF_MONTH));
+            return tpd;
+        }
+        return super.onCreateDialog(id);
+    }
+
+    private void displayDeliveryDate()
+    {
+         tvDeliveryDate.setText(DateFormat.format("Доставка: dd.MM.yyyy", orderExtra.deliveryDate));
     }
 
     @Override
@@ -168,8 +222,8 @@ public class ActivityOrder extends  ActionBarActivity implements IOrder  {
 //        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //        spinner.setAdapter(adapter);
 //        spinner.setPrompt("Тип продажи");
-
-
+        TextView deliveryDate = (TextView) dlgOrderParams.findViewById(R.id.tvDeliveryDate);
+        deliveryDate.setText(DateFormat.format("  Дата доставки: dd.MM.yyyy", currnentOrder.deliveryDate));
             dlgOrderParams.show();
         }
     }

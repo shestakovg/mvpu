@@ -159,6 +159,9 @@ public class appManager {
         values.put("outletId", outletid);
         values.put("orderNumber", orderNumber);
         values.put("orderDate", wputils.getDateTime(orderDate));
+        Calendar deliveryDate=(Calendar) orderDate.clone();
+        deliveryDate.add(Calendar.DATE, 1);
+        values.put("deliveryDate", wputils.getDateTime(deliveryDate));
         values.put("_send",0);
         db.insert("orderHeader", null, values);
         db.close();

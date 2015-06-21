@@ -4,6 +4,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.Date;
+
+import core.wputils;
 import db.DbOpenHelper;
 
 /**
@@ -17,6 +20,8 @@ public class OrderExtra extends Order {
 
     }
 
+
+
     public OrderExtra(Order order, Context context) {
         //super(order._id, );
         this._id = order._id;
@@ -28,7 +33,7 @@ public class OrderExtra extends Order {
         DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select  h.orderUUID, h.outletId, h.orderNumber, h.notes, h._1CDocNumber1, h._1CDocNumber2, " +
-                " h.responseText, h.payType , h.autoLoad    " +
+                " h.responseText, h.payType , h.autoLoad ,(strftime('%s', h.deliveryDate) * 1000)  deliveryDate  " +
             " from orderHeader h where h._id = ?", new String[]{Integer.toString(this._id)});
         cursor.moveToFirst();
         for (int i=0; i<cursor.getCount(); i++)
@@ -42,6 +47,7 @@ public class OrderExtra extends Order {
             this.outletId =  cursor.getString(cursor.getColumnIndex("outletId"));
             this.payType = cursor.getInt(cursor.getColumnIndex("payType"));
             this.autoLoad = (cursor.getInt(cursor.getColumnIndex("autoLoad")) > 0 ? true : false);
+            this.deliveryDate = wputils.getCalendarFromDate(new Date(cursor.getLong((cursor.getColumnIndex("deliveryDate")))));
             cursor.moveToNext();
         }
         db.close();
@@ -57,8 +63,9 @@ public class OrderExtra extends Order {
         DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
         String dmlQuery = "update orderHeader set _send =0, payType =  "+this.payType+", autoLoad = "+(this.autoLoad ? 1 :0)+
-                ", notes = '"+this.notes+"' "+
+                ", notes = '"+this.notes+"', deliveryDate = '"+wputils.getDateTime(deliveryDate)+"' "+
                 " where _id = "+this._id;
+        //db.execSQL(dmlQuery, new String[] {wputils.getDateTime(wputils.getCalendarFromDate(deliveryDate))});
         db.execSQL(dmlQuery);
         db.close();
     }

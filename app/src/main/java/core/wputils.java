@@ -23,6 +23,14 @@ public class wputils {
                 calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)));
     }
 
+//    public static String getDateTime(Date date) {
+//
+//        SimpleDateFormat dateFormat = new SimpleDateFormat(
+//                "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+//        //Date date = new Date();
+//        return dateFormat.format(date);
+//    }
+
     public static String decodeCyrilicString(String s)
     {
         if (s.length()==0) s="без комментариев";
@@ -41,4 +49,10 @@ public class wputils {
         return res;
     }
 
+    public static Calendar getCalendarFromDate(Date date)
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return cal;
+    }
 }

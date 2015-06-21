@@ -24,6 +24,16 @@ public class orderSku {
     public double stockG;
     public double stockR;
 
+    public int getCountInBox() {
+        return countInBox;
+    }
+
+    public void setCountInBox(int countInBox) {
+        this.countInBox = countInBox;
+    }
+
+    public int countInBox;
+
     private boolean exist;
     public orderSku( String skuName, boolean exist) {
 

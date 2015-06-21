@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.format.DateFormat;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
@@ -16,6 +17,7 @@ public class Order implements Parcelable {
     public int orderNumber;
     public String orderUUID;
     public Date orderDate;
+    public Calendar deliveryDate;
     public double orderSum;
     public String responseText="";
     public String _1CDocNumber1="";

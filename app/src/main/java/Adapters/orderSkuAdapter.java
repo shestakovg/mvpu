@@ -158,7 +158,8 @@ public class orderSkuAdapter extends BaseAdapter  {
         dlgEditQty.setContentView(R.layout.edit_orderqty);
         dlgEditQty.setCancelable(true);
         //((TextView) dlgEditQty.findViewById(R.id.tvEtitQtyDescription)).setText(sku.skuName);
-        String stockStr = "Остатки: главный "+String.format("%d", (long)  sku.stockG)+"   розница "+String.format("%d", (long)  sku.stockR);
+        String stockStr = "Остатки: главный "+String.format("%d", (long)  sku.stockG)+"   розница "+String.format("%d", (long)  sku.stockR)
+                + "     В ящ. "+String.format("%d", (int)  sku.getCountInBox());
         ((TextView) dlgEditQty.findViewById(R.id.tvEtitQtyStock)).setText(stockStr);
 
         final EditText dlgEditMWH = (EditText) dlgEditQty.findViewById(R.id.editDialogMWH);
@@ -172,6 +173,8 @@ public class orderSkuAdapter extends BaseAdapter  {
 
                 if (!dlgEditMWH.getText().toString().trim().isEmpty()) {
                     sku.setQtyMWH(Integer.parseInt(dlgEditMWH.getText().toString()));
+                    if (sku.qtyMWH % sku.getCountInBox() !=0)
+                        Toast.makeText(context, "Количество по складу Главный не кратно ящику",Toast.LENGTH_LONG).show();
                 }
                 else
                 {
@@ -180,6 +183,8 @@ public class orderSkuAdapter extends BaseAdapter  {
 
                 if (!dlgEditRWH.getText().toString().trim().isEmpty()) {
                     sku.setQtyRWH(Integer.parseInt(dlgEditRWH.getText().toString()));
+                    if (sku.qtyRWH % sku.getCountInBox() !=0)
+                        Toast.makeText(context, "Количество по складу Розница не кратно ящику",Toast.LENGTH_LONG).show();
                 }
                 else
                 {

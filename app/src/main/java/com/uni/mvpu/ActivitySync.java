@@ -137,7 +137,7 @@ public class ActivitySync extends ActionBarActivity {
                         break;
                     case IDLI_PRODUCT:
                         syncSkuGroup syncGroup = new syncSkuGroup(this, pd);
-                        syncGroup.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getskugroup"});
+                        syncGroup.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getskugroup/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
                         syncSku syncSku = new syncSku(this, pd);
                         syncSku.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getsku"});
                         break;
