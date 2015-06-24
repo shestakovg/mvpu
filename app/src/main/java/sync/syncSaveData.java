@@ -150,4 +150,32 @@ public class syncSaveData {
         db.close();
         Toast.makeText(context, "Обновление остатков завершено", Toast.LENGTH_SHORT).show();
     }
+
+    public static void saveDebt(List<JSONObject> jsonObjects, Context context)
+    {
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        db.execSQL("delete from debts");
+
+        for (JSONObject jsonObject: jsonObjects) {
+            try {
+                ContentValues values = new ContentValues();
+                values.put("partnerId", jsonObject.getString("partnerId"));
+                values.put("customerId", jsonObject.getString("customerId"));
+                values.put("transactionNumber", jsonObject.getString("transactionNumber"));
+                values.put("transactionDate", jsonObject.getString("transactionDate"));
+                values.put("transactionSum", jsonObject.getDouble("transactionSum"));
+                values.put("paymentDate", jsonObject.getString("paymentDate"));
+                values.put("debt", jsonObject.getDouble("debt"));
+                values.put("overdueDebt", jsonObject.getDouble("overdueDebt"));
+                values.put("overdueDays", jsonObject.getInt("overdueDays"));
+                db.insert("debts", null, values);
+            } catch (Exception e) {
+
+            }
+        }
+        db.close();
+        Toast.makeText(context, "Обновление долгов завершено", Toast.LENGTH_LONG).show();
+    }
+
 }

@@ -45,6 +45,10 @@ public class DbCreateScript {
     private static String CREATE_STOCK = "create table stock(SkuId text, StockG double, StockR double)";
     private static String CREATE_STOCK_IDX1 = "CREATE INDEX idx_stock ON stock (SkuId)";
 
+    private static String CREATE_DEBT = "create table IF NOT EXISTS debts(partnerId text, customerId text,transactionNumber text, transactionDate text, transactionSum double," +
+            "paymentDate text, debt double, overdueDebt double, overdueDays int)";
+    private static String CREATE_DEBT_IDX1 = "CREATE INDEX idx_debt ON debts (customerId)";
+
     public static  ArrayList<String> getCreateDataBaseScripts()
     {
         ArrayList<String> list = new ArrayList<String>();
@@ -70,6 +74,8 @@ public class DbCreateScript {
         list.add(CREATE_PRICE_IDX2);
         list.add(CREATE_STOCK);
         list.add(CREATE_STOCK_IDX1);
+        list.add(CREATE_DEBT);
+        list.add(CREATE_DEBT_IDX1);
         return list;
     }
 
@@ -83,10 +89,12 @@ public class DbCreateScript {
     private static String DROP_SKU = "DROP TABLE sku";
     private static String DROP_PRICE = "DROP TABLE price";
     private static String DROP_STOCK = "DROP TABLE stock";
+    private static String DROP_DEBT = "DROP TABLE debts";
+
     public static ArrayList<String>  getDropTableScripts()
     {
         ArrayList<String> list = new ArrayList<String>();
-        list.add(DROP_BASEPARAMS);
+        //list.add(DROP_BASEPARAMS);
         list.add(DROP_ROUTE);
         list.add(DROP_ORDER_HEADER);
         list.add(DROP_DETAIL);
@@ -95,6 +103,7 @@ public class DbCreateScript {
         list.add(DROP_SKU);
         list.add(DROP_PRICE);
         list.add(DROP_STOCK);
+        list.add(DROP_DEBT);
         return list;
     }
 }

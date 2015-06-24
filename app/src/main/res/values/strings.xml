@@ -16,4 +16,5 @@
     <string name="send_current_order_dialog">Отправлен  заказ  </string>
     <string name="send_order_dialog_finish">Отправка заказов завершена</string>
     <string name="title_activity_activityget_version">ActivitygetVersion</string>
+    <string name="title_activity_activity_debt">ActivityDebt</string>
 </resources>

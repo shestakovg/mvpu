@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import Entitys.priceType;
 import core.appManager;
 import sync.syncContracts;
+import sync.syncDebt;
 import sync.syncPrice;
 import sync.syncRoute;
 import sync.syncSku;
@@ -31,7 +32,8 @@ public class ActivitySync extends ActionBarActivity {
     private final String IDLI_PRICE = "Цены";
     private final String IDLI_DOCS = "Договора";
     private final String IDLI_STOCK = "Остатки";
-    private String[] mSyncOptions = {IDLI_ROUTE, IDLI_PRODUCT,  IDLI_DOCS, IDLI_STOCK};
+    private final String IDLI_DEBT = "Долги";
+    private String[] mSyncOptions = {IDLI_ROUTE, IDLI_PRODUCT,  IDLI_DOCS, IDLI_STOCK, IDLI_DEBT};
     private ArrayAdapter listAdapter;
     private ArrayList<priceType> priceList;
     private ArrayList<String> priceNameList;
@@ -156,6 +158,10 @@ public class ActivitySync extends ActionBarActivity {
                         syncStock syncSt= new syncStock(this, pd);
                         syncSt.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getbalancesku/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
                         break; //Add other menu items
+                    case IDLI_DEBT:
+                        syncDebt sncDept = new syncDebt(this, pd);
+                        sncDept.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getdebt/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
+                        break;
                 }
             }
         }

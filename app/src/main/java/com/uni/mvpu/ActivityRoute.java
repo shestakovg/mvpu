@@ -199,11 +199,9 @@ public class ActivityRoute extends ActionBarActivity {
 //                                        Toast.LENGTH_SHORT).show();
                                 appManager.getOurInstance().showOrderList(selectedOutlet, ActivityRoute.this);
                                 return true;
-//                            case R.id.menu2:
-//                                Toast.makeText(getApplicationContext(),
-//                                        "Вы выбрали PopupMenu 2",
-//                                        Toast.LENGTH_SHORT).show();
-//                                return true;
+                            case R.id.menuDebt:
+                                appManager.getOurInstance().showDebtList(selectedOutlet, ActivityRoute.this);
+                                return true;
 //                            case R.id.menu3:
 //                                Toast.makeText(getApplicationContext(),
 //                                        "Вы выбрали PopupMenu 3",

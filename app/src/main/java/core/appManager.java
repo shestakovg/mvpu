@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 
+import com.uni.mvpu.ActivityDebt;
 import com.uni.mvpu.ActivityOrder;
 import com.uni.mvpu.ActivityOrderList;
 import com.uni.mvpu.ActivitySync;
@@ -114,6 +115,14 @@ public class appManager {
         Intent intent = new Intent(context, ActivityOrderList.class);
         //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("outletid", outletObject.outletId.toString());
+        context.startActivity(intent);
+    }
+
+    public void showDebtList(OutletObject outletObject, Context context)
+    {
+        Intent intent = new Intent(context, ActivityDebt.class);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("customerid", outletObject.customerId.toString());
         context.startActivity(intent);
     }
 

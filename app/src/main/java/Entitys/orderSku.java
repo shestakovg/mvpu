@@ -25,7 +25,7 @@ public class orderSku {
     public double stockR;
 
     public int getCountInBox() {
-        return countInBox;
+        return (countInBox == 0 ? 1 : countInBox);
     }
 
     public void setCountInBox(int countInBox) {

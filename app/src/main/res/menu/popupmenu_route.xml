@@ -5,9 +5,9 @@
             android:id="@+id/menuOrders"
             android:icon="@drawable/document_32"
             android:title="Перейти к заказам"/>
-        <!--<item-->
-            <!--android:id="@+id/menu2"-->
-            <!--android:title="menu item 2"/>-->
+        <item
+            android:id="@+id/menuDebt"
+            android:title="Долги"/>
         <!--<item-->
             <!--android:id="@+id/menu3"-->
             <!--android:title="menu item 3">-->

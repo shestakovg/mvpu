@@ -47,6 +47,10 @@
             android:name=".ActivitygetVersion"
             android:label="@string/title_activity_activityget_version" >
         </activity>
+        <activity
+            android:name=".ActivityDebt"
+            android:label="@string/title_activity_activity_debt" >
+        </activity>
     </application>
 
 </manifest> <!-- android:screenOrientation="landscape" -->

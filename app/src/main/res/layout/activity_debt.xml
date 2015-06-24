@@ -1,0 +1,51 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.uni.mvpu.ActivityDebt">
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <TableRow>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Долг всего: "
+                    android:gravity="left" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Долг всего: "
+                    android:id="@+id/tvDeptTotal"
+                    android:textStyle="bold"
+                    android:textColor="#ff2d43ff"
+                    android:gravity="left" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="     Просрочка всего: "
+                    android:gravity="right" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Просрочка всего: "
+                    android:id="@+id/tvOverdueDeptTotal"
+                    android:textStyle="bold"
+                    android:textColor="#ffff243c"
+                    android:gravity="right" />
+            </LinearLayout>
+        </TableRow>
+        <ListView
+            android:id="@+id/lvDebtDataList"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:dividerHeight="2dp"
+            android:divider="@color/background_material_dark">
+        </ListView>
+    </TableLayout>
+</RelativeLayout>
