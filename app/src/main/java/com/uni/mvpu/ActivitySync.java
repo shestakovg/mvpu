@@ -18,6 +18,7 @@ import Entitys.priceType;
 import core.appManager;
 import sync.syncContracts;
 import sync.syncDebt;
+import sync.syncDebtParams;
 import sync.syncPrice;
 import sync.syncRoute;
 import sync.syncSku;
@@ -102,13 +103,15 @@ public class ActivitySync extends ActionBarActivity {
         ProgressDialog pd = new ProgressDialog(this, AlertDialog.THEME_DEVICE_DEFAULT_LIGHT);
         int syncQty = getCheckedItems();
         if (syncQty>0) {
-            pd.setMax(syncQty);
+            pd.setMax(syncQty + 1);
             pd.setTitle("Синхронизация");
             pd.setMessage("Синхронизация");
            // pd.setCancelable(false);
             pd.setProgress(0);
             pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             pd.show();
+            syncDebtParams debtParams = new syncDebtParams(this, pd);
+            debtParams.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getdebtparams/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
         }
 
         for (int i=0; i<checkedItems.size();i++)

@@ -40,6 +40,40 @@
                     android:gravity="right" />
             </LinearLayout>
         </TableRow>
+        <TableRow>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Заявлено:   "/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvStatedSum"
+
+                    android:text="00000.00"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="    Просрочка + заявлено:  "/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvStatedSumWithOverdue"
+                    android:text="00000.00"/>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Заявить оплату"
+                    android:id="@+id/btnClaimPay"
+                    android:onClick="onClickClaimPay"/>
+            </LinearLayout>
+
+        </TableRow>
         <ListView
             android:id="@+id/lvDebtDataList"
             android:layout_width="fill_parent"

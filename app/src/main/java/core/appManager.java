@@ -182,5 +182,19 @@ public class appManager {
         so.execute();
     }
 
+    public double getOverdueSum(Context context,String customerId, Calendar date)
+    {
+        double result=0;
+        SQLiteDatabase db = new DbOpenHelper(context).getReadableDatabase();
+        Cursor cursor = db.rawQuery("select sum(d.overdueDebt - coalesce(p.paySum,0)) overSum from debts d " +
+                "left join pays p on p.transactionId = d.transactionId" +
+                "where d.customerid= ? and p.payDate = ? and  d.overdueDebt > 0",
+                new String[] {customerId, wputils.getDateTime(date)});
+        cursor.moveToFirst();
+        result = cursor.getDouble(0);
+        db.close();
+        return result;
+    }
+
 }
 

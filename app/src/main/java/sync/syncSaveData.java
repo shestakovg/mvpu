@@ -6,11 +6,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
 
 import Entitys.priceType;
+import core.appManager;
 import db.DbOpenHelper;
 
 /**
@@ -162,6 +164,7 @@ public class syncSaveData {
                 ContentValues values = new ContentValues();
                 values.put("partnerId", jsonObject.getString("partnerId"));
                 values.put("customerId", jsonObject.getString("customerId"));
+                values.put("transactionId", jsonObject.getString("transactionId"));
                 values.put("transactionNumber", jsonObject.getString("transactionNumber"));
                 values.put("transactionDate", jsonObject.getString("transactionDate"));
                 values.put("transactionSum", jsonObject.getDouble("transactionSum"));
@@ -177,5 +180,24 @@ public class syncSaveData {
         db.close();
         Toast.makeText(context, "Обновление долгов завершено", Toast.LENGTH_LONG).show();
     }
+
+    public static void saveDebtParams(List<JSONObject> jsonObjects, Context context) {
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        for (JSONObject jsonObject: jsonObjects) {
+
+            try {
+                appManager.getOurInstance().appSetupInstance.saveParamSetup(db, "debtControl",Integer.toString(jsonObject.getInt("debtControl")));
+                appManager.getOurInstance().appSetupInstance.saveParamSetup(db, "allowOverdueSum", jsonObject.getString("allowOverdueSum"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        db.close();
+        appManager.getOurInstance().appSetupInstance.readSetup(context);
+    }
+
 
 }

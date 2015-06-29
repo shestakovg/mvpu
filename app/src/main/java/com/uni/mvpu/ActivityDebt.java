@@ -6,18 +6,22 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import Adapters.debtListAdapter;
 import Adapters.orderListAdapter;
+import Dialogs.DlgInputPay;
 import Entitys.DebtData;
 import db.DbOpenHelper;
+import interfaces.IInputCustomerPay;
 
 
-public class ActivityDebt extends ActionBarActivity {
+public class ActivityDebt extends ActionBarActivity implements IInputCustomerPay {
     private String customerid;
     private ListView lvDebt;
     @Override
@@ -80,5 +84,16 @@ public class ActivityDebt extends ActionBarActivity {
 
         ((TextView) findViewById(R.id.tvDeptTotal)).setText(String.format("%.2f", DebtData.getDebtSum(debts)));
         ((TextView) findViewById(R.id.tvOverdueDeptTotal)).setText(String.format("%.2f", DebtData.getOverdueDebtSum(debts)));
+    }
+
+    @Override
+    public void processPay(double paySum) {
+        Toast.makeText(this, Double.toString(paySum), Toast.LENGTH_LONG).show();
+    }
+
+    public void onClickClaimPay(View view)
+    {
+        DlgInputPay dlg = new DlgInputPay(this,"client",this);
+        dlg.show();
     }
 }

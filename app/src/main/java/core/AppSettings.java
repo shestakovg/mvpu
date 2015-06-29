@@ -24,6 +24,8 @@ public class AppSettings {
     private final String PARAM_ROUTE_NAME = "ROUTE_NAME";
     private final String PARAM_EMPLOYEE_ID = "EMPLOYEE_ID";
     private final String PARAM_EMPLOYEE_NAME = "EMPLOYEE_NAME";
+    private final String PARAM_debtControl = "debtControl";
+    private final String PARAM_allowOverdueSum = "allowOverdueSum";
 
     public static final String PARAM_PRICEID_DEFAULT = "75a9d60f-cd75-11e4-826a-240a64c9314e";
 
@@ -78,6 +80,17 @@ public class AppSettings {
 
     private UUID employeeID;
 
+    public boolean isDebtControl() {
+        return debtControl;
+    }
+
+    public double getAllowOverdueSum() {
+        return allowOverdueSum;
+    }
+
+    private boolean debtControl;
+    private double  allowOverdueSum;
+
     public String version;
     public AppSettings(String serviceUrl, String routeName, String employeeName, UUID routeId, UUID employeeID) {
         this.serviceUrl = serviceUrl;
@@ -112,7 +125,7 @@ public class AppSettings {
         db.close();
     }
 
-    private void saveParamSetup(SQLiteDatabase db, String paramName, String paramValue)
+    public void saveParamSetup(SQLiteDatabase db, String paramName, String paramValue)
     {
         db.execSQL("delete from baseParams where ParamId='" + paramName + "'");
         ContentValues values = new ContentValues();
@@ -138,6 +151,8 @@ public class AppSettings {
                 case PARAM_SERVICE_URL: serviceUrl = cursor.getString(1); break;
                 case PARAM_EMPLOYEE_ID: employeeID = UUID.fromString(cursor.getString(1)); break;
                 case PARAM_EMPLOYEE_NAME: employeeName = cursor.getString(1); break;
+                case PARAM_debtControl: debtControl = cursor.getString(1).equals("1"); break;
+                case PARAM_allowOverdueSum: allowOverdueSum = Double.valueOf(cursor.getString(1)); break;
             }
             cursor.moveToNext();
         }
