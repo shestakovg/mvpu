@@ -1,5 +1,8 @@
 package com.uni.mvpu;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBarActivity;
@@ -29,12 +32,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import Entitys.Order;
 import Entitys.OutletObject;
 import core.appManager;
 import db.DbOpenHelper;
 
 public class ActivityRoute extends ActionBarActivity {
-
+    private Context currentContext;
     private Spinner spinner;
     private ListView listRoute;
     private  SimpleAdapter sa;
@@ -44,12 +48,16 @@ public class ActivityRoute extends ActionBarActivity {
     private String routeWhere = "";
     private String[] daysString = {"Все торговые точки", "Понедельник", "Вторник", "Среда", "Четверг","Пятница","Суббота","Воскресенье"};
     private int[] daysInt = {-1,0,1,2,3,4,5,6};
-    public ActivityRoute() {
-    }
+//    public ActivityRoute() {
+//    }
+
+    private final int IDD_THREE_BUTTONS = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        currentContext = this;
+
 //        fillWhereCondition(Calendar.getInstance().get(Calendar.DAY_OF_WEEK) -Calendar.getInstance().getFirstDayOfWeek());
         setContentView(R.layout.activity_route);
         listRoute = (ListView) findViewById(R.id.listViewRoute);
@@ -197,7 +205,32 @@ public class ActivityRoute extends ActionBarActivity {
 //                                Toast.makeText(getApplicationContext(),
 //                                        "Вы выбрали PopupMenu 1",
 //                                        Toast.LENGTH_SHORT).show();
-                                appManager.getOurInstance().showOrderList(selectedOutlet, ActivityRoute.this);
+
+                                Calendar currentDate = Calendar.getInstance();
+                                currentDate.setTime(new Date());
+                                double overdueSum =  appManager.getOurInstance().getOverdueSum(getBaseContext(),selectedOutlet.customerId.toString(), currentDate );
+                                if (overdueSum>0 && appManager.getOurInstance().appSetupInstance.isDebtControl())
+                                {
+                                    //Toast.makeText(getBaseContext(), "Просрочка "+Double.toString(overdueSum), Toast.LENGTH_LONG).show();
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(currentContext);
+                                    builder.setTitle("Важное сообщение!")
+                                            .setMessage("По клиенту " + selectedOutlet.customerName + " просрочка " + Double.toString(overdueSum)
+                                                    +" грн.\nОТГРУЗКА ЗАПРЕЩЕНА!")
+                                            .setIcon(R.drawable.hrn)
+                                            .setCancelable(false)
+                                            .setNegativeButton("ОК",
+                                                    new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int id) {
+                                                            dialog.cancel();
+                                                        }
+                                                    });
+                                    AlertDialog alert = builder.create();
+                                    alert.show();
+                                }
+                                else
+                                {
+                                    appManager.getOurInstance().showOrderList(selectedOutlet, ActivityRoute.this);
+                                }
                                 return true;
                             case R.id.menuDebt:
                                 appManager.getOurInstance().showDebtList(selectedOutlet, ActivityRoute.this);

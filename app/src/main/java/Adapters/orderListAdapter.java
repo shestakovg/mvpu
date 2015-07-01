@@ -13,6 +13,8 @@ import android.widget.Toast;
 import com.uni.mvpu.R;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
 
 import Entitys.Order;
@@ -97,6 +99,7 @@ public class orderListAdapter extends BaseAdapter {
     {
         int position = (Integer) view.getTag();
         context.startActivity(appManager.getOurInstance().getOrderActivityIntent(((Order) getItem(position)), context,((Order) getItem(position)).outletId));
+
         //Toast.makeText(context,((Order) getItem(position)).orderDescription, Toast.LENGTH_SHORT).show();
     }
 }
