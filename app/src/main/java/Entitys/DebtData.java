@@ -12,6 +12,7 @@ public class DebtData {
     public String customerId;
 
     public String transactionNumber;
+    public String transactionId;
 
     public String transactionDate;
 
@@ -24,6 +25,8 @@ public class DebtData {
     public double overdueDebt;
 
     public int overdueDays;
+
+    public double claimedSum;
 
     public static double getDebtSum(List<DebtData> debts)
     {
@@ -41,6 +44,27 @@ public class DebtData {
         for (DebtData d : debts)
         {
             result += d.overdueDebt;
+        }
+        return result;
+    }
+
+    public static double getClaimedSum(List<DebtData> debts)
+    {
+        double result = 0;
+        for (DebtData d : debts)
+        {
+            result += d.claimedSum;
+        }
+        return result;
+    }
+
+    public static double getOverdueAndClaimedSum(List<DebtData> debts)
+    {
+        double result = 0;
+        for (DebtData d : debts)
+        {
+           if (d.overdueDebt > 0)
+                result += d.overdueDebt - d.claimedSum;
         }
         return result;
     }

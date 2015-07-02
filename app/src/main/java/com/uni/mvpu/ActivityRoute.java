@@ -35,6 +35,7 @@ import java.util.UUID;
 import Entitys.Order;
 import Entitys.OutletObject;
 import core.appManager;
+import core.wputils;
 import db.DbOpenHelper;
 
 public class ActivityRoute extends ActionBarActivity {
@@ -208,7 +209,7 @@ public class ActivityRoute extends ActionBarActivity {
 
                                 Calendar currentDate = Calendar.getInstance();
                                 currentDate.setTime(new Date());
-                                double overdueSum =  appManager.getOurInstance().getOverdueSum(getBaseContext(),selectedOutlet.customerId.toString(), currentDate );
+                                double overdueSum =  appManager.getOurInstance().getOverdueSum(getBaseContext(),selectedOutlet.customerId.toString(), currentDate);
                                 if (overdueSum>0 && appManager.getOurInstance().appSetupInstance.isDebtControl())
                                 {
                                     //Toast.makeText(getBaseContext(), "Просрочка "+Double.toString(overdueSum), Toast.LENGTH_LONG).show();

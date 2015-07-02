@@ -146,7 +146,7 @@ public class appManager {
     public ArrayList<priceType> getPriceType(Context context)
     {
         DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
-        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select distinct PriceId, PriceName from contracts", null);
         cursor.moveToFirst();
         ArrayList<priceType> result = new ArrayList<>();
@@ -192,6 +192,17 @@ public class appManager {
                 new String[] { wputils.getDateTime(date), customerId});
         cursor.moveToFirst();
         result = cursor.getDouble(0);
+        db.close();
+        return result;
+    }
+
+    public String getCustomerName(String customerId, Context context)
+    {
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select distinct CustomerName from route where customerid = ?", new String[]  {customerId});
+        cursor.moveToFirst();
+        String result = cursor.getString(0);
         db.close();
         return result;
     }

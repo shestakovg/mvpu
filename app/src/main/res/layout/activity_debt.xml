@@ -53,9 +53,11 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/tvStatedSum"
+                    android:id="@+id/tvClaimedSum"
 
-                    android:text="00000.00"/>
+                    android:text="00000.00"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/background_dark" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -64,7 +66,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/tvStatedSumWithOverdue"
-                    android:text="00000.00"/>
+                    android:text="00000.00"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/background_dark" />
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -17,19 +17,25 @@ import Adapters.debtListAdapter;
 import Adapters.orderListAdapter;
 import Dialogs.DlgInputPay;
 import Entitys.DebtData;
+import core.appManager;
+import core.wputils;
 import db.DbOpenHelper;
 import interfaces.IInputCustomerPay;
 
 
 public class ActivityDebt extends ActionBarActivity implements IInputCustomerPay {
     private String customerid;
+    private String customerName;
     private ListView lvDebt;
+    private debtListAdapter debtAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("Долги");
         setContentView(R.layout.activity_debt);
         customerid = getIntent().getStringExtra("customerid");
+        customerName = appManager.getOurInstance().getCustomerName(customerid, this);
+        setTitle("Долги:  "+customerName);
         lvDebt = (ListView) findViewById(R.id.lvDebtDataList);
         fillDebtList();
     }
@@ -62,8 +68,12 @@ public class ActivityDebt extends ActionBarActivity implements IInputCustomerPay
         DbOpenHelper dbOpenHelper = new DbOpenHelper(this);
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select  d.transactionNumber  , d.transactionDate  , d.transactionSum  , "  +
-                " d.paymentDate  , d.debt  , d.overdueDebt  , d.overdueDays  from debts d where d.customerId= ?"
-                    , new String[] {customerid});
+                " d.paymentDate  , d.debt  , d.overdueDebt  , d.overdueDays, d.transactionId, coalesce(p.paySum,0) claimedSum  from debts d " +
+                " left join  pays p on p.transactionId = d.transactionId and p.payDate = ?" +
+                " where d.customerId= ? order by DATE(substr( d.paymentDate,7,4)" +
+                "||substr( d.paymentDate,4,2)" +
+                "||substr( d.paymentDate,1,2)) "
+                    , new String[] { wputils.getDateTime(wputils.getCurrentDate()),customerid});
         cursor.moveToFirst();
         for (int i=0; i < cursor.getCount(); i++ )
         {
@@ -75,25 +85,32 @@ public class ActivityDebt extends ActionBarActivity implements IInputCustomerPay
             debtData.transactionNumber = cursor.getString(cursor.getColumnIndex("transactionNumber"));
             debtData.transactionDate = cursor.getString(cursor.getColumnIndex("transactionDate"));
             debtData.paymentDate = cursor.getString(cursor.getColumnIndex("paymentDate"));
+            debtData.transactionId = cursor.getString(cursor.getColumnIndex("transactionId"));
+            debtData.claimedSum = cursor.getDouble(cursor.getColumnIndex("claimedSum"));
             debts.add(debtData);
             cursor.moveToNext();
         }
         db.close();
-        debtListAdapter debtAdapter = new debtListAdapter(this, debts);
+        debtAdapter = new debtListAdapter(this, debts);
         lvDebt.setAdapter(debtAdapter);
 
         ((TextView) findViewById(R.id.tvDeptTotal)).setText(String.format("%.2f", DebtData.getDebtSum(debts)));
         ((TextView) findViewById(R.id.tvOverdueDeptTotal)).setText(String.format("%.2f", DebtData.getOverdueDebtSum(debts)));
+        ((TextView) findViewById(R.id.tvClaimedSum)).setText(String.format("%.2f", DebtData.getClaimedSum(debts)));
+        ((TextView) findViewById(R.id.tvStatedSumWithOverdue)).setText(String.format("%.2f", DebtData.getOverdueAndClaimedSum(debts)));
     }
 
     @Override
     public void processPay(double paySum) {
-        Toast.makeText(this, Double.toString(paySum), Toast.LENGTH_LONG).show();
+       // Toast.makeText(this, Double.toString(paySum), Toast.LENGTH_LONG).show();
+        debtAdapter.applyPay(paySum, this.customerid);
+        fillDebtList();
     }
 
     public void onClickClaimPay(View view)
     {
-        DlgInputPay dlg = new DlgInputPay(this,"client",this);
+        DlgInputPay dlg = new DlgInputPay(this,customerName,this);
         dlg.show();
+
     }
 }

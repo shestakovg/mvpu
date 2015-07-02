@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.uni.mvpu.R;
 
@@ -26,7 +27,8 @@ public class DlgInputPay extends Dialog {
         this.setContentView(R.layout.dialog_input_pay);
         this.setCancelable(true);
         edPaySum = (EditText) this.findViewById(R.id.edPaySum);
-        edPaySum.setText("0");
+        ((TextView) this.findViewById(R.id.tvDlgPayCustomer)).setText(customerName);
+        //edPaySum.setText("0");
         final Dialog dlg = this;
         Button btnCancel =(Button) this.findViewById(R.id.btnInputPayCancel);
         btnCancel.setOnClickListener(new View.OnClickListener() {

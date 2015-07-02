@@ -12,7 +12,7 @@ import java.util.Locale;
 /**
  * Created by shestakov.g on 07.06.2015.
  */
-public class wputils {
+public final class wputils {
     public static String getDateTime(Calendar calendar) {
         int year = calendar.get(Calendar.YEAR);
       //  if (year>3900) year-=1900;
@@ -54,5 +54,12 @@ public class wputils {
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         return cal;
+    }
+
+    public static  Calendar  getCurrentDate()
+    {
+        Calendar currentDate = Calendar.getInstance();
+        currentDate.setTime(new Date());
+        return currentDate;
     }
 }

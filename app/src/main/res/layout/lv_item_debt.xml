@@ -98,5 +98,17 @@
             android:id="@+id/tvOverdueDays"
             android:textStyle="bold"
             android:textSize="15dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="  Заявлено:  "
+            android:textSize="15dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="20145.36"
+            android:id="@+id/tvClaimedSum"
+            android:textStyle="bold"
+            android:textSize="15dp" />
     </LinearLayout>
 </LinearLayout>
