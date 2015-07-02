@@ -210,12 +210,12 @@ public class ActivityRoute extends ActionBarActivity {
                                 Calendar currentDate = Calendar.getInstance();
                                 currentDate.setTime(new Date());
                                 double overdueSum =  appManager.getOurInstance().getOverdueSum(getBaseContext(),selectedOutlet.customerId.toString(), currentDate);
-                                if (overdueSum>0 && appManager.getOurInstance().appSetupInstance.isDebtControl())
+                                if ((overdueSum - appManager.getOurInstance().appSetupInstance.getAllowOverdueSum()) >0 && appManager.getOurInstance().appSetupInstance.isDebtControl())
                                 {
                                     //Toast.makeText(getBaseContext(), "Просрочка "+Double.toString(overdueSum), Toast.LENGTH_LONG).show();
                                     AlertDialog.Builder builder = new AlertDialog.Builder(currentContext);
                                     builder.setTitle("Важное сообщение!")
-                                            .setMessage("По клиенту " + selectedOutlet.customerName + " просрочка " + Double.toString(overdueSum)
+                                            .setMessage("По клиенту " + selectedOutlet.customerName + " просрочка " + String.format("%.2f", overdueSum)
                                                     +" грн.\nОТГРУЗКА ЗАПРЕЩЕНА!")
                                             .setIcon(R.drawable.hrn)
                                             .setCancelable(false)
