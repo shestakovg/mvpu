@@ -26,6 +26,7 @@ import Entitys.OutletObject;
 import Entitys.priceType;
 import db.DbOpenHelper;
 import sync.sendOrders;
+import sync.sendPays;
 
 /**
  * Created by g.shestakov on 26.05.2015.
@@ -180,6 +181,8 @@ public class appManager {
     {
         sendOrders so = new  sendOrders(context, owner);
         so.execute();
+        sendPays pays = new sendPays(context);
+        pays.execute();
     }
 
     public double getOverdueSum(Context context,String customerId, Calendar date)

@@ -113,9 +113,10 @@ public class debtListAdapter extends BaseAdapter {
     {
         ContentValues values = new ContentValues();
         values.put("payDate", wputils.getDateTime(date));
-        values.put("customerid",customerId);
-        values.put("transactionId",transactionId);
-        values.put("paySum",paySum);
+        values.put("customerid", customerId);
+        values.put("transactionId", transactionId);
+        values.put("paySum", paySum);
+        values.put("_send",0);
         db.insert("pays", null, values);
     }
 }

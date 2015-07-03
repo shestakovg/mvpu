@@ -49,7 +49,7 @@ public class DbCreateScript {
             "paymentDate text, debt double, overdueDebt double, overdueDays int)";
     private static String CREATE_DEBT_IDX1 = "CREATE INDEX idx_debt ON debts (customerId)";
 
-    private static String CREATE_PAY = "create table pays (_id integer primary key autoincrement, payDate  DATETIME DEFAULT CURRENT_TIMESTAMP, transactionId text, customerid text, paySum double)";
+    private static String CREATE_PAY = "create table pays (_id integer primary key autoincrement, payDate  DATETIME DEFAULT CURRENT_TIMESTAMP, transactionId text, customerid text, paySum double,  _send integer DEFAULT 0)";
     private static String CREATE_PAY_IDX1 = "CREATE INDEX idx_pays ON pays (payDate,transactionId )";
 
     public static  ArrayList<String> getCreateDataBaseScripts()

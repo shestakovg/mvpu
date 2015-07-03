@@ -73,16 +73,17 @@ public class sendOrders  extends AsyncTask<String, Integer, List<JSONObject>> {
         }
         pd.dismiss();
         if (this.ownerActivity!=null)
-            ((IUpdateOrderList) this.ownerActivity).UpdateList();
+            if (this.ownerActivity instanceof IUpdateOrderList)
+                ((IUpdateOrderList) this.ownerActivity).UpdateList();
     }
 
     @Override
     protected void onProgressUpdate(Integer... values) {
         super.onProgressUpdate(values);
-        this.pd.setMessage(this.context.getString(R.string.send_current_order_dialog)+" ¹ " + values[0].toString());
-        Toast.makeText(this.context,
-                            this.context.getString(R.string.send_current_order_dialog) +" ¹ " + values[0].toString()
-                        , Toast.LENGTH_SHORT).show();
+        this.pd.setMessage(this.context.getString(R.string.send_current_order_dialog)+"  " + values[0].toString());
+//        Toast.makeText(this.context,
+//                            this.context.getString(R.string.send_current_order_dialog) +" ï¿½ " + values[0].toString()
+//                        , Toast.LENGTH_SHORT).show();
     }
 
     private sendResult sendHeaders()
