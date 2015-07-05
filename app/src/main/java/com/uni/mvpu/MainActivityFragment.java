@@ -55,6 +55,13 @@ public class MainActivityFragment extends Fragment {
                 btnMyOrders(v);
             }
         });
+
+        ((Button) parentView.findViewById(R.id.btnMyPays)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                appManager.getOurInstance().showPayList(parentView.getContext());
+            }
+        });
         String versionName ="Версия:  "+BuildConfig.VERSION_NAME;
         appManager.getOurInstance().appSetupInstance.version = BuildConfig.VERSION_NAME;
                 //parentView.getContext().getPackageManager().getPackageInfo(parentView.getContext().getPackageName(), 0).versionName;

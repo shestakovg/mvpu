@@ -124,6 +124,14 @@ public class appManager {
         Intent intent = new Intent(context, ActivityDebt.class);
         //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("customerid", outletObject.customerId.toString());
+        intent.putExtra("onlyCustomer", "1");
+        context.startActivity(intent);
+    }
+
+    public void showPayList( Context context)
+    {
+        Intent intent = new Intent(context, ActivityDebt.class);
+        intent.putExtra("onlyCustomer", "0");
         context.startActivity(intent);
     }
 
