@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import Adapters.orderSkuAdapter;
 import Entitys.OrderExtra;
 import Entitys.OutletObject;
+import Entitys.orderControlParams;
 import Entitys.orderSku;
 import core.appManager;
 import core.wputils;
@@ -110,7 +111,7 @@ public class FragmentOrderSku extends Fragment implements IOrderTotal{
         displayTotal();
     }
 
-    public void displayTotal()
+    public orderControlParams displayTotal()
     {
         DbOpenHelper dbOpenHelper = new DbOpenHelper(parentView.getContext());
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
@@ -132,6 +133,15 @@ public class FragmentOrderSku extends Fragment implements IOrderTotal{
         db.close();
         ((TextView) getView().findViewById(R.id.tvOrderSum)).setText(String.format("%.2f", orderSum));
         ((TextView) getView().findViewById(R.id.tvOrderRowCount)).setText(Integer.toString(rowCount));
+        return new orderControlParams(rowCount, orderSum, appManager.getOurInstance().appSetupInstance);
     }
+
+    @Override
+    public Boolean allowCloseOrder() {
+        return null;
+    }
+
+
+
 }
 

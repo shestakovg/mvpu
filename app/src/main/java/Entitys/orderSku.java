@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.ArrayList;
+
 import db.DbOpenHelper;
 
 /**
@@ -115,4 +117,6 @@ public class orderSku {
     {
         updatePosition(context, null);
     }
+
+
 }

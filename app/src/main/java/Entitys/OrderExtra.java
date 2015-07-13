@@ -69,4 +69,14 @@ public class OrderExtra extends Order {
         db.execSQL(dmlQuery);
         db.close();
     }
+
+    public static void DeleteOrder(OrderExtra orderExtra, Context context)
+    {
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        db.execSQL("delete from orderHeader where _id = ? ", new String[]{Integer.toString(orderExtra._id)});
+        db.execSQL("delete from orderDetail where headerId = ? ", new String[] { Integer.toString(orderExtra._id)});
+        db.close();
+
+    }
 }

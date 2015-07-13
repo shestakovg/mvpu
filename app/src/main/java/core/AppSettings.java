@@ -10,6 +10,7 @@ import com.uni.mvpu.R;
 import java.util.UUID;
 
 import db.DbOpenHelper;
+import interfaces.IOrderControlParams;
 
 /**
  * Created by g.shestakov on 26.05.2015.
@@ -17,7 +18,7 @@ import db.DbOpenHelper;
 
 
 
-public class AppSettings {
+public class AppSettings implements IOrderControlParams {
 
     private final String PARAM_SERVICE_URL = "SERVICE_URL";
     private final String PARAM_ROUTE_ID = "ROUTE_ID";
@@ -26,6 +27,8 @@ public class AppSettings {
     private final String PARAM_EMPLOYEE_NAME = "EMPLOYEE_NAME";
     private final String PARAM_debtControl = "debtControl";
     private final String PARAM_allowOverdueSum = "allowOverdueSum";
+    private final String PARAM_minOrderRowsQty = "skuQty";
+    private final String PARAM_minOrderSum = "minOrderSum";
 
     public static final String PARAM_PRICEID_DEFAULT = "75a9d60f-cd75-11e4-826a-240a64c9314e";
 
@@ -91,6 +94,17 @@ public class AppSettings {
     private boolean debtControl;
     private double  allowOverdueSum;
 
+    private int minOrderRowsQty;
+    private double minOrderSum;
+
+    public int getMinOrderRowsQty() {
+        return minOrderRowsQty;
+    }
+
+    public double getMinOrderSum() {
+        return minOrderSum;
+    }
+
     public String version;
     public AppSettings(String serviceUrl, String routeName, String employeeName, UUID routeId, UUID employeeID) {
         this.serviceUrl = serviceUrl;
@@ -153,6 +167,8 @@ public class AppSettings {
                 case PARAM_EMPLOYEE_NAME: employeeName = cursor.getString(1); break;
                 case PARAM_debtControl: debtControl = cursor.getString(1).equals("1"); break;
                 case PARAM_allowOverdueSum: allowOverdueSum = Double.valueOf(cursor.getString(1)); break;
+                case PARAM_minOrderRowsQty: minOrderRowsQty = Integer.valueOf(cursor.getString(1)); break;
+                case PARAM_minOrderSum: minOrderSum = Double.valueOf(cursor.getString(1)); break;
             }
             cursor.moveToNext();
         }

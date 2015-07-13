@@ -12,6 +12,7 @@ import java.util.Map;
  * Created by shestakov.g on 02.06.2015.
  */
 public class Order implements Parcelable {
+    private static int idOrder;
     public String orderDescription;
     public int _id;
     public int orderNumber;
@@ -81,10 +82,19 @@ public class Order implements Parcelable {
 //        this.orderUUID = parcel.readString();
     }
 
-    public static Order initOrderById(int idOrder)
+    public static double initOrderById(int idOrder)
     {
-
-        return new Order();
+        return 0;
     }
+
+//    public static double getOrderSum(int orderId)
+//    {
+//        return 0;
+//    }
+//
+//    public static int getOrderRows(int orderId)
+//    {
+//        return 0;
+//    }
 
 }

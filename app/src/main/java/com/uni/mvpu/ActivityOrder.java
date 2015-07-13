@@ -1,8 +1,10 @@
 package com.uni.mvpu;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Parcelable;
 import android.app.Fragment;
@@ -23,6 +25,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -33,6 +36,7 @@ import java.util.UUID;
 import Entitys.Order;
 import Entitys.OrderExtra;
 import Entitys.OutletObject;
+import Entitys.orderControlParams;
 import Entitys.orderSku;
 import core.appManager;
 import core.wputils;
@@ -78,7 +82,7 @@ public class ActivityOrder extends  ActionBarActivity implements IOrder  {
 //        ft.add(R.id.containerOrder, fragSku, "fragmentSku");
 //        ft.addToBackStack(null);
 //        ft.commit();
-
+        context = this;
         currentOutlet = OutletObject.getInstance(UUID.fromString(getIntent().getStringExtra("OUTLETID")), this);
                 //appManager.getOurInstance().getActiveOutletObject();
 
@@ -120,6 +124,34 @@ public class ActivityOrder extends  ActionBarActivity implements IOrder  {
     private void displayDeliveryDate()
     {
          tvDeliveryDate.setText(DateFormat.format("Доставка: dd.MM.yyyy", orderExtra.deliveryDate));
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (fragSku!=null && fragSku.isInLayout()) {
+            orderControlParams param = fragSku.displayTotal();
+            if (!param.allowOrderToSave())
+            {
+                AlertDialog.Builder ad = new AlertDialog.Builder(context);
+                ad.setTitle(context.getString(R.string.orderControlMessage));
+                ad.setMessage(param.getControlMessage() + "\n" + " Заказ не может быть сохранен!\n Удалить заказ?");
+                ad.setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int arg1) {
+                        OrderExtra.DeleteOrder(orderExtra, context);
+                        finish();
+                    }
+                });
+                ad.setNegativeButton("Нет", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int arg1) {
+
+                    }
+                });
+                ad.show();
+            }
+            else finish();
+        }
+        else
+            super.onBackPressed();
     }
 
     @Override

@@ -189,6 +189,8 @@ public class syncSaveData {
             try {
                 appManager.getOurInstance().appSetupInstance.saveParamSetup(db, "debtControl",Integer.toString(jsonObject.getInt("debtControl")));
                 appManager.getOurInstance().appSetupInstance.saveParamSetup(db, "allowOverdueSum", jsonObject.getString("allowOverdueSum"));
+                appManager.getOurInstance().appSetupInstance.saveParamSetup(db, "skuQty", jsonObject.getString("skuQty"));
+                appManager.getOurInstance().appSetupInstance.saveParamSetup(db, "minOrderSum", jsonObject.getString("minOrderSum"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
