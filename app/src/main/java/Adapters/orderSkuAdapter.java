@@ -173,8 +173,22 @@ public class orderSkuAdapter extends BaseAdapter  {
 
                 if (!dlgEditMWH.getText().toString().trim().isEmpty()) {
                     sku.setQtyMWH(Integer.parseInt(dlgEditMWH.getText().toString()));
-                    if (sku.qtyMWH % sku.getCountInBox() !=0)
-                        Toast.makeText(context, "Количество по складу Главный не кратно ящику",Toast.LENGTH_LONG).show();
+                    if (sku.qtyMWH % sku.getCountInBox() !=0) {
+                        Toast.makeText(context, context.getText(R.string.non_multiply_mvh), Toast.LENGTH_LONG).show();
+                        AlertDialog.Builder ad = new AlertDialog.Builder(context);
+                        ad.setTitle(context.getString(R.string.pAlert));
+                        ad.setMessage(context.getText(R.string.non_multiply_mvh) + " : " + sku.skuName + "  -  " + String.format("%d", (long) sku.qtyMWH)+" шт");
+                        ad.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int arg1) {
+                            }
+                        });
+//                        ad.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int arg1) {
+//
+//                            }
+//                        });
+                        ad.show();
+                    }
                 }
                 else
                 {
@@ -184,7 +198,7 @@ public class orderSkuAdapter extends BaseAdapter  {
                 if (!dlgEditRWH.getText().toString().trim().isEmpty()) {
                     sku.setQtyRWH(Integer.parseInt(dlgEditRWH.getText().toString()));
                     if (sku.qtyRWH % sku.getCountInBox() !=0)
-                        Toast.makeText(context, "Количество по складу Розница не кратно ящику",Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, context.getText(R.string.non_multiply_rvh),Toast.LENGTH_LONG).show();
                 }
                 else
                 {

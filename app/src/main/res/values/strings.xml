@@ -17,4 +17,7 @@
     <string name="send_order_dialog_finish">Отправка заказов завершена</string>
     <string name="title_activity_activityget_version">ActivitygetVersion</string>
     <string name="title_activity_activity_debt">ActivityDebt</string>
+    <string name="non_multiply_mvh">Количество по складу Главный не кратно ящику</string>
+    <string name="non_multiply_rvh">Количество по складу Розница не кратно ящику</string>
+    <string name="pAlert">Внимание</string>
 </resources>
