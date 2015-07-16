@@ -130,7 +130,7 @@ public class ActivityOrder extends  ActionBarActivity implements IOrder  {
     public void onBackPressed() {
         if (fragSku!=null && fragSku.isInLayout()) {
             orderControlParams param = fragSku.displayTotal();
-            if (!param.allowOrderToSave())
+            if (!param.allowOrderToSave(orderExtra, currentOutlet, this.context))
             {
                 AlertDialog.Builder ad = new AlertDialog.Builder(context);
                 ad.setTitle(context.getString(R.string.orderControlMessage));

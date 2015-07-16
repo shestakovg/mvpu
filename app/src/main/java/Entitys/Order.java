@@ -17,6 +17,7 @@ public class Order implements Parcelable {
     public int _id;
     public int orderNumber;
     public String orderUUID;
+    public Calendar orderDateCalendar;
     public Date orderDate;
     public Calendar deliveryDate;
     public double orderSum;
