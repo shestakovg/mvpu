@@ -13,6 +13,20 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
                 <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Заявленная оплата "
+                    android:id="@+id/tvPaymentDescription"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/background_dark"
+                    android:gravity="center_horizontal" />
+             </LinearLayout>
+        </TableRow>
+        <TableRow>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Долг всего: "
@@ -38,6 +52,7 @@
                     android:textStyle="bold"
                     android:textColor="#ffff243c"
                     android:gravity="right" />
+
             </LinearLayout>
         </TableRow>
         <TableRow>
@@ -75,6 +90,12 @@
                     android:text="Заявить оплату"
                     android:id="@+id/btnClaimPay"
                     android:onClick="onClickClaimPay"/>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Нет оплаты"
+                    android:id="@+id/btnEmptyPay"
+                    android:onClick="onClickEmptyPay"/>
             </LinearLayout>
 
         </TableRow>

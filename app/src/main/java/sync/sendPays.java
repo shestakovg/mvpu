@@ -15,6 +15,7 @@ import org.json.JSONStringer;
 
 import java.util.List;
 
+import core.AppSettings;
 import core.appManager;
 import db.DbOpenHelper;
 
@@ -57,7 +58,7 @@ public class sendPays  extends AsyncTask<String, Integer, List<JSONObject>> {
             HttpPost request = new HttpPost(appManager.getOurInstance().appSetupInstance.getServiceUrl()+"/dictionary/savepay");
             request.setHeader("Accept", "application/json");
             request.setHeader("Content-type", "application/json");
-            Cursor cursor = db.rawQuery("select _id , DATETIME(payDate) payDate, transactionId, customerid, paySum from pays  where  _send=0", null);
+            Cursor cursor = db.rawQuery("select _id , DATETIME(payDate) payDate, transactionId, customerid, paySum from pays  where  _send=0 and paySum > "+ AppSettings.PARAM_EMPTY_PAYMENT, null);
             cursor.moveToFirst();
 
             for (int i=0;i<cursor.getCount();i++)

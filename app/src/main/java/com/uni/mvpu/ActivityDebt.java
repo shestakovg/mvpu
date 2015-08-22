@@ -17,6 +17,7 @@ import Adapters.debtListAdapter;
 import Adapters.orderListAdapter;
 import Dialogs.DlgInputPay;
 import Entitys.DebtData;
+import core.AppSettings;
 import core.appManager;
 import core.wputils;
 import db.DbOpenHelper;
@@ -106,6 +107,12 @@ public class ActivityDebt extends ActionBarActivity implements IInputCustomerPay
         ((TextView) findViewById(R.id.tvOverdueDeptTotal)).setText(String.format("%.2f", DebtData.getOverdueDebtSum(debts)));
         ((TextView) findViewById(R.id.tvClaimedSum)).setText(String.format("%.2f", DebtData.getClaimedSum(debts)));
         ((TextView) findViewById(R.id.tvStatedSumWithOverdue)).setText(String.format("%.2f", DebtData.getOverdueAndClaimedSum(debts)));
+        String PaymentDescription = "Оплата не заявлена";
+        if ( DebtData.getClaimedSum(debts) > 0 ) PaymentDescription = "Заявлена оплата";
+
+        if ( Math.round(DebtData.getClaimedSum(debts) - AppSettings.PARAM_EMPTY_PAYMENT ) == 0 &&  DebtData.getDebtSum(debts) > 0) PaymentDescription = "НЕТ ОПЛАТЫ";
+        ((TextView) findViewById(R.id.tvPaymentDescription)).setText(PaymentDescription);
+
     }
 
     private void fillPayList()
@@ -158,5 +165,11 @@ public class ActivityDebt extends ActionBarActivity implements IInputCustomerPay
         DlgInputPay dlg = new DlgInputPay(this,customerName,this);
         dlg.show();
 
+    }
+
+    public void onClickEmptyPay(View v)
+    {
+        debtAdapter.applyPay(AppSettings.PARAM_EMPTY_PAYMENT, this.customerid);
+        fillDebtList();
     }
 }

@@ -209,8 +209,30 @@ public class ActivityRoute extends ActionBarActivity {
 
                                 Calendar currentDate = Calendar.getInstance();
                                 currentDate.setTime(new Date());
+                                boolean paymentExists = appManager.getOurInstance().checkAnnouncedSum(getBaseContext(), selectedOutlet.customerId.toString(), currentDate);
+                                if (!paymentExists)
+                                {
+                                    AlertDialog.Builder builder = new AlertDialog.Builder(currentContext);
+                                    builder.setTitle("Важное сообщение!")
+                                            .setMessage("По клиенту " + selectedOutlet.customerName + " не заявлена оплата. Заявите сумму платежа!")
+                                            .setIcon(R.drawable.hrn)
+                                            .setCancelable(false)
+                                            .setNegativeButton("ОК",
+                                                    new DialogInterface.OnClickListener() {
+                                                        public void onClick(DialogInterface dialog, int id) {
+                                                            dialog.cancel();
+                                                        }
+                                                    });
+                                    AlertDialog alert = builder.create();
+                                    alert.show();
+                                    return true;
+                                }
+
                                 double overdueSum =  appManager.getOurInstance().getOverdueSum(getBaseContext(),selectedOutlet.customerId.toString(), currentDate);
-                                if ((overdueSum - appManager.getOurInstance().appSetupInstance.getAllowOverdueSum()) >0 && appManager.getOurInstance().appSetupInstance.isDebtControl())
+                                boolean OverdueExists = false;
+                                OverdueExists =
+                                        (overdueSum - appManager.getOurInstance().appSetupInstance.getAllowOverdueSum()) >0 && appManager.getOurInstance().appSetupInstance.isDebtControl() ;
+                                if (OverdueExists)
                                 {
                                     //Toast.makeText(getBaseContext(), "Просрочка "+Double.toString(overdueSum), Toast.LENGTH_LONG).show();
                                     AlertDialog.Builder builder = new AlertDialog.Builder(currentContext);
@@ -227,8 +249,10 @@ public class ActivityRoute extends ActionBarActivity {
                                                     });
                                     AlertDialog alert = builder.create();
                                     alert.show();
+                                    return true;
                                 }
-                                else
+
+                                if (paymentExists && !OverdueExists)
                                 {
                                     appManager.getOurInstance().showOrderList(selectedOutlet, ActivityRoute.this);
                                 }

@@ -32,6 +32,7 @@ import sync.sendPays;
  * Created by g.shestakov on 26.05.2015.
  */
 public class appManager {
+    public final int ANNOUNCED_EMPTY_PAY = -100;
     private static appManager ourInstance ; //= new appManager();
 
     public AppSettings appSetupInstance ;
@@ -205,6 +206,23 @@ public class appManager {
         result = cursor.getDouble(0);
         db.close();
         return result;
+    }
+
+
+    public Boolean checkAnnouncedSum(Context context,String customerId, Calendar date)
+    {
+        double paySum=0;
+        SQLiteDatabase db = new DbOpenHelper(context).getReadableDatabase();
+        Cursor cursor = db.rawQuery("select coalesce(sum(p.paySum), 0) overSum, coalesce(sum(d.debt), 0) alldebt from debts d " +
+                        "left join pays p on p.transactionId = d.transactionId and p.payDate = ?" +
+                        "where d.customerid= ? ",
+                new String[] { wputils.getDateTime(date), customerId});
+        cursor.moveToFirst();
+        paySum = cursor.getDouble(0);
+        double alldebt =  cursor.getDouble(1);
+        db.close();
+        if (paySum > 0 || alldebt == 0) return true;
+        return false;
     }
 
     public String getCustomerName(String customerId, Context context)
