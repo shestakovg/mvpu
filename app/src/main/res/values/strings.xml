@@ -21,4 +21,6 @@
     <string name="non_multiply_rvh">Количество по складу Розница не кратно ящику</string>
     <string name="pAlert">Внимание</string>
     <string name="orderControlMessage">Контроль параметров заказа</string>
+    <string name="local_service_started">GPS Service Stardet</string>
+    <string name="local_service_stopped">GPS Service Stopped</string>
 </resources>

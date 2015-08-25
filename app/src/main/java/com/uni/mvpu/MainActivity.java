@@ -3,12 +3,14 @@ package com.uni.mvpu;
 import android.app.Application;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 //import core.MyApplication;
+import Service.GPSLoggerService;
 import core.appManager;
 
 
@@ -20,6 +22,13 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         appManager.getOurInstance(this);
+        startGPSLogger();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopGPSLogger();
     }
 
 
@@ -57,5 +66,17 @@ public class MainActivity extends ActionBarActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void startGPSLogger()
+    {
+        startService(new Intent(MainActivity.this,
+                GPSLoggerService.class));
+    }
+
+    private void stopGPSLogger()
+    {
+        stopService(new Intent(MainActivity.this,
+                GPSLoggerService.class));
     }
 }
