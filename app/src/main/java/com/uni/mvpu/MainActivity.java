@@ -10,7 +10,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 //import core.MyApplication;
-import Service.GPSLoggerService;
 import core.appManager;
 
 
@@ -70,8 +69,7 @@ public class MainActivity extends ActionBarActivity {
 
     private void startGPSLogger()
     {
-        startService(new Intent(MainActivity.this,
-                GPSLoggerService.class));
+        startService(new Intent(MainActivity.this,                GPSLoggerService.class));
     }
 
     private void stopGPSLogger()

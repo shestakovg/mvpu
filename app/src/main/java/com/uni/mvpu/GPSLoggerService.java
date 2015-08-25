@@ -1,7 +1,5 @@
-package Service;
-import android.app.Notification;
+package com.uni.mvpu;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -15,8 +13,6 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
-
-import com.uni.mvpu.R;
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;

@@ -23,4 +23,5 @@
     <string name="orderControlMessage">Контроль параметров заказа</string>
     <string name="local_service_started">GPS Service Stardet</string>
     <string name="local_service_stopped">GPS Service Stopped</string>
+    <string name="service_name">GPSLoggerService</string>
 </resources>
