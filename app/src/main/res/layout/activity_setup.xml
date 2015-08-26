@@ -51,23 +51,27 @@
 
      />
 
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GPS логгер"
+        android:id="@+id/chbAllowGps"
+        android:layout_gravity="left" />
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Сохранить"
+        android:text="Сохранить настройки"
         android:id="@+id/btnSave"
         android:onClick="onClickBtnSave"
-        android:layout_gravity="center_horizontal"
-        android:focusable="true" />
+        android:focusable="true"
+        android:layout_gravity="left" />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Обновить приложение"
         android:id="@+id/btnDownloadVersion"
-        android:onClick="onClickDownloadVersion"
-     />
-
-
+        android:onClick="onClickDownloadVersion" />
 
 
 </LinearLayout>

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +19,7 @@ public class SetupActivity extends ActionBarActivity {
     private EditText txtServiceLink;
     private EditText txtRouteName;
     private EditText txtEmployeeName;
+    private CheckBox chbAllowGps;
     private appManager m_appManager = appManager.getOurInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +29,7 @@ public class SetupActivity extends ActionBarActivity {
         txtServiceLink.setText(m_appManager.appSetupInstance.getServiceUrl());
         txtRouteName = (EditText) findViewById(R.id.editTextRouteName);
         txtEmployeeName  = (EditText) findViewById(R.id.editTextEmployeeName);
+        chbAllowGps = (CheckBox) findViewById(R.id.chbAllowGps);
         refreshSetup();
     }
 
@@ -40,6 +43,7 @@ public class SetupActivity extends ActionBarActivity {
     {
         txtEmployeeName.setText(m_appManager.appSetupInstance.getEmployeeName());
         txtRouteName.setText(m_appManager.appSetupInstance.getRouteName());
+        chbAllowGps.setChecked(m_appManager.appSetupInstance.getAllowGpsLog());
     }
 
     @Override
@@ -71,6 +75,7 @@ public class SetupActivity extends ActionBarActivity {
         m_appManager.appSetupInstance.setServiceUrl(txtServiceLink.getText().toString().trim());
         m_appManager.appSetupInstance.setRouteName(txtRouteName.getText().toString());
         m_appManager.appSetupInstance.setEmployeeName(txtEmployeeName.getText().toString());
+        m_appManager.appSetupInstance.setAllowGpsLog(chbAllowGps.isChecked());
         m_appManager.appSetupInstance.saveSetup(this);
         m_appManager.appSetupInstance.readSetup(this);
     }

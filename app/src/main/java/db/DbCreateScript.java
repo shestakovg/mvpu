@@ -52,6 +52,15 @@ public class DbCreateScript {
     private static String CREATE_PAY = "create table pays (_id integer primary key autoincrement, payDate  DATETIME DEFAULT CURRENT_TIMESTAMP, transactionId text, customerid text, paySum double,  _send integer DEFAULT 0)";
     private static String CREATE_PAY_IDX1 = "CREATE INDEX idx_pays ON pays (payDate,transactionId )";
 
+    private static String CREATE_GPS_LOG = "create table gpsLog (  id text  primary key, routeDayId integer, longtitude real, latitude real, logDate DATETIME DEFAULT CURRENT_TIMESTAMP, _send integer DEFAULT 0 )";
+    private static String CREATE_GPS_LOG_IDX1 = "CREATE INDEX idx1_gpsLog ON gpsLog (_send)";
+
+    private static String CREATE_ROUTE_DAY = "create table routesDay (_id integer primary key autoincrement, routeDay DATETIME DEFAULT CURRENT_TIMESTAMP, timeBeginning DATETIME DEFAULT CURRENT_TIMESTAMP, " +
+            "timeCompletion DATETIME DEFAULT CURRENT_TIMESTAMP, status integer DEFAULT 0, AutomaticClosed integer DEFAULT 0, _send integer DEFAULT 0)";
+
+    private static String CREATE_ROUTE_DAY_IDX1 ="CREATE INDEX idx1_routesDay ON routesDay (_send)";
+    private static String CREATE_ROUTE_DAY_IDX2 ="CREATE INDEX idx2_routesDay ON routesDay (status)";
+
     public static  ArrayList<String> getCreateDataBaseScripts()
     {
         ArrayList<String> list = new ArrayList<String>();
@@ -81,6 +90,11 @@ public class DbCreateScript {
         list.add(CREATE_DEBT_IDX1);
         list.add(CREATE_PAY);
         list.add(CREATE_PAY_IDX1);
+        list.add(CREATE_GPS_LOG);
+        list.add(CREATE_GPS_LOG_IDX1);
+        list.add(CREATE_ROUTE_DAY);
+        list.add(CREATE_ROUTE_DAY_IDX1);
+        list.add(CREATE_ROUTE_DAY_IDX2);
         return list;
     }
 
@@ -96,6 +110,8 @@ public class DbCreateScript {
     private static String DROP_STOCK = "DROP TABLE stock";
     private static String DROP_DEBT = "DROP TABLE debts";
     private static String DROP_PAYS  = "DROP TABLE pays";
+    private static String DROP_GPS_LOG  = "DROP TABLE gpsLog";
+    private static String DROP_ROUTE_DAY  = "DROP TABLE routesDay";
 
     public static ArrayList<String>  getDropTableScripts()
     {

@@ -29,6 +29,7 @@ public class AppSettings implements IOrderControlParams {
     private final String PARAM_allowOverdueSum = "allowOverdueSum";
     private final String PARAM_minOrderRowsQty = "skuQty";
     private final String PARAM_minOrderSum = "minOrderSum";
+    private final String PARAM_ALLOW_GPS_LOG = "allowGpsLog";
 
     public static final String PARAM_PRICEID_DEFAULT = "75a9d60f-cd75-11e4-826a-240a64c9314e";
     public static final Double PARAM_EMPTY_PAYMENT = 0.001;
@@ -105,6 +106,16 @@ public class AppSettings implements IOrderControlParams {
         return minOrderSum;
     }
 
+    public Boolean getAllowGpsLog() {
+        return allowGpsLog;
+    }
+
+    public void setAllowGpsLog(Boolean allowGpsLog) {
+        this.allowGpsLog = allowGpsLog;
+    }
+
+    private Boolean allowGpsLog = false;
+
     public String version;
     public AppSettings(String serviceUrl, String routeName, String employeeName, UUID routeId, UUID employeeID) {
         this.serviceUrl = serviceUrl;
@@ -136,6 +147,7 @@ public class AppSettings implements IOrderControlParams {
         saveParamSetup(db, PARAM_ROUTE_NAME, getRouteName());
         saveParamSetup(db, PARAM_EMPLOYEE_ID, employeeID.toString());
         saveParamSetup(db, PARAM_EMPLOYEE_NAME, employeeName);
+        saveParamSetup(db, PARAM_ALLOW_GPS_LOG, (this.allowGpsLog ? "1" : "0"));
         db.close();
     }
 
@@ -169,6 +181,7 @@ public class AppSettings implements IOrderControlParams {
                 case PARAM_allowOverdueSum: allowOverdueSum = Double.valueOf(cursor.getString(1)); break;
                 case PARAM_minOrderRowsQty: minOrderRowsQty = Integer.valueOf(cursor.getString(1)); break;
                 case PARAM_minOrderSum: minOrderSum = Double.valueOf(cursor.getString(1)); break;
+                case PARAM_ALLOW_GPS_LOG: this.allowGpsLog = (Integer.valueOf(cursor.getString(1)) == 1 ) ; break;
             }
             cursor.moveToNext();
         }
