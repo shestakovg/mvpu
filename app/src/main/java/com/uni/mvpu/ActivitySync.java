@@ -15,6 +15,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import Entitys.priceType;
+import core.TouchActivity;
 import core.appManager;
 import sync.syncContracts;
 import sync.syncDebt;
@@ -26,7 +27,7 @@ import sync.syncSkuGroup;
 import sync.syncStock;
 
 
-public class ActivitySync extends ActionBarActivity {
+public class ActivitySync extends TouchActivity {
     private ListView listSyncOptions;
     private final String IDLI_ROUTE = "Маршрут";
     private final String IDLI_PRODUCT = "Товары";

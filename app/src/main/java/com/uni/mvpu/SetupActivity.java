@@ -11,11 +11,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import core.TouchActivity;
 import core.appManager;
 import sync.downloadNewVwersion;
 
 
-public class SetupActivity extends ActionBarActivity {
+public class SetupActivity extends TouchActivity {
     private EditText txtServiceLink;
     private EditText txtRouteName;
     private EditText txtEmployeeName;

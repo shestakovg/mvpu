@@ -18,10 +18,11 @@ import java.net.ProtocolException;
 import java.net.Proxy;
 import java.net.URL;
 
+import core.TouchActivity;
 import core.appManager;
 
 
-public class ActivitygetVersion extends ActionBarActivity {
+public class ActivitygetVersion extends TouchActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

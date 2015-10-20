@@ -38,12 +38,13 @@ import Entitys.OrderExtra;
 import Entitys.OutletObject;
 import Entitys.orderControlParams;
 import Entitys.orderSku;
+import core.TouchActivity;
 import core.appManager;
 import core.wputils;
 import interfaces.IOrder;
 
 
-public class ActivityOrder extends  ActionBarActivity implements IOrder  {
+public class ActivityOrder extends TouchActivity implements IOrder  {
     int DIALOG_DATE = 1;
     private Order orderObject;
     private OrderExtra orderExtra;

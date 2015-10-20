@@ -10,10 +10,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 //import core.MyApplication;
+import core.TouchActivity;
 import core.appManager;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends TouchActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,13 +22,13 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         appManager.getOurInstance(this);
-        startGPSLogger();
+        // startGPSLogger();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stopGPSLogger();
+        //  stopGPSLogger();
     }
 
 

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.provider.Telephony;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -24,6 +25,7 @@ import java.util.ArrayList;
 import Entitys.OrderExtra;
 import Entitys.OutletObject;
 import Entitys.orderSku;
+import core.checkRowSum;
 import interfaces.IOrderTotal;
 
 /**
@@ -164,6 +166,8 @@ public class orderSkuAdapter extends BaseAdapter  {
 
         final EditText dlgEditMWH = (EditText) dlgEditQty.findViewById(R.id.editDialogMWH);
         final EditText dlgEditRWH = (EditText) dlgEditQty.findViewById(R.id.editDialogRWH);
+        checkRowSum chrs = new checkRowSum(sku.price);
+        ((TextView) dlgEditQty.findViewById(R.id.editQtyTextMessage)).setText(chrs.getSkuPriceTitle());
         dlgEditMWH.setText(sku.getQtyMWHForEditText());
         dlgEditRWH.setText(sku.getQtyRWHForEditText());
         Button btnOk =(Button) dlgEditQty.findViewById(R.id.btnEtitQtyOk);

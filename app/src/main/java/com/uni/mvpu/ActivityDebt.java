@@ -18,13 +18,14 @@ import Adapters.orderListAdapter;
 import Dialogs.DlgInputPay;
 import Entitys.DebtData;
 import core.AppSettings;
+import core.TouchActivity;
 import core.appManager;
 import core.wputils;
 import db.DbOpenHelper;
 import interfaces.IInputCustomerPay;
 
 
-public class ActivityDebt extends ActionBarActivity implements IInputCustomerPay {
+public class ActivityDebt extends TouchActivity implements IInputCustomerPay {
     private String customerid;
     private String customerName;
     private ListView lvDebt;

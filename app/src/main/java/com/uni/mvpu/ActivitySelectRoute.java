@@ -22,11 +22,12 @@ import java.util.UUID;
 
 import Entitys.branch;
 import Entitys.routeObject;
+import core.TouchActivity;
 import core.appManager;
 import sync.ServiceManager;
 import sync.ServiceManager4;
 
-public class ActivitySelectRoute extends ActionBarActivity {
+public class ActivitySelectRoute extends TouchActivity {
     private ListView listView;
     protected boolean branchMode = true;
     protected ProgressDialog progressDialog;

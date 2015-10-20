@@ -34,11 +34,12 @@ import java.util.UUID;
 
 import Entitys.Order;
 import Entitys.OutletObject;
+import core.TouchActivity;
 import core.appManager;
 import core.wputils;
 import db.DbOpenHelper;
 
-public class ActivityRoute extends ActionBarActivity {
+public class ActivityRoute extends TouchActivity {
     private Context currentContext;
     private Spinner spinner;
     private ListView listRoute;

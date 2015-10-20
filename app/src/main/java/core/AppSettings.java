@@ -31,8 +31,11 @@ public class AppSettings implements IOrderControlParams {
     private final String PARAM_minOrderSum = "minOrderSum";
     private final String PARAM_ALLOW_GPS_LOG = "allowGpsLog";
 
+
     public static final String PARAM_PRICEID_DEFAULT = "75a9d60f-cd75-11e4-826a-240a64c9314e";
     public static final Double PARAM_EMPTY_PAYMENT = 0.001;
+
+
     public String getServiceUrl() {
         return serviceUrl;
     }
@@ -115,6 +118,12 @@ public class AppSettings implements IOrderControlParams {
     }
 
     private Boolean allowGpsLog = false;
+
+    public int getLockTimeOut() {
+        return LockTimeOut;
+    }
+
+    private   int LockTimeOut = 1;
 
     public String version;
     public AppSettings(String serviceUrl, String routeName, String employeeName, UUID routeId, UUID employeeID) {

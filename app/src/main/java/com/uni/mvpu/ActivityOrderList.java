@@ -8,8 +8,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -28,13 +30,14 @@ import Entitys.Order;
 import Entitys.OutletObject;
 import core.AppSettings;
 import core.OrderListMode;
+import core.TouchActivity;
 import core.appManager;
 import core.wputils;
 import db.DbOpenHelper;
 import interfaces.IUpdateOrderList;
 
 
-public class ActivityOrderList extends ActionBarActivity implements IUpdateOrderList {
+public class ActivityOrderList extends TouchActivity implements IUpdateOrderList   {
     private int maxOrderNumber = 0;
     private String outletid;
     private TextView tvOrderDate;
@@ -67,6 +70,7 @@ public class ActivityOrderList extends ActionBarActivity implements IUpdateOrder
                 //appManager.getOurInstance().getActiveOutletObject().outletId.toString();
         // getIntent().getStringExtra("outletid");
         tvOrderDate = (TextView) findViewById(R.id.textViewOrderDate);
+
         orderDate = Calendar.getInstance();
         orderDate.setTime(new Date());
         tvOrderDate.setText(DateFormat.format("Дата заказа: dd.MM.yyyy", orderDate));
@@ -100,6 +104,14 @@ public class ActivityOrderList extends ActionBarActivity implements IUpdateOrder
         //Toast.makeText(this,"onPostResume", Toast.LENGTH_SHORT).show();
         updateOrderList();
     }
+
+
+
+//    @Override
+//    public boolean dispatchTouchEvent(MotionEvent ev) {
+//        Toast.makeText(getApplicationContext(),"dispatchTouchEvent",Toast.LENGTH_SHORT).show();
+//        return super.dispatchTouchEvent(ev);
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
