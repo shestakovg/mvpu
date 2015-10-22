@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import Dialogs.DlgChangeLockPassword;
 import core.TouchActivity;
 import core.appManager;
 import sync.downloadNewVwersion;
@@ -85,6 +86,12 @@ public class SetupActivity extends TouchActivity {
     {
         saveSetup();
         finish();
+    }
+
+    public void onClickSetLockPassword(View v)
+    {
+        DlgChangeLockPassword dlg = new DlgChangeLockPassword(this);
+        dlg.show();
     }
 
     public void onClickSelectRoute(View v)

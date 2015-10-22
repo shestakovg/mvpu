@@ -7,6 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.uni.mvpu.R;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.TimeZone;
 import java.util.UUID;
 
 import db.DbOpenHelper;
@@ -30,6 +33,7 @@ public class AppSettings implements IOrderControlParams {
     private final String PARAM_minOrderRowsQty = "skuQty";
     private final String PARAM_minOrderSum = "minOrderSum";
     private final String PARAM_ALLOW_GPS_LOG = "allowGpsLog";
+    private final String PARAM_LOCK_PASSWORD = "LOCK_PASSWORD";
 
 
     public static final String PARAM_PRICEID_DEFAULT = "75a9d60f-cd75-11e4-826a-240a64c9314e";
@@ -123,7 +127,51 @@ public class AppSettings implements IOrderControlParams {
         return LockTimeOut;
     }
 
-    private   int LockTimeOut = 1;
+    private   int LockTimeOut = 10;
+
+    public Context getActiveWindow() {
+        return activeWindow;
+    }
+
+    public void setActiveWindow(Context activeWindow) {
+        this.activeWindow = activeWindow;
+    }
+
+    private Context activeWindow;
+
+    public Calendar getLastTouch() {
+        return lastTouch;
+    }
+
+    public void setLastTouch() {
+
+        this.lastTouch = Calendar.getInstance(TimeZone.getDefault());
+
+    }
+
+    private Calendar lastTouch;
+
+    public boolean firtsStart = true;
+
+    public String getLockPasswod() {
+        return lockPasswod;
+    }
+
+    public void setLockPasswod(String lockPasswod) {
+        this.lockPasswod = lockPasswod;
+    }
+    private String lockPasswod = "0000";
+
+
+    public boolean isAppLocked() {
+        return appLocked;
+    }
+
+    public void setAppLocked(boolean appLocked) {
+        this.appLocked = appLocked;
+    }
+
+    private boolean appLocked = false;
 
     public String version;
     public AppSettings(String serviceUrl, String routeName, String employeeName, UUID routeId, UUID employeeID) {
@@ -157,6 +205,7 @@ public class AppSettings implements IOrderControlParams {
         saveParamSetup(db, PARAM_EMPLOYEE_ID, employeeID.toString());
         saveParamSetup(db, PARAM_EMPLOYEE_NAME, employeeName);
         saveParamSetup(db, PARAM_ALLOW_GPS_LOG, (this.allowGpsLog ? "1" : "0"));
+        saveParamSetup(db, PARAM_LOCK_PASSWORD, this.lockPasswod);
         db.close();
     }
 
@@ -191,6 +240,7 @@ public class AppSettings implements IOrderControlParams {
                 case PARAM_minOrderRowsQty: minOrderRowsQty = Integer.valueOf(cursor.getString(1)); break;
                 case PARAM_minOrderSum: minOrderSum = Double.valueOf(cursor.getString(1)); break;
                 case PARAM_ALLOW_GPS_LOG: this.allowGpsLog = (Integer.valueOf(cursor.getString(1)) == 1 ) ; break;
+                case PARAM_LOCK_PASSWORD:this.lockPasswod = cursor.getString(1); break;
             }
             cursor.moveToNext();
         }

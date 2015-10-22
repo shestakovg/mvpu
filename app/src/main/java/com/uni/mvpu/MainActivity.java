@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 //import core.MyApplication;
+import Dialogs.DlgLockApp;
 import core.TouchActivity;
 import core.appManager;
 
@@ -22,6 +23,11 @@ public class MainActivity extends TouchActivity {
         setContentView(R.layout.activity_main);
 
         appManager.getOurInstance(this);
+        ResetTimer();
+//        if ( !appManager.getOurInstance().appSetupInstance.isAppLocked()) {
+//            DlgLockApp dlg = new DlgLockApp(this);
+//            dlg.show();
+//        }
         // startGPSLogger();
     }
 
