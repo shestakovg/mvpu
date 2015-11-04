@@ -50,7 +50,7 @@ public class TouchActivity extends ActionBarActivity {
             createTimerTask();
             try {
                 t.scheduleAtFixedRate(task, 100, 10000);//appManager.getOurInstance().appSetupInstance.getLockTimeOut()*60*1000);
-
+//text
             }
             catch (Exception e)
             {
