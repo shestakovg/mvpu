@@ -7,14 +7,20 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.provider.Telephony;
+import android.support.v7.internal.widget.AdapterViewCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +32,7 @@ import Entitys.OrderExtra;
 import Entitys.OutletObject;
 import Entitys.orderSku;
 import core.checkRowSum;
+import core.priceTypeManager;
 import interfaces.IOrderTotal;
 
 /**
@@ -108,7 +115,7 @@ public class orderSkuAdapter extends BaseAdapter  {
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // onClickEditSkuRow(v);
+                // onClickEditSkuRow(v);
                 deletePos(position);
             }
         });
@@ -121,6 +128,27 @@ public class orderSkuAdapter extends BaseAdapter  {
         TextView edRWH =  (TextView) view.findViewById(R.id.editRWH);
         edRWH.setTag(position);
         edRWH.setText(cursku.getQtyRWHForEditText());
+
+        Spinner spinnerPriceType = (Spinner) view.findViewById(R.id.spinnerPriceType);
+        spinnerPriceType.setTag(position);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,android.R.layout.simple_spinner_dropdown_item, priceTypeManager.getInstance().getPriceNameArray(outlet.priceName));
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerPriceType.setAdapter(adapter);
+        int spinnerPosition = adapter.getPosition(cursku.priceName);
+        spinnerPriceType.setSelection(spinnerPosition);
+        spinnerPriceType.setOnItemSelectedListener(new OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                onSpinnerPriceTypeItemSelected(parent, view,position,id);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        //spinnerPriceType.setText(cursku.priceName);
+
 //        edMWH.setOnFocusChangeListener(new View.OnFocusChangeListener() {
 //            @Override
 //            public void onFocusChange(View v, boolean hasFocus) {
@@ -148,7 +176,24 @@ public class orderSkuAdapter extends BaseAdapter  {
 
             }
         });*/
-        return view;
+            return view;
+    }
+
+    private void onSpinnerPriceTypeItemSelected(AdapterView<?> parent, View view,int position, long id)
+    {
+        int pos = (Integer) parent.getTag();
+        orderSku cursku = (orderSku)getItem(pos);
+        if (!cursku.priceName.equals(parent.getAdapter().getItem(position).toString()))
+        {
+            cursku.priceName = parent.getAdapter().getItem(position).toString();
+            cursku.priceId = priceTypeManager.getInstance().getPriceIdByPriceName(cursku.priceName, outlet.priceId.toString());
+            cursku.price = priceTypeManager.getInstance().getPriceValue(cursku.skuId, cursku.priceId);
+            cursku.calcRowSum();
+            cursku.saveDb(context);
+            currentAdapter.notifyDataSetChanged();
+            orderTotal.displayTotal();
+
+        }
     }
 
     private void onClickEditSkuRow(View v)

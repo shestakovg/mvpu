@@ -1,17 +1,21 @@
 package core;
 
+import android.app.Application;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.ArrayAdapter;
 
 import com.uni.mvpu.R;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.TimeZone;
 import java.util.UUID;
 
+import Entitys.priceTypeObject;
 import db.DbOpenHelper;
 import interfaces.IOrderControlParams;
 

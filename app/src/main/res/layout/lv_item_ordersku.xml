@@ -34,6 +34,13 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+                <Spinner
+                    android:layout_width="100dp"
+                    android:layout_height="40dp"
+                    android:id="@+id/spinnerPriceType"
+                    android:text="Price type"
+                    android:spinnerMode="dialog"
+                    android:foreground="@android:color/black" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

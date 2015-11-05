@@ -73,7 +73,12 @@ public class DbOpenHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         for (String currentScript : DbCreateScript.getCreateDataBaseScripts())
         {
-            db.execSQL(currentScript);
+            try {
+            db.execSQL(currentScript);}
+            catch (Exception e)
+            {
+                String badStript = currentScript;
+            }
         }
     }
 

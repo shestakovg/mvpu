@@ -25,6 +25,8 @@ public class orderSku {
     public double price;
     public double stockG;
     public double stockR;
+    public String priceId;
+    public String priceName;
 
     public int getCountInBox() {
         return (countInBox == 0 ? 1 : countInBox);
@@ -70,7 +72,7 @@ public class orderSku {
         calcRowSum();
     }
 
-    private void calcRowSum()
+    public void calcRowSum()
     {
         this.rowSum = qtyMWH * price + qtyRWH * price;
     }
@@ -82,7 +84,7 @@ public class orderSku {
             db = dbOpenHelper.getWritableDatabase();
         }
         db.execSQL("update orderDetail " +
-                " set _send = 0, qty1 = "+qtyMWH+" , qty2 = "+qtyRWH+
+                " set _send = 0, qty1 = "+qtyMWH+" , qty2 = "+qtyRWH+", priceId = '"+priceId+"' "+
                 " where _id = "+_id);
         if (dbNotExist) db.close();
     }
@@ -102,6 +104,7 @@ public class orderSku {
             values.put("SkuId", skuId);
             values.put("headerId", headerId);
             values.put("orderUUID", orderUUID);
+            values.put("priceId", priceId);
             values.put("qty1", qtyMWH);
             values.put("qty2", qtyRWH);
             values.put("_send", 0);

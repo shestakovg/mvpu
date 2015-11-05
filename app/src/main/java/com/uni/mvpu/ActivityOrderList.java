@@ -143,7 +143,8 @@ public class ActivityOrderList extends TouchActivity implements IUpdateOrderList
                 " inner join orderDetail d on d.headerid = h._id " +
                 " inner join (select outletId outletId,partnerId from  route) r on r.outletId = h.outletId "+
                 " left  join contracts con on  con.PartnerId = r.partnerId "+
-                " inner join price p on p.priceId = coalesce(con.PriceId,'"+ AppSettings.PARAM_PRICEID_DEFAULT+"') and d.skuId = p.skuId" +
+                //" inner join price p on p.priceId = coalesce(con.PriceId,'"+ AppSettings.PARAM_PRICEID_DEFAULT+"') and d.skuId = p.skuId" +
+                " inner join price p on p.priceId = d.PriceId and d.skuId = p.skuId" +
                 " where h._id = ?";
         Cursor cursor = db.rawQuery(query, new String[]{Integer.toString(orderId)});
         cursor.moveToFirst();

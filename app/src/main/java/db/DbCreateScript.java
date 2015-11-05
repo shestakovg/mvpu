@@ -22,7 +22,7 @@ public class DbCreateScript {
             " orderDate DATETIME DEFAULT CURRENT_TIMESTAMP,deliveryDate DATETIME DEFAULT CURRENT_TIMESTAMP, orderNumber integer DEFAULT 0, notes text, responseText text, _1CDocNumber1 text,  _1CDocNumber2 text, payType integer DEFAULT 0, autoLoad integer DEFAULT 0, _send integer DEFAULT 0)";
     private static String CREATE_ORDER_HEADER_IDX = "CREATE INDEX idx_orderHeader_UUID ON orderHeader (orderUUID)";
 
-    private static String CREATE_ORDER_DETAIL = "create table orderDetail(_id integer primary key autoincrement, headerId integer DEFAULT 0, orderUUID text, skuId text, qty1 integer, qty2 integer, _send integer DEFAULT 0)";
+    private static String CREATE_ORDER_DETAIL = "create table orderDetail(_id integer primary key autoincrement, headerId integer DEFAULT 0, orderUUID text, skuId text, qty1 integer, qty2 integer, PriceId text, _send integer DEFAULT 0)";
     private static String CREATE_CREATE_ORDER_DETAIL_IDX = "CREATE UNIQUE INDEX idx_orderDetail_UUID ON orderDetail (orderUUID, skuId)";
     private static String CREATE_CREATE_ORDER_DETAIL2_IDX = "CREATE UNIQUE INDEX idx_orderDetail_ID ON orderDetail (headerId, skuId)";
 
@@ -52,7 +52,7 @@ public class DbCreateScript {
     private static String CREATE_PAY = "create table pays (_id integer primary key autoincrement, payDate  DATETIME DEFAULT CURRENT_TIMESTAMP, transactionId text, customerid text, paySum double,  _send integer DEFAULT 0)";
     private static String CREATE_PAY_IDX1 = "CREATE INDEX idx_pays ON pays (payDate,transactionId )";
 
-    private static String CREATE_GPS_LOG = "create table gpsLog (  id text  primary key, routeDayId integer, longtitude real, latitude real, logDate DATETIME DEFAULT CURRENT_TIMESTAMP, _send integer DEFAULT 0 )";
+    private static String CREATE_GPS_LOG = "create table gpsLog (  id integer  primary key, routeDayId integer, longtitude real, latitude real, logDate DATETIME DEFAULT CURRENT_TIMESTAMP, _send integer DEFAULT 0 )";
     private static String CREATE_GPS_LOG_IDX1 = "CREATE INDEX idx1_gpsLog ON gpsLog (_send)";
 
     private static String CREATE_ROUTE_DAY = "create table routesDay (_id integer primary key autoincrement, routeDay DATETIME DEFAULT CURRENT_TIMESTAMP, timeBeginning DATETIME DEFAULT CURRENT_TIMESTAMP, " +
@@ -60,6 +60,8 @@ public class DbCreateScript {
 
     private static String CREATE_ROUTE_DAY_IDX1 ="CREATE INDEX idx1_routesDay ON routesDay (_send)";
     private static String CREATE_ROUTE_DAY_IDX2 ="CREATE INDEX idx2_routesDay ON routesDay (status)";
+
+    private static String CREATE_PRICE_NAMES = "create table PriceNames(PriceId text primary key, PriceName text)";
 
     public static  ArrayList<String> getCreateDataBaseScripts()
     {
@@ -95,6 +97,7 @@ public class DbCreateScript {
         list.add(CREATE_ROUTE_DAY);
         list.add(CREATE_ROUTE_DAY_IDX1);
         list.add(CREATE_ROUTE_DAY_IDX2);
+        list.add(CREATE_PRICE_NAMES);
         return list;
     }
 
@@ -112,6 +115,7 @@ public class DbCreateScript {
     private static String DROP_PAYS  = "DROP TABLE pays";
     private static String DROP_GPS_LOG  = "DROP TABLE gpsLog";
     private static String DROP_ROUTE_DAY  = "DROP TABLE routesDay";
+    private static String DROP_PRICE_NAMES ="DROP TABLE PriceNames";
 
     public static ArrayList<String>  getDropTableScripts()
     {
@@ -127,6 +131,9 @@ public class DbCreateScript {
         list.add(DROP_STOCK);
         list.add(DROP_DEBT);
         list.add(DROP_PAYS);
+        list.add(DROP_GPS_LOG);
+        list.add(DROP_ROUTE_DAY);
+        list.add(DROP_PRICE_NAMES);
         return list;
     }
 }

@@ -162,7 +162,7 @@ public class sendOrders  extends AsyncTask<String, Integer, List<JSONObject>> {
             HttpPost request = new HttpPost(appManager.getOurInstance().appSetupInstance.getServiceUrl()+"/dictionary/savedetail");
             request.setHeader("Accept", "application/json");
             request.setHeader("Content-type", "application/json");
-            Cursor cursor = db.rawQuery("select orderUUID, skuId, qty1, qty2 from orderDetail where headerId = "+orderId, null);
+            Cursor cursor = db.rawQuery("select orderUUID, skuId, qty1, qty2, PriceId from orderDetail where headerId = "+orderId, null);
             cursor.moveToFirst();
             for (int i=0;i<cursor.getCount();i++) {
                 JSONStringer orderHeader = new JSONStringer()
@@ -172,7 +172,8 @@ public class sendOrders  extends AsyncTask<String, Integer, List<JSONObject>> {
                             key("orderUUID").value(cursor.getString(cursor.getColumnIndex("orderUUID"))).
                             key("skuId").value(cursor.getString(cursor.getColumnIndex("skuId"))).
                             key("qty1").value(cursor.getInt(cursor.getColumnIndex("qty1"))).
-                            key("qty2").value(cursor.getInt(cursor.getColumnIndex("qty2"))).endObject()
+                            key("qty2").value(cursor.getInt(cursor.getColumnIndex("qty2"))).
+                            key("priceType").value(cursor.getString(cursor.getColumnIndex("PriceId"))).endObject()
                         .endObject();
                 StringEntity entity = new StringEntity(orderHeader.toString());
                 request.setEntity(entity);

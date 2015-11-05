@@ -77,11 +77,14 @@ public class FragmentOrderSku extends Fragment implements IOrderTotal{
         final OutletObject locOutlet = ((IOrder) getActivity()).getOutletObject();
         DbOpenHelper dbOpenHelper = new DbOpenHelper(parentView.getContext());
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select  s.SkuId, s.SkuName, st.StockG, st.StockR, COALESCE( p.Pric,0) pric, COALESCE(od.qty1, 0) as QtyMWH, " +
-                        "  COALESCE(od.qty2, 0) as QtyRWH, case when od.skuId is null then 0 else 1 end existPosition, od._id as detailId , s.QtyPack  from sku as s" +
+        Cursor cursor = db.rawQuery("select  s.SkuId, s.SkuName, st.StockG, st.StockR,COALESCE(pOrder.Pric, COALESCE( p.Pric,0)) pric, COALESCE(od.qty1, 0) as QtyMWH, " +
+                        "  COALESCE(od.qty2, 0) as QtyRWH, case when od.skuId is null then 0 else 1 end existPosition, od._id as detailId , s.QtyPack," +
+                        " coalesce(od.PriceId,'"+locOutlet.priceId.toString()+"') PriceId,  "+" pn.PriceName  from sku as s" +
                         "            left join  stock st on s.skuId = st.skuId  " +
                         "            left join price p on s.skuId = p.skuId and p.PriceId = '" +locOutlet.priceId.toString()+"' "+
                         joinKind + " join orderDetail od on od.skuId= s.skuId and od.headerId = ?  "+
+                        " left join price pOrder on s.skuId = pOrder.skuId and pOrder.PriceId = od.PriceId "+
+                        " left join PriceNames pn on pn.PriceId = coalesce(od.PriceId,'"+locOutlet.priceId.toString()+"') "+
                         whereClause + "   order by " + orderByClause, params
                 );
         //, wputils.getDateTime(orderDate)
@@ -101,6 +104,8 @@ public class FragmentOrderSku extends Fragment implements IOrderTotal{
             sku.setQtyRWH(cursor.getInt(cursor.getColumnIndex("QtyRWH")));
             sku._id = cursor.getLong(cursor.getColumnIndex("detailId"));
             sku.setCountInBox(cursor.getInt(cursor.getColumnIndex("QtyPack")));
+            sku.priceId = cursor.getString(cursor.getColumnIndex("PriceId"));
+            sku.priceName = cursor.getString(cursor.getColumnIndex("PriceName"));
             skuList.add(sku);
             cursor.moveToNext();
         }
@@ -120,10 +125,10 @@ public class FragmentOrderSku extends Fragment implements IOrderTotal{
         String query="select sum(coalesce(d.qty1,0) * coalesce(p.pric,0) + coalesce(d.qty2,0) * coalesce(p.pric,0)) as orderSumma," +
                 " count(d._id) rowCount from orderHeader h " +
                 " inner join orderDetail d on d.headerid= h._id" +
-                " left join price p on d.skuId = p.skuId" +
-                " where h._id = ? and p.priceId= ? and (coalesce(d.qty1,0)>0 or coalesce(d.qty2,0)>0)";
-        Cursor cursor = db.rawQuery(query, new String[] {Integer.toString(((IOrder) getActivity()).getOrderExtra()._id),
-                ((IOrder) getActivity()).getOutletObject().priceId.toString()});
+                " left join price p on d.skuId = p.skuId and p.priceId = d.priceId " +
+                " where h._id = ? and (coalesce(d.qty1,0)>0 or coalesce(d.qty2,0)>0)";
+        Cursor cursor = db.rawQuery(query, new String[] {Integer.toString(((IOrder) getActivity()).getOrderExtra()._id)});
+                //((IOrder) getActivity()).getOutletObject().priceId.toString()});
         cursor.moveToFirst();
         for (int i = 0; i < cursor.getCount(); i++) {
             orderSum = cursor.getDouble(0);
