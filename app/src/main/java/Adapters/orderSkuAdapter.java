@@ -121,13 +121,13 @@ public class orderSkuAdapter extends BaseAdapter  {
         });
         if (cursku.qtyMWH >0 || cursku.qtyRWH>0) {btnEdit.setVisibility(Button.VISIBLE); }
                 else        {            btnEdit.setVisibility(Button.INVISIBLE);        }
-        //TextView edMWH =  (TextView) view.findViewById(R.id.editMWH);
-        //edMWH.setTag(position);
-        //edMWH.setText(cursku.getQtyMWHForEditText());
+        TextView edMWH =  (TextView) view.findViewById(R.id.editMWH);
+        edMWH.setTag(position);
+        edMWH.setText(cursku.getQtyMWHForEditText());
 
-      //  TextView edRWH =  (TextView) view.findViewById(R.id.editRWH);
-        //edRWH.setTag(position);
-        //edRWH.setText(cursku.getQtyRWHForEditText());
+        TextView edRWH =  (TextView) view.findViewById(R.id.editRWH);
+        edRWH.setTag(position);
+        edRWH.setText(cursku.getQtyRWHForEditText());
 
         Spinner spinnerPriceType = (Spinner) view.findViewById(R.id.spinnerPriceType);
         spinnerPriceType.setTag(position);
