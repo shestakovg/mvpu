@@ -18,6 +18,7 @@ import Adapters.orderListAdapter;
 import Dialogs.DlgInputPay;
 import Entitys.DebtData;
 import core.AppSettings;
+import core.ResultObject;
 import core.TouchActivity;
 import core.appManager;
 import core.wputils;
@@ -161,6 +162,11 @@ public class ActivityDebt extends TouchActivity implements IInputCustomerPay {
         fillDebtList();
     }
 
+    @Override
+    public ResultObject checkAllowInputPay(double paySum) {
+        return debtAdapter.checkAllowInputPay(paySum, this.customerid);
+    }
+
     public void onClickClaimPay(View view)
     {
         DlgInputPay dlg = new DlgInputPay(this,customerName,this);
@@ -170,7 +176,14 @@ public class ActivityDebt extends TouchActivity implements IInputCustomerPay {
 
     public void onClickEmptyPay(View v)
     {
-        debtAdapter.applyPay(AppSettings.PARAM_EMPTY_PAYMENT, this.customerid);
-        fillDebtList();
+        ResultObject res = debtAdapter.checkAllowInputPay(AppSettings.PARAM_EMPTY_PAYMENT, this.customerid);
+        if (!res.isResult())
+        {
+           Toast.makeText(this, res.getResultMessage(),Toast.LENGTH_LONG).show();
+        }
+        else {
+            debtAdapter.applyPay(AppSettings.PARAM_EMPTY_PAYMENT, this.customerid);
+            fillDebtList();
+        }
     }
 }

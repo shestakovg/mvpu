@@ -2,6 +2,7 @@ package Adapters;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -19,6 +20,8 @@ import java.util.Date;
 
 import Entitys.DebtData;
 import Entitys.Order;
+import core.AppSettings;
+import core.ResultObject;
 import core.wputils;
 import db.DbOpenHelper;
 
@@ -85,6 +88,35 @@ public class debtListAdapter extends BaseAdapter {
         }
         return view;
     }
+
+    public ResultObject checkAllowInputPay(double paySum, String customerId)
+    {
+        ResultObject result = new ResultObject(this);
+        Calendar currentDate = Calendar.getInstance();
+        currentDate.setTime(new Date());
+        double allPays = 0;
+
+        SQLiteDatabase db = (new DbOpenHelper(this.context)).getReadableDatabase();
+        Cursor cursor = db.rawQuery("select coalesce(sum(paySum),0) from  pays where payDate = ? and customerid= ?" +
+                " and exists (select * from orderHeader oh " +
+                            "  left join route r on oh.outletId=r.outletId " +
+                            " where oh.orderDate = ? and r.customerid = ?)",
+                new String[]{wputils.getDateTime(currentDate), customerId, wputils.getDateTime(currentDate), customerId});
+        cursor.moveToFirst();
+
+        for (int i=0; i < cursor.getCount(); i++ ) {
+            allPays+= cursor.getDouble(0);
+            cursor.moveToNext();
+        }
+        db.close();
+        Boolean resBool = allPays <= paySum;
+        result.setResult(resBool);
+        if (!resBool)
+            result.setResultMessage("Сумма "+(paySum == AppSettings.PARAM_EMPTY_PAYMENT ? "0": String.format("%.2f",paySum))+" меньше заявленной ранее суммы "
+                    +String.format("%.2f", allPays)+"\n"+"Нельзя уменьшать оплату, если создан заказ!");
+        return result;
+    }
+
 
     public void applyPay(double paySum, String customerId)
     {

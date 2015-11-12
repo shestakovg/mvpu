@@ -6,9 +6,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.uni.mvpu.R;
 
+import core.ResultObject;
+import core.TouchActivity;
 import interfaces.IInputCustomerPay;
 
 /**
@@ -21,6 +24,7 @@ public class DlgInputPay extends Dialog {
 
     public DlgInputPay(Context context, String customerName,  final IInputCustomerPay inputCustomerPay) {
         super(context);
+        final Context _context = context;
         this.customerName = customerName;
         this.inputCustomerPay = inputCustomerPay;
         this.setTitle("¬ведите сумму платежа");
@@ -42,7 +46,14 @@ public class DlgInputPay extends Dialog {
         btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                inputCustomerPay.processPay(Double.valueOf(edPaySum.getText().toString()));
+                ResultObject checkResult = inputCustomerPay.checkAllowInputPay(Double.valueOf(edPaySum.getText().toString()));
+                if (checkResult.isResult()) {
+                    inputCustomerPay.processPay(Double.valueOf(edPaySum.getText().toString()));
+                }
+                else
+                {
+                    Toast.makeText(_context, checkResult.getResultMessage(), Toast.LENGTH_LONG).show();
+                }
                 dlg.dismiss();
             }
         });
