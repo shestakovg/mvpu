@@ -15,14 +15,22 @@ import interfaces.IOrderControlParams;
 public class orderControlParams {
     private int orderRows;
     private double orderSum;
+    private boolean onlyFactSku = true;
+    private boolean financeControl = true;
     private IOrderControlParams params;
-
+    private OrderExtra order;
     public orderControlParams(int orderRows, double orderSum, IOrderControlParams params) {
         this.orderRows = orderRows;
         this.orderSum = orderSum;
         this.params = params;
     }
 
+    public orderControlParams(int orderRows, double orderSum, IOrderControlParams params, OrderExtra order) {
+        this.orderRows = orderRows;
+        this.orderSum = orderSum;
+        this.params = params;
+        this.order = order;
+    }
     private void loadSumByOutlet(OrderExtra orderExtra,OutletObject currentOutlet,  Context context)
     {
         DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
@@ -43,28 +51,55 @@ public class orderControlParams {
         db.close();
     }
 
+    private void checkOnlyFactSku(OrderExtra orderExtra, Context context)
+    {
+        if (order.payType !=0)
+        {
+            this.onlyFactSku =true;
+            return;
+        }
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
+        String query="select count(*) from orderDetail d left join sku s on s.SkuId = d.skuid  where d.orderUUID = ? and s.OnlyFact =1 and coalesce(d.qty1,0)<>0";
+        Cursor cursor = db.rawQuery(query,new String[] {orderExtra.orderUUID});
+        cursor.moveToFirst();
+        for (int i = 0; i < cursor.getCount(); i++) {
+            if (cursor.getInt(0)>0) this.onlyFactSku = false;
+            cursor.moveToNext();
+        }
+        db.close();
+    }
     public Boolean allowOrderToSave(OrderExtra orderExtra,OutletObject currentOutlet, Context context)
     {
         if (this.orderRows ==0 && this.orderSum == 0) return true;
         loadSumByOutlet(orderExtra, currentOutlet, context);
+        checkOnlyFactSku(orderExtra,context);
         if (this.orderRows < params.getMinOrderRowsQty() && this.orderSum < this.params.getMinOrderSum())
         {
+            this.financeControl = false;
             return false;
         }
+       // checkOnlyFactSku(context);
+        if (!this.onlyFactSku) return false;
         return true;
     }
 
     public String getControlMessage()
     {
         String result = "";
-        if (this.orderRows < params.getMinOrderRowsQty())
+        if (this.orderRows < params.getMinOrderRowsQty() && !this.financeControl)
         {
             result+="В заказе должно быть минимум "+Integer.toString(this.params.getMinOrderRowsQty())+" строк. В заказе: "+Integer.toString(this.orderRows) +" стр\n";
         }
-        if (this.orderSum < this.params.getMinOrderSum())
+        if (this.orderSum < this.params.getMinOrderSum() && !this.financeControl)
         {
-            result+="Сумма заказа должна быть не меньше "+String.format("%.2f", this.params.getMinOrderSum())+" грн. Сумма заказа: "+String.format("%.2f",this.orderSum);
+            result+="Сумма заказа должна быть не меньше "+String.format("%.2f", this.params.getMinOrderSum())+" грн. Сумма заказа: "+String.format("%.2f", this.orderSum)+"\n";
         }
+        if (!this.onlyFactSku)
+            result+="В заказе есть позиции, которые можно отгружать только по факту!";
+
         return result;
     }
+
+
 }

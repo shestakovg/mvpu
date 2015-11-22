@@ -126,6 +126,16 @@ public class orderSkuAdapter extends BaseAdapter  {
         edMWH.setText(cursku.getQtyMWHForEditText());
 
         TextView edRWH =  (TextView) view.findViewById(R.id.editRWH);
+
+        TextView onlyFact = (TextView) view.findViewById(R.id.textViewOrderOnlyFact);
+        if (cursku.onlyFact)
+        {
+            onlyFact.setText("Ôàêò ");
+        }
+        else
+        {
+            onlyFact.setText("");
+        }
         edRWH.setTag(position);
         edRWH.setText(cursku.getQtyRWHForEditText());
 
@@ -219,14 +229,15 @@ public class orderSkuAdapter extends BaseAdapter  {
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                boolean allowClose = true;
                 if (!dlgEditMWH.getText().toString().trim().isEmpty()) {
-                    sku.setQtyMWH(Integer.parseInt(dlgEditMWH.getText().toString()));
-                    if (sku.qtyMWH % sku.getCountInBox() !=0) {
+                    int enteredQty = Integer.parseInt(dlgEditMWH.getText().toString());
+                    if (enteredQty % sku.getCountInBox() != 0) {
+                        if (sku.checkMultiplicity) allowClose = false;
                         Toast.makeText(context, context.getText(R.string.non_multiply_mvh), Toast.LENGTH_LONG).show();
                         AlertDialog.Builder ad = new AlertDialog.Builder(context);
                         ad.setTitle(context.getString(R.string.pAlert));
-                        ad.setMessage(context.getText(R.string.non_multiply_mvh) + " : " + sku.skuName + "  -  " + String.format("%d", (long) sku.qtyMWH)+" øò");
+                        ad.setMessage(context.getText(R.string.non_multiply_mvh) + " : " + sku.skuName + "  -  " + String.format("%d", (long) enteredQty) + " øò");
                         ad.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int arg1) {
                             }
@@ -238,26 +249,28 @@ public class orderSkuAdapter extends BaseAdapter  {
 //                        });
                         ad.show();
                     }
-                }
-                else
-                {
-                    if (sku.qtyMWH>0) sku.setQtyMWH(0);
+                    if (allowClose)
+                        sku.setQtyMWH(Integer.parseInt(dlgEditMWH.getText().toString()));
+                } else {
+                    if (sku.qtyMWH > 0) sku.setQtyMWH(0);
                 }
 
-                if (!dlgEditRWH.getText().toString().trim().isEmpty()) {
-                    sku.setQtyRWH(Integer.parseInt(dlgEditRWH.getText().toString()));
-                    if (sku.qtyRWH % sku.getCountInBox() !=0)
-                        Toast.makeText(context, context.getText(R.string.non_multiply_rvh),Toast.LENGTH_LONG).show();
-                }
-                else
-                {
-                    if (sku.qtyRWH>0) sku.setQtyRWH(0);
+                if (!dlgEditRWH.getText().toString().trim().isEmpty() ) {
+                    if (allowClose) {
+                        sku.setQtyRWH(Integer.parseInt(dlgEditRWH.getText().toString()));
+                        if (sku.qtyRWH % sku.getCountInBox() != 0)
+                            Toast.makeText(context, context.getText(R.string.non_multiply_rvh), Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    if (sku.qtyRWH > 0) sku.setQtyRWH(0);
                 }
                 //
-                sku.saveDb(context);
-                currentAdapter.notifyDataSetChanged();
-                orderTotal.displayTotal();
-                dlgEditQty.dismiss();
+                if (allowClose) {
+                    sku.saveDb(context);
+                    currentAdapter.notifyDataSetChanged();
+                    orderTotal.displayTotal();
+                    dlgEditQty.dismiss();
+                }
             }
         });
 

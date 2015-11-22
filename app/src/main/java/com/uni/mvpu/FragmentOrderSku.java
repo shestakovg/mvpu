@@ -79,7 +79,7 @@ public class FragmentOrderSku extends Fragment implements IOrderTotal{
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select  s.SkuId, s.SkuName, st.StockG, st.StockR,COALESCE(pOrder.Pric, COALESCE( p.Pric,0)) pric, COALESCE(od.qty1, 0) as QtyMWH, " +
                         "  COALESCE(od.qty2, 0) as QtyRWH, case when od.skuId is null then 0 else 1 end existPosition, od._id as detailId , s.QtyPack," +
-                        " coalesce(od.PriceId,'"+locOutlet.priceId.toString()+"') PriceId,  "+" pn.PriceName  from sku as s" +
+                        " coalesce(od.PriceId,'"+locOutlet.priceId.toString()+"') PriceId,  "+" pn.PriceName, s.CheckCountInBox, s.OnlyFact  from sku as s" +
                         "            left join  stock st on s.skuId = st.skuId  " +
                         "            left join price p on s.skuId = p.skuId and p.PriceId = '" +locOutlet.priceId.toString()+"' "+
                         joinKind + " join orderDetail od on od.skuId= s.skuId and od.headerId = ?  "+
@@ -106,6 +106,8 @@ public class FragmentOrderSku extends Fragment implements IOrderTotal{
             sku.setCountInBox(cursor.getInt(cursor.getColumnIndex("QtyPack")));
             sku.priceId = cursor.getString(cursor.getColumnIndex("PriceId"));
             sku.priceName = cursor.getString(cursor.getColumnIndex("PriceName"));
+            sku.onlyFact = cursor.getInt(cursor.getColumnIndex("OnlyFact")) == 1;
+            sku.checkMultiplicity = cursor.getInt(cursor.getColumnIndex("CheckCountInBox")) == 1;
             skuList.add(sku);
             cursor.moveToNext();
         }
@@ -138,7 +140,7 @@ public class FragmentOrderSku extends Fragment implements IOrderTotal{
         db.close();
         ((TextView) getView().findViewById(R.id.tvOrderSum)).setText(String.format("%.2f", orderSum));
         ((TextView) getView().findViewById(R.id.tvOrderRowCount)).setText(Integer.toString(rowCount));
-        return new orderControlParams(rowCount, orderSum, appManager.getOurInstance().appSetupInstance);
+        return new orderControlParams(rowCount, orderSum, appManager.getOurInstance().appSetupInstance, ((IOrder) getActivity()).getOrderExtra());
     }
 
     @Override

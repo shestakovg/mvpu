@@ -103,9 +103,11 @@ public class syncSaveData {
                 values.put("SkuParentId", jsonObject.getString("SkuParentId"));
                 values.put("QtyPack", jsonObject.getDouble("QtyPack"));
                 values.put("Article", jsonObject.getString("Article"));
+                values.put("OnlyFact", jsonObject.getInt("OnlyFact"));
+                values.put("CheckCountInBox", jsonObject.getInt("CheckCountInBox"));
                 db.insert("sku", null, values);
             } catch (Exception e) {
-
+                Toast.makeText(context, "Could not save sku", Toast.LENGTH_SHORT).show();
             }
         }
         db.close();

@@ -27,7 +27,8 @@ public class orderSku {
     public double stockR;
     public String priceId;
     public String priceName;
-
+    public boolean checkMultiplicity = true;
+    public boolean onlyFact = false;
     public int getCountInBox() {
         return (countInBox == 0 ? 1 : countInBox);
     }
