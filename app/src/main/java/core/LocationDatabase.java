@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.Toast;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -37,6 +38,16 @@ public class LocationDatabase {
     public void SaveLocationData(double latitude, double longtitude,long  time)
     {
         Date date = new Date(time);
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(this.context);
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("routeDayId", (this.currentRoute == null ? -1 : this.currentRoute.getId()));
+        values.put("longtitude", longtitude);
+        values.put("latitude", latitude);
+        values.put("logDate", wputils.getDateTime(wputils.getCalendarFromDate(date)));
+        db.insert("gpsLog", null, values);
+        db.close();
+       // Toast.makeText(this.context, "location saved", Toast.LENGTH_SHORT).show();
     }
     public RouteDay currentRoute = null;
     public RouteDay getActiveRouteDay(Calendar routeDate)
