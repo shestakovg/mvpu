@@ -11,6 +11,7 @@ import android.view.MenuItem;
 
 //import core.MyApplication;
 import Dialogs.DlgLockApp;
+import core.LocationDatabase;
 import core.TouchActivity;
 import core.appManager;
 
@@ -28,13 +29,13 @@ public class MainActivity extends TouchActivity {
 //            DlgLockApp dlg = new DlgLockApp(this);
 //            dlg.show();
 //        }
-        // startGPSLogger();
+         startGPSLogger();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //  stopGPSLogger();
+        stopGPSLogger();
     }
 
 
@@ -76,6 +77,8 @@ public class MainActivity extends TouchActivity {
 
     private void startGPSLogger()
     {
+        if (LocationDatabase.locDb == null)
+            LocationDatabase.locDb = new LocationDatabase(this);
         startService(new Intent(MainActivity.this,                GPSLoggerService.class));
     }
 

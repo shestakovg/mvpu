@@ -23,6 +23,15 @@ public final class wputils {
                 calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)));
     }
 
+    public static String getDateTimeString(Calendar calendar) {
+        int year = calendar.get(Calendar.YEAR);
+        //  if (year>3900) year-=1900;
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "dd.MM.yyyy", Locale.getDefault());
+        //Date date = new Date();
+        return dateFormat.format(new Date(year - 1900,
+                calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)));
+    }
 //    public static String getDateTime(Date date) {
 //
 //        SimpleDateFormat dateFormat = new SimpleDateFormat(

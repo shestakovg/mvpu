@@ -1,6 +1,8 @@
 package com.uni.mvpu;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,7 +11,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import core.LocationDatabase;
+import core.RouteDay;
 import core.appManager;
+import core.wputils;
 
 
 /**
@@ -18,6 +23,7 @@ import core.appManager;
 public class MainActivityFragment extends Fragment {
     private View parentView ;
     Button btnSetup;
+    Button btnRoute;
     Button btnSyncServer;
     Button btnBeginWork;
 
@@ -28,13 +34,6 @@ public class MainActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         parentView = inflater.inflate(R.layout.fragment_main, container, false);
-        btnSetup = (Button) parentView.findViewById(R.id.btnSetup);
-        btnSetup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btnSetupClick(v);
-            }
-        });
         btnBeginWork = (Button) parentView.findViewById(R.id.btnBeginWork);
         btnBeginWork.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,6 +41,34 @@ public class MainActivityFragment extends Fragment {
                 btnBeginWork(v);
             }
         });
+
+        btnRoute = (Button) parentView.findViewById(R.id.btnRouteDay);
+        btnRoute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnRouteDay(v);
+            }
+        });
+        if (LocationDatabase.getInstance()!=null)
+        {
+            RouteDay rd = LocationDatabase.getInstance().getActiveRouteDay(wputils.getCurrentDate());
+            if (rd == null) {
+                btnRoute.setText(RouteDay.getEmptyRouteDescription());
+                btnBeginWork.setEnabled(false);}
+            else
+            {
+                btnRoute.setText(rd.getRouteDescription());
+                btnBeginWork.setEnabled(true);
+            }
+        }
+        btnSetup = (Button) parentView.findViewById(R.id.btnSetup);
+        btnSetup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnSetupClick(v);
+            }
+        });
+
         btnSyncServer = (Button) parentView.findViewById(R.id.btnSyncServer);
         btnSyncServer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +130,55 @@ public class MainActivityFragment extends Fragment {
         //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         //intent.putExtra("w", selectedValue);
         startActivity(intent);
+    }
+
+    private void btnRouteDay(View v)
+    {
+        if (LocationDatabase.getInstance()!=null)
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(parentView.getContext());
+
+            builder.setTitle("Confirm");
+            if (LocationDatabase.getInstance().currentRoute == null) {
+                builder.setMessage("Открыть маршрут за "+wputils.getDateTimeString(wputils.getCurrentDate())+" ?");}
+            else
+            {
+                builder.setMessage("Закрыть маршрут за "+wputils.getDateTimeString(wputils.getCurrentDate())+"?");
+            }
+
+            builder.setPositiveButton("Да", new DialogInterface.OnClickListener() {
+
+                public void onClick(DialogInterface dialog, int which) {
+                    // Do nothing but close the dialog
+                    if (LocationDatabase.getInstance().currentRoute == null)
+                    {
+                         RouteDay rd = LocationDatabase.getInstance().openRouteDay(wputils.getCurrentDate());
+                         btnRoute.setText(rd.getRouteDescription());
+                        btnBeginWork.setEnabled(true);
+                    }
+                    else
+                    {
+                        LocationDatabase.getInstance().closeRouteDate(LocationDatabase.getInstance().currentRoute);
+                        btnRoute.setText(RouteDay.getEmptyRouteDescription());
+                        btnBeginWork.setEnabled(false);
+                    }
+                    dialog.dismiss();
+                }
+
+            });
+
+            builder.setNegativeButton("Нет", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Do nothing
+                    dialog.dismiss();
+                }
+            });
+
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
     }
 
 }

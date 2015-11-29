@@ -18,6 +18,8 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 
+import core.LocationDatabase;
+
 /**
  * Created by g.shestakov on 25.08.2015.
  */
@@ -77,25 +79,29 @@ public class GPSLoggerService  extends Service {
                     //Write to DB
                     Log.d(TAG, " loc.getLatitude() "+ loc.getLatitude());
                     Log.d(TAG, " loc.getLongitude() "+ loc.getLongitude());
+                    if (LocationDatabase.getInstance()!=null)
+                    {
+                        LocationDatabase.getInstance().SaveLocationData(loc.getLatitude(),loc.getLongitude(), loc.getTime() );
+                    }
                 }
 
-                if (pointIsRecorded) {
-                    if (showingDebugToast) Toast.makeText(
-                            getBaseContext(),
-                            "Location stored: \nLat: " + sevenSigDigits.format(loc.getLatitude())
-                                    + " \nLon: " + sevenSigDigits.format(loc.getLongitude())
-                                    + " \nAlt: " + (loc.hasAltitude() ? loc.getAltitude()+"m":"?")
-                                    + " \nAcc: " + (loc.hasAccuracy() ? loc.getAccuracy()+"m":"?"),
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    if (showingDebugToast) Toast.makeText(
-                            getBaseContext(),
-                            "Location not accurate enough: \nLat: " + sevenSigDigits.format(loc.getLatitude())
-                                    + " \nLon: " + sevenSigDigits.format(loc.getLongitude())
-                                    + " \nAlt: " + (loc.hasAltitude() ? loc.getAltitude()+"m":"?")
-                                    + " \nAcc: " + (loc.hasAccuracy() ? loc.getAccuracy()+"m":"?"),
-                            Toast.LENGTH_SHORT).show();
-                }
+//                if (pointIsRecorded) {
+//                    if (showingDebugToast) Toast.makeText(
+//                            getBaseContext(),
+//                            "Location stored: \nLat: " + sevenSigDigits.format(loc.getLatitude())
+//                                    + " \nLon: " + sevenSigDigits.format(loc.getLongitude())
+//                                    + " \nAlt: " + (loc.hasAltitude() ? loc.getAltitude()+"m":"?")
+//                                    + " \nAcc: " + (loc.hasAccuracy() ? loc.getAccuracy()+"m":"?"),
+//                            Toast.LENGTH_SHORT).show();
+//                } else {
+//                    if (showingDebugToast) Toast.makeText(
+//                            getBaseContext(),
+//                            "Location not accurate enough: \nLat: " + sevenSigDigits.format(loc.getLatitude())
+//                                    + " \nLon: " + sevenSigDigits.format(loc.getLongitude())
+//                                    + " \nAlt: " + (loc.hasAltitude() ? loc.getAltitude()+"m":"?")
+//                                    + " \nAcc: " + (loc.hasAccuracy() ? loc.getAccuracy()+"m":"?"),
+//                            Toast.LENGTH_SHORT).show();
+//                }
             }
 
         }
