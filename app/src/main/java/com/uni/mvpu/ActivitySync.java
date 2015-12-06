@@ -23,6 +23,7 @@ import sync.syncDebtParams;
 import sync.syncPrice;
 import sync.syncRoute;
 import sync.syncSku;
+import sync.syncSkuFact;
 import sync.syncSkuGroup;
 import sync.syncStock;
 
@@ -146,6 +147,8 @@ public class ActivitySync extends TouchActivity {
                         syncGroup.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getskugroup/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
                         syncSku syncSku = new syncSku(this, pd);
                         syncSku.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getsku"});
+                        syncSkuFact skuFact = new syncSkuFact(this, pd);
+                        skuFact.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getskufact"});
                         break;
 //                    case IDLI_PRICE:
 //                        //appManager.getOurInstance().setCurrentContext(this);

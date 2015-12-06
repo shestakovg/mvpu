@@ -61,6 +61,10 @@ public class MainActivityFragment extends Fragment {
                 btnBeginWork.setEnabled(true);
             }
         }
+        //*************************************************************
+        btnBeginWork.setEnabled(true);
+        btnRoute.setVisibility(View.INVISIBLE);
+        //*************************************************************
         btnSetup = (Button) parentView.findViewById(R.id.btnSetup);
         btnSetup.setOnClickListener(new View.OnClickListener() {
             @Override

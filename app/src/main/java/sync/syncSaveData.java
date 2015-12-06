@@ -114,6 +114,25 @@ public class syncSaveData {
         Toast.makeText(context, "Обновление номенклатуры завершено", Toast.LENGTH_SHORT).show();
     }
 
+    public static void saveSkuFact(List<JSONObject> jsonObjects, Context context)
+    {
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        db.execSQL("delete from skuFact");
+        for (JSONObject jsonObject: jsonObjects) {
+            try {
+                ContentValues values = new ContentValues();
+                values.put("skuId", jsonObject.getString("SkuId"));
+                values.put("priceId", jsonObject.getString("PriceId"));
+                db.insert("skuFact", null, values);
+            } catch (Exception e) {
+                Toast.makeText(context, "Could not save sku fact", Toast.LENGTH_SHORT).show();
+            }
+        }
+        db.close();
+        Toast.makeText(context, "Обновление фактовых позиций завершено", Toast.LENGTH_SHORT).show();
+    }
+
     public static void savePrice(List<JSONObject> jsonObjects, Context context, priceType price)
     {
         DbOpenHelper dbOpenHelper = new DbOpenHelper(context);

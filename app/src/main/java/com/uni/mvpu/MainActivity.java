@@ -29,7 +29,7 @@ public class MainActivity extends TouchActivity {
 //            DlgLockApp dlg = new DlgLockApp(this);
 //            dlg.show();
 //        }
-         startGPSLogger();
+       //  startGPSLogger();
     }
 
     @Override

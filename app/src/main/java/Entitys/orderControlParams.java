@@ -60,7 +60,7 @@ public class orderControlParams {
         }
         DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
-        String query="select count(*) from orderDetail d left join sku s on s.SkuId = d.skuid  where d.orderUUID = ? and s.OnlyFact =1 and coalesce(d.qty1,0)<>0";
+        String query="select count(*) from orderDetail d inner join skuFact s on s.SkuId = d.skuid and d.PriceId=s.PriceId where d.orderUUID = ? and (coalesce(d.qty1,0)+coalesce(d.qty2,0))<>0";
         Cursor cursor = db.rawQuery(query,new String[] {orderExtra.orderUUID});
         cursor.moveToFirst();
         for (int i = 0; i < cursor.getCount(); i++) {

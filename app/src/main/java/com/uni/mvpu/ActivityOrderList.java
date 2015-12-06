@@ -141,7 +141,8 @@ public class ActivityOrderList extends TouchActivity implements IUpdateOrderList
         double result = 0;
         String query="select sum(coalesce(d.qty1,0) * coalesce(p.pric,0) + coalesce(d.qty2,0) * coalesce(p.pric,0)) as orderSumma from orderHeader h " +
                 " inner join orderDetail d on d.headerid = h._id " +
-                " inner join (select outletId outletId,partnerId from  route) r on r.outletId = h.outletId "+
+                " inner join (select outletId outletId,max(partnerId) partnerId from  route group by outletId) r on r.outletId = h.outletId "+
+                //" inner join (select outletId outletId,partnerId partnerId from  route) r on r.outletId = h.outletId "+
                 " left  join contracts con on  con.PartnerId = r.partnerId "+
                 //" inner join price p on p.priceId = coalesce(con.PriceId,'"+ AppSettings.PARAM_PRICEID_DEFAULT+"') and d.skuId = p.skuId" +
                 " inner join price p on p.priceId = d.PriceId and d.skuId = p.skuId" +

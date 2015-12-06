@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.provider.Telephony;
@@ -33,6 +35,7 @@ import Entitys.OutletObject;
 import Entitys.orderSku;
 import core.checkRowSum;
 import core.priceTypeManager;
+import db.DbOpenHelper;
 import interfaces.IOrderTotal;
 
 /**
@@ -189,6 +192,22 @@ public class orderSkuAdapter extends BaseAdapter  {
             return view;
     }
 
+    private boolean getOnlyFact(orderSku sku)
+    {
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from skuFact where skuId=? and priceId=?", new String[]{sku.skuId, sku.priceId});
+        boolean result = false;
+        for (int i=0; i<cursor.getCount(); i++ )
+        {
+            result=true;
+            break;
+            //cursor.moveToNext();
+        }
+        db.close();
+        return result;
+    }
+
     private void onSpinnerPriceTypeItemSelected(AdapterView<?> parent, View view,int position, long id)
     {
         int pos = (Integer) parent.getTag();
@@ -198,6 +217,7 @@ public class orderSkuAdapter extends BaseAdapter  {
             cursku.priceName = parent.getAdapter().getItem(position).toString();
             cursku.priceId = priceTypeManager.getInstance().getPriceIdByPriceName(cursku.priceName, outlet.priceId.toString());
             cursku.price = priceTypeManager.getInstance().getPriceValue(cursku.skuId, cursku.priceId);
+            cursku.onlyFact = getOnlyFact(cursku);
             cursku.calcRowSum();
             cursku.saveDb(context);
             currentAdapter.notifyDataSetChanged();
