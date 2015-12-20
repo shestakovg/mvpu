@@ -202,8 +202,10 @@ public class appManager {
                 "left join pays p on p.transactionId = d.transactionId and p.payDate = ?" +
                 "where d.customerid= ?  and  d.overdueDebt > 0",
                 new String[] { wputils.getDateTime(date), customerId});
-        cursor.moveToFirst();
-        result = cursor.getDouble(0);
+        if (cursor.moveToFirst()) {
+            result = cursor.getDouble(0);
+        }
+        if (result < 0 ) result = 0;
         db.close();
         return result;
     }

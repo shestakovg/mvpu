@@ -25,14 +25,14 @@ public class OutletObject {
     public String outletAddress;
     public UUID partnerId = new UUID(0L, 0L);
     public String partnerName;
-
+    public boolean IsRoute = false;
     public static OutletObject getInstance( UUID outletId, Context context)
     {
         OutletObject ob = new OutletObject();
         ob.outletId = outletId;
         //(CustomerId text, PriceId text, PriceName text, LimitSum double, Reprieve text, PartnerId text
         String query = "select r.outletId , r.outletName , r.VisitDay, r.VisitDayId ,r.VisitOrder, r.CustomerId,r.CustomerName," +
-                " r.partnerId, r.partnerName, r.address, con.PriceId , con.PriceName from route r" +
+                " r.partnerId, r.partnerName, r.address, con.PriceId , con.PriceName, r.IsRoute from route r" +
                 " left join contracts con on con.PartnerId =  r.partnerId " +
                 " where r.outletId = ?";
         DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
@@ -56,6 +56,7 @@ public class OutletObject {
             ob.outletAddress= cursor.getString(cursor.getColumnIndex("address"));
             ob.partnerId =UUID.fromString(cursor.getString(cursor.getColumnIndex("partnerId")));
             ob.partnerName = cursor.getString(cursor.getColumnIndex("partnerName"));
+            ob.IsRoute = (cursor.getInt(cursor.getColumnIndex("IsRoute")) == 1 ? true : false);
             cursor.moveToNext();
         }
         db.close();

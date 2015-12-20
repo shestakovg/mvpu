@@ -133,7 +133,7 @@ public class ActivityRoute extends TouchActivity {
         DbOpenHelper dbOpenHelper = new DbOpenHelper(this);
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select r.outletId , r.outletName , r.VisitDay  , r.VisitDayId ,r.VisitOrder , r.CustomerId , " +
-                "r.CustomerName, r.partnerId, r.partnerName, r.address, con.PriceId, COALESCE(con.PriceName,'') as PriceName from route r   " +
+                "r.CustomerName, r.partnerId, r.partnerName, r.address, con.PriceId, COALESCE(con.PriceName,'') as PriceName, r.IsRoute from route r   " +
                 "left join contracts con on r.partnerId = con.partnerId  " + routeWhere + " order by VisitDayId,outletName ", null);
         cursor.moveToFirst();
         for (int i = 0; i < cursor.getCount(); i++)
@@ -159,6 +159,7 @@ public class ActivityRoute extends TouchActivity {
             {
                 ob.priceId = UUID.fromString(appManager.getOurInstance().appSetupInstance.getDefaultPrice());
             }
+            ob.IsRoute = (cursor.getInt(cursor.getColumnIndex("IsRoute")) == 1 ? true : false);
             outletsObjectList.add(ob);
             cursor.moveToNext();
         }
@@ -194,6 +195,11 @@ public class ActivityRoute extends TouchActivity {
 
         popupMenu.getMenuInflater().inflate(R.menu.popupmenu_route, popupMenu.getMenu());
         popupMenu.getMenu().getItem(0).setTitle("Заказы: "+ outlet.outletName);
+        if (!selectedOutlet.IsRoute)
+        {
+            popupMenu.getMenu().getItem(0).setEnabled(false);
+            popupMenu.getMenu().getItem(0).setTitle(outlet.outletName + " - не по маршруту");
+        }
         //popupMenu.inflate(R.menu.popupmenu_route);
 
         popupMenu
@@ -207,6 +213,7 @@ public class ActivityRoute extends TouchActivity {
 //                                Toast.makeText(getApplicationContext(),
 //                                        "Вы выбрали PopupMenu 1",
 //                                        Toast.LENGTH_SHORT).show();
+
 
                                 Calendar currentDate = Calendar.getInstance();
                                 currentDate.setTime(new Date());
