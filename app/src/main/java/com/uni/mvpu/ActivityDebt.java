@@ -79,8 +79,9 @@ public class ActivityDebt extends TouchActivity implements IInputCustomerPay {
         DbOpenHelper dbOpenHelper = new DbOpenHelper(this);
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select  d.transactionNumber  , d.transactionDate  , d.transactionSum  , "  +
-                " d.paymentDate  , d.debt  , d.overdueDebt  , d.overdueDays, d.transactionId, coalesce(p.paySum,0) claimedSum  from debts d " +
+                " d.paymentDate  , d.debt  , d.overdueDebt  , d.overdueDays, d.transactionId, coalesce(p.paySum,0) claimedSum, rt.CustomerName from debts d " +
                 " left join  pays p on p.transactionId = d.transactionId and p.payDate = ?" +
+                " left join (select distinct CustomerId ,CustomerName from route) rt on rt.CustomerId = d.customerId"+
                 " where d.customerId= ? order by DATE(substr( d.paymentDate,7,4)" +
                 "||substr( d.paymentDate,4,2)" +
                 "||substr( d.paymentDate,1,2)) "
@@ -98,6 +99,7 @@ public class ActivityDebt extends TouchActivity implements IInputCustomerPay {
             debtData.paymentDate = cursor.getString(cursor.getColumnIndex("paymentDate"));
             debtData.transactionId = cursor.getString(cursor.getColumnIndex("transactionId"));
             debtData.claimedSum = cursor.getDouble(cursor.getColumnIndex("claimedSum"));
+            debtData.CustomerName = cursor.getString(cursor.getColumnIndex("CustomerName"));
             debts.add(debtData);
             cursor.moveToNext();
         }
@@ -123,8 +125,9 @@ public class ActivityDebt extends TouchActivity implements IInputCustomerPay {
         DbOpenHelper dbOpenHelper = new DbOpenHelper(this);
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select  d.transactionNumber  , d.transactionDate  , d.transactionSum  , "  +
-                " d.paymentDate  , d.debt  , d.overdueDebt  , d.overdueDays, d.transactionId, coalesce(p.paySum,0) claimedSum  from pays p " +
+                " d.paymentDate  , d.debt  , d.overdueDebt  , d.overdueDays, d.transactionId, coalesce(p.paySum,0) claimedSum, rt.CustomerName  from pays p " +
                 " left join debts d  on p.transactionId = d.transactionId " +
+                " left join (select distinct CustomerId ,CustomerName from route) rt on rt.CustomerId = d.customerId"+
                 " where p.payDate = ? order by DATE(substr( d.paymentDate,7,4)" +
                 "||substr( d.paymentDate,4,2)" +
                 "||substr( d.paymentDate,1,2)) "
@@ -142,6 +145,7 @@ public class ActivityDebt extends TouchActivity implements IInputCustomerPay {
             debtData.paymentDate = cursor.getString(cursor.getColumnIndex("paymentDate"));
             debtData.transactionId = cursor.getString(cursor.getColumnIndex("transactionId"));
             debtData.claimedSum = cursor.getDouble(cursor.getColumnIndex("claimedSum"));
+            debtData.CustomerName = cursor.getString(cursor.getColumnIndex("CustomerName"));
             debts.add(debtData);
             cursor.moveToNext();
         }

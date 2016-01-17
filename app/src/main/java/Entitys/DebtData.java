@@ -68,4 +68,7 @@ public class DebtData {
         }
         return result;
     }
+
+    public String CustomerName;
+
 }

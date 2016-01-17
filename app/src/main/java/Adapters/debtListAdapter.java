@@ -74,6 +74,8 @@ public class debtListAdapter extends BaseAdapter {
         ((TextView) view.findViewById(R.id.tvDebt)).setText(String.format("%.2f",debt.debt));
         ((TextView) view.findViewById(R.id.tvOverdueDebt)).setText(String.format("%.2f", debt.overdueDebt));
         ((TextView) view.findViewById(R.id.tvOverdueDays)).setText(Integer.toString(debt.overdueDays));
+        ((TextView) view.findViewById(R.id.tvDebtCustomername)).setText(debt.CustomerName);
+
 
         ((TextView) view.findViewById(R.id.tvClaimedSum)).setText(String.format("%.2f", debt.claimedSum));
         if (debt.overdueDays>0) {
