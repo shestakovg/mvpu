@@ -74,7 +74,8 @@ public class orderControlParams {
         if (this.orderRows ==0 && this.orderSum == 0) return true;
         loadSumByOutlet(orderExtra, currentOutlet, context);
         checkOnlyFactSku(orderExtra,context);
-        if (this.orderRows < params.getMinOrderRowsQty() && this.orderSum < this.params.getMinOrderSum())
+        if (//this.orderRows < params.getMinOrderRowsQty() &&
+                this.orderSum < this.params.getMinOrderSum())
         {
             this.financeControl = false;
             return false;
@@ -87,10 +88,10 @@ public class orderControlParams {
     public String getControlMessage()
     {
         String result = "";
-        if (this.orderRows < params.getMinOrderRowsQty() && !this.financeControl)
-        {
-            result+="В заказе должно быть минимум "+Integer.toString(this.params.getMinOrderRowsQty())+" строк. В заказе: "+Integer.toString(this.orderRows) +" стр\n";
-        }
+//        if (this.orderRows < params.getMinOrderRowsQty() && !this.financeControl)
+//        {
+//            result+="В заказе должно быть минимум "+Integer.toString(this.params.getMinOrderRowsQty())+" строк. В заказе: "+Integer.toString(this.orderRows) +" стр\n";
+//        }
         if (this.orderSum < this.params.getMinOrderSum() && !this.financeControl)
         {
             result+="Сумма заказа должна быть не меньше "+String.format("%.2f", this.params.getMinOrderSum())+" грн. Сумма заказа: "+String.format("%.2f", this.orderSum)+"\n";
