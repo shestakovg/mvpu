@@ -38,6 +38,7 @@ public class AppSettings implements IOrderControlParams {
     private final String PARAM_minOrderSum = "minOrderSum";
     private final String PARAM_ALLOW_GPS_LOG = "allowGpsLog";
     private final String PARAM_LOCK_PASSWORD = "LOCK_PASSWORD";
+    private final String PARAM_ROUTE_TYPE = "ROUTE_TYPE";
 
 
     public static final String PARAM_PRICEID_DEFAULT = "75a9d60f-cd75-11e4-826a-240a64c9314e";
@@ -177,6 +178,28 @@ public class AppSettings implements IOrderControlParams {
 
     private boolean appLocked = false;
 
+    public int getRouteType() {
+        return routeType;
+    }
+
+    public void setRouteType(int routeType) {
+        this.routeType = routeType;
+    }
+
+    public String getRouteTypeDescription()
+    {
+        String result = "";
+        switch (this.routeType)
+        {
+            case 1: result = "Мерчендайзер"; break;
+            case 0: result = "Торговый представитель"; break;
+            default: result = "Неизветсно";break;
+        }
+        return result;
+    }
+
+    private int routeType = -1; //Trade Agent
+
     public String version;
     public AppSettings(String serviceUrl, String routeName, String employeeName, UUID routeId, UUID employeeID) {
         this.serviceUrl = serviceUrl;
@@ -210,6 +233,7 @@ public class AppSettings implements IOrderControlParams {
         saveParamSetup(db, PARAM_EMPLOYEE_NAME, employeeName);
         saveParamSetup(db, PARAM_ALLOW_GPS_LOG, (this.allowGpsLog ? "1" : "0"));
         saveParamSetup(db, PARAM_LOCK_PASSWORD, this.lockPasswod);
+        saveParamSetup(db, PARAM_ROUTE_TYPE, Integer.toString(this.routeType));
         db.close();
     }
 
@@ -245,6 +269,7 @@ public class AppSettings implements IOrderControlParams {
                 case PARAM_minOrderSum: minOrderSum = Double.valueOf(cursor.getString(1)); break;
                 case PARAM_ALLOW_GPS_LOG: this.allowGpsLog = (Integer.valueOf(cursor.getString(1)) == 1 ) ; break;
                 case PARAM_LOCK_PASSWORD:this.lockPasswod = cursor.getString(1); break;
+                case PARAM_ROUTE_TYPE:this.routeType = cursor.getInt(1);break;
             }
             cursor.moveToNext();
         }

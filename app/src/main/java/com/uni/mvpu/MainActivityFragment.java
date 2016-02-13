@@ -104,7 +104,9 @@ public class MainActivityFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((TextView) parentView.findViewById(R.id.textViewRoute)).setText(appManager.getOurInstance().appSetupInstance.getRouteName());
+        ((TextView) parentView.findViewById(R.id.textViewRoute)).setText(appManager.getOurInstance().appSetupInstance.getRouteName()+" - "+
+                                                                appManager.getOurInstance().appSetupInstance.getRouteTypeDescription()
+        );
     }
 
     private void btnSetupClick(View v)

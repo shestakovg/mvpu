@@ -75,6 +75,7 @@ public class ActivitySelectRoute extends TouchActivity {
             appManager.getOurInstance().appSetupInstance.setRouteName(r.description);
             appManager.getOurInstance().appSetupInstance.setEmployeeID(r.employeeId);
             appManager.getOurInstance().appSetupInstance.setEmployeeName(r.employee);
+            appManager.getOurInstance().appSetupInstance.setRouteType(r.RouteTypeID);
             finish();
         }
     }
@@ -117,8 +118,8 @@ public class ActivitySelectRoute extends TouchActivity {
         {
             for (routeObject r:routeObjectList) {
                 Map<String, Object> map = new HashMap<String, Object>();
-                map.put("description", r.description);
-                map.put("other", r.employee);
+                map.put("description",r.description);
+                map.put("other", r.RouteType+": "+r.employee);
                 items.add(map);
             }
         }
@@ -178,6 +179,8 @@ public class ActivitySelectRoute extends TouchActivity {
                          r.code = jsonObject.getString("Code");
                          r.employee = jsonObject.getString("Employee");
                          r.employeeId = UUID.fromString(jsonObject.getString("EmployeeId"));
+                         r.RouteType = jsonObject.getString("RouteType");
+                         r.RouteTypeID = jsonObject.getInt("RouteTypeID");
                          routeObjectList.add(r);
                     } catch (Exception e) {
 

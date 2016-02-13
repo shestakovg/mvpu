@@ -36,6 +36,7 @@ public class ActivitySync extends TouchActivity {
     private final String IDLI_DOCS = "Договора";
     private final String IDLI_STOCK = "Остатки";
     private final String IDLI_DEBT = "Долги";
+    private final String IDLI_SPECIFICATION = "Спецификации";
     private String[] mSyncOptions = {IDLI_ROUTE, IDLI_PRODUCT,  IDLI_DOCS, IDLI_STOCK, IDLI_DEBT};
     private ArrayAdapter listAdapter;
     private ArrayList<priceType> priceList;
@@ -54,6 +55,11 @@ public class ActivitySync extends TouchActivity {
         {
             arrList.add("Прайс: "+price.getPriceName());
             priceNameList.add("Прайс: "+price.getPriceName());
+        }
+
+        if (appManager.getOurInstance().appSetupInstance.getRouteType() ==1 )
+        {
+            arrList.add(IDLI_SPECIFICATION);
         }
         String[] syncOptions =        arrList.toArray(new String[arrList.size()] );
         setContentView(R.layout.activity_sync);

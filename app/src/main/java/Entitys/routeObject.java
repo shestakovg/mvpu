@@ -13,6 +13,8 @@ public class routeObject {
     public String description;
     public String  employee;
     public UUID employeeId;
+    public String RouteType;
+    public int RouteTypeID;
     //
 
 }
