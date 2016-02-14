@@ -64,6 +64,8 @@ public class DbCreateScript {
     private static String CREATE_PRICE_NAMES = "create table PriceNames(PriceId text primary key, PriceName text)";
     private static String CREATE_SKU_FACT = "create table skuFact(skuId text, priceId text)";
 
+    private static String CREATE_SPECIFICATION = "create table Specification(outletId text, skuId text)";
+
     public static  ArrayList<String> getCreateDataBaseScripts()
     {
         ArrayList<String> list = new ArrayList<String>();
@@ -100,6 +102,7 @@ public class DbCreateScript {
         list.add(CREATE_ROUTE_DAY_IDX2);
         list.add(CREATE_PRICE_NAMES);
         list.add(CREATE_SKU_FACT);
+        list.add(CREATE_SPECIFICATION);
         return list;
     }
 
@@ -119,6 +122,7 @@ public class DbCreateScript {
     private static String DROP_ROUTE_DAY  = "DROP TABLE routesDay";
     private static String DROP_PRICE_NAMES ="DROP TABLE PriceNames";
     private static String DROP_SKU_FACT="DROP TABLE skuFact";
+    private static String DROP_SPECIFICATION="DROP TABLE Specification";
 
     public static ArrayList<String>  getDropTableScripts()
     {
@@ -138,6 +142,7 @@ public class DbCreateScript {
         list.add(DROP_ROUTE_DAY);
         list.add(DROP_PRICE_NAMES);
         list.add(DROP_SKU_FACT);
+        list.add(DROP_SPECIFICATION);
         return list;
     }
 }

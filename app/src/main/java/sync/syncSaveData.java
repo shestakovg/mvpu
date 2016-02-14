@@ -205,6 +205,27 @@ public class syncSaveData {
         Toast.makeText(context, "Обновление долгов завершено", Toast.LENGTH_LONG).show();
     }
 
+    public static void saveSpecification(List<JSONObject> jsonObjects, Context context)
+    {
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        db.execSQL("delete from specification");
+        for (JSONObject jsonObject: jsonObjects) {
+            try
+            {
+                ContentValues values = new ContentValues();
+                values.put("outletId", jsonObject.getString("OutletId"));
+                values.put("skuId", jsonObject.getString("SkuId"));
+                db.insert("specification", null, values);
+
+            } catch (Exception e)  {
+            e.printStackTrace();
+    }
+        }
+        db.close();
+        Toast.makeText(context, "Обновление спецификаций завершено", Toast.LENGTH_SHORT).show();
+    }
+
     public static void saveDebtParams(List<JSONObject> jsonObjects, Context context) {
         DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();

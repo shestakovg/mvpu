@@ -25,6 +25,7 @@ import sync.syncRoute;
 import sync.syncSku;
 import sync.syncSkuFact;
 import sync.syncSkuGroup;
+import sync.syncSpecification;
 import sync.syncStock;
 
 
@@ -174,6 +175,10 @@ public class ActivitySync extends TouchActivity {
                     case IDLI_DEBT:
                         syncDebt sncDept = new syncDebt(this, pd);
                         sncDept.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getdebt/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
+                        break;
+                    case IDLI_SPECIFICATION:
+                        syncSpecification sncSpec = new syncSpecification(this, pd);
+                        sncSpec.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getspecification/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
                         break;
                 }
             }
