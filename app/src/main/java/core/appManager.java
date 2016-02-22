@@ -120,6 +120,15 @@ public class appManager {
         context.startActivity(intent);
     }
 
+    public void showOrderList(OutletObject outletObject, Context context, int orderType)
+    {
+        Intent intent = new Intent(context, ActivityOrderList.class);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("outletid", outletObject.outletId.toString());
+        intent.putExtra("orderType", orderType);
+        context.startActivity(intent);
+    }
+
     public void showDebtList(OutletObject outletObject, Context context)
     {
         Intent intent = new Intent(context, ActivityDebt.class);
@@ -169,7 +178,7 @@ public class appManager {
         return result;
     }
 
-    public void addNewOrder(Context context, String outletid, int orderNumber, Calendar orderDate)
+    public void addNewOrder(Context context, String outletid, int orderNumber, Calendar orderDate, int orderType)
     {
         DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
@@ -182,6 +191,7 @@ public class appManager {
         deliveryDate.add(Calendar.DATE, 1);
         values.put("deliveryDate", wputils.getDateTime(deliveryDate));
         values.put("_send",0);
+        values.put("orderType", orderType);
         db.insert("orderHeader", null, values);
         db.close();
     }

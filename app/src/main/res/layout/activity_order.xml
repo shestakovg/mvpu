@@ -23,4 +23,12 @@
         android:layout_weight="2"
         tools:layout="@layout/fragment_skuorder">
     </fragment>
+    <!--<fragment-->
+        <!--android:id="@+id/fragmentStorecheck"-->
+        <!--android:name="com.uni.mvpu.FragmenStorecheckSku"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_weight="2"-->
+        <!--tools:layout="@layout/fragmen_storecheck_sku">-->
+    <!--</fragment>-->
 </LinearLayout>

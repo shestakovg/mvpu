@@ -34,6 +34,7 @@ import java.util.UUID;
 
 import Entitys.Order;
 import Entitys.OutletObject;
+import core.AppSettings;
 import core.TouchActivity;
 import core.appManager;
 import core.wputils;
@@ -190,6 +191,62 @@ public class ActivityRoute extends TouchActivity {
 
     }
 
+    private void showOrders(int orderType)
+    {
+        Calendar currentDate = Calendar.getInstance();
+        currentDate.setTime(new Date());
+        boolean paymentExists = appManager.getOurInstance().checkAnnouncedSum(getBaseContext(), selectedOutlet.customerId.toString(), currentDate);
+        if (!paymentExists && orderType== AppSettings.ORDER_TYPE_ORDER)
+        {
+            AlertDialog.Builder builder = new AlertDialog.Builder(currentContext);
+            builder.setTitle("Важное сообщение!")
+                    .setMessage("По клиенту " + selectedOutlet.customerName + " не заявлена оплата. Заявите сумму платежа!")
+                    .setIcon(R.drawable.hrn)
+                    .setCancelable(false)
+                    .setNegativeButton("ОК",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+            AlertDialog alert = builder.create();
+            alert.show();
+            return ;
+        }
+
+        double overdueSum =  appManager.getOurInstance().getOverdueSum(getBaseContext(),selectedOutlet.customerId.toString(), currentDate);
+        boolean OverdueExists = false;
+        OverdueExists =
+                (overdueSum - appManager.getOurInstance().appSetupInstance.getAllowOverdueSum()) >0 && appManager.getOurInstance().appSetupInstance.isDebtControl() ;
+        if (OverdueExists && orderType== AppSettings.ORDER_TYPE_ORDER)
+        {
+            //Toast.makeText(getBaseContext(), "Просрочка "+Double.toString(overdueSum), Toast.LENGTH_LONG).show();
+            AlertDialog.Builder builder = new AlertDialog.Builder(currentContext);
+            builder.setTitle("Важное сообщение!")
+                    .setMessage("По клиенту " + selectedOutlet.customerName + " просрочка " + String.format("%.2f", overdueSum)
+                            +" грн.\nОТГРУЗКА ЗАПРЕЩЕНА!")
+                    .setIcon(R.drawable.hrn)
+                    .setCancelable(false)
+                    .setNegativeButton("ОК",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                }
+                            });
+            AlertDialog alert = builder.create();
+            alert.show();
+            return;
+        }
+        if (orderType== AppSettings.ORDER_TYPE_STORECHECK) {
+            appManager.getOurInstance().showOrderList(selectedOutlet, ActivityRoute.this, orderType);
+        }
+
+        if (paymentExists && !OverdueExists && orderType== AppSettings.ORDER_TYPE_ORDER)
+        {
+            appManager.getOurInstance().showOrderList(selectedOutlet, ActivityRoute.this, orderType);
+        }
+    }
+
     private void showPopupMenu(View v, OutletObject outlet ) {
         PopupMenu popupMenu = new PopupMenu(this, v);
 
@@ -199,6 +256,10 @@ public class ActivityRoute extends TouchActivity {
         {
             popupMenu.getMenu().getItem(0).setEnabled(false);
             popupMenu.getMenu().getItem(0).setTitle(outlet.outletName + " - не по маршруту");
+        }
+        if (appManager.getOurInstance().appSetupInstance.getRouteType()!=1)
+        {
+            popupMenu.getMenu().getItem(2).setVisible(false);
         }
         //popupMenu.inflate(R.menu.popupmenu_route);
 
@@ -213,57 +274,10 @@ public class ActivityRoute extends TouchActivity {
 //                                Toast.makeText(getApplicationContext(),
 //                                        "Вы выбрали PopupMenu 1",
 //                                        Toast.LENGTH_SHORT).show();
-
-
-                                Calendar currentDate = Calendar.getInstance();
-                                currentDate.setTime(new Date());
-                                boolean paymentExists = appManager.getOurInstance().checkAnnouncedSum(getBaseContext(), selectedOutlet.customerId.toString(), currentDate);
-                                if (!paymentExists)
-                                {
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(currentContext);
-                                    builder.setTitle("Важное сообщение!")
-                                            .setMessage("По клиенту " + selectedOutlet.customerName + " не заявлена оплата. Заявите сумму платежа!")
-                                            .setIcon(R.drawable.hrn)
-                                            .setCancelable(false)
-                                            .setNegativeButton("ОК",
-                                                    new DialogInterface.OnClickListener() {
-                                                        public void onClick(DialogInterface dialog, int id) {
-                                                            dialog.cancel();
-                                                        }
-                                                    });
-                                    AlertDialog alert = builder.create();
-                                    alert.show();
-                                    return true;
-                                }
-
-                                double overdueSum =  appManager.getOurInstance().getOverdueSum(getBaseContext(),selectedOutlet.customerId.toString(), currentDate);
-                                boolean OverdueExists = false;
-                                OverdueExists =
-                                        (overdueSum - appManager.getOurInstance().appSetupInstance.getAllowOverdueSum()) >0 && appManager.getOurInstance().appSetupInstance.isDebtControl() ;
-                                if (OverdueExists)
-                                {
-                                    //Toast.makeText(getBaseContext(), "Просрочка "+Double.toString(overdueSum), Toast.LENGTH_LONG).show();
-                                    AlertDialog.Builder builder = new AlertDialog.Builder(currentContext);
-                                    builder.setTitle("Важное сообщение!")
-                                            .setMessage("По клиенту " + selectedOutlet.customerName + " просрочка " + String.format("%.2f", overdueSum)
-                                                    +" грн.\nОТГРУЗКА ЗАПРЕЩЕНА!")
-                                            .setIcon(R.drawable.hrn)
-                                            .setCancelable(false)
-                                            .setNegativeButton("ОК",
-                                                    new DialogInterface.OnClickListener() {
-                                                        public void onClick(DialogInterface dialog, int id) {
-                                                            dialog.cancel();
-                                                        }
-                                                    });
-                                    AlertDialog alert = builder.create();
-                                    alert.show();
-                                    return true;
-                                }
-
-                                if (paymentExists && !OverdueExists)
-                                {
-                                    appManager.getOurInstance().showOrderList(selectedOutlet, ActivityRoute.this);
-                                }
+                                showOrders(AppSettings.ORDER_TYPE_ORDER);
+                                return true;
+                            case R.id.menuStorecheck:
+                                showOrders(AppSettings.ORDER_TYPE_STORECHECK);
                                 return true;
                             case R.id.menuDebt:
                                 appManager.getOurInstance().showDebtList(selectedOutlet, ActivityRoute.this);

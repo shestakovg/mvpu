@@ -38,6 +38,7 @@ import Entitys.OrderExtra;
 import Entitys.OutletObject;
 import Entitys.orderControlParams;
 import Entitys.orderSku;
+import core.AppSettings;
 import core.TouchActivity;
 import core.appManager;
 import core.wputils;
@@ -50,6 +51,7 @@ public class ActivityOrder extends TouchActivity implements IOrder  {
     private OrderExtra orderExtra;
     private FragmentOrderSkuGroup fragGroup;
     private FragmentOrderSku  fragSku;
+    private FragmenStorecheckSku  fragStorecheck;
     private OutletObject currentOutlet;
     private Context context;
 
@@ -76,37 +78,58 @@ public class ActivityOrder extends TouchActivity implements IOrder  {
 //        {
 //            setContentView(R.layout.activity_order);
 //        }
-        setContentView(R.layout.activity_order);
-//        FragmentManager fragmentManager = getFragmentManager();
-//        FragmentTransaction ft = fragmentManager.beginTransaction();
-//        FragmentOrderSku fragSku = new FragmentOrderSku();
-//        ft.add(R.id.containerOrder, fragSku, "fragmentSku");
-//        ft.addToBackStack(null);
-//        ft.commit();
         context = this;
         currentOutlet = OutletObject.getInstance(UUID.fromString(getIntent().getStringExtra("OUTLETID")), this);
-                //appManager.getOurInstance().getActiveOutletObject();
+        //appManager.getOurInstance().getActiveOutletObject();
 
         Bundle data = getIntent().getExtras();
         orderObject = (Order) data.getParcelable("ORDER_OBJECT");
         orderExtra = OrderExtra.intInstanceFromDb(orderObject, this);
-        setTitle(getOutletObject().outletName+"    Вид цен: "+getOutletObject().priceName+ "   Заказ №: "+ orderExtra.orderNumber);
 
+        if (orderExtra.orderType == AppSettings.ORDER_TYPE_ORDER) {
+            setContentView(R.layout.activity_order);
+        }
+        else
+        {
+            setContentView(R.layout.activity_order_wide);
+        }
+//        FragmentManager fragmentManager = getFragmentManager();
+//        FragmentTransaction ft = fragmentManager.beginTransaction();
+//        fragGroup = new FragmentOrderSkuGroup();
+//        ft.add(R.id.containerOrder, fragGroup, "fragmentGroup");
+//                //(FragmentOrderSkuGroup) getFragmentManager().findFragmentById(R.id.fragmentGroup);
+//        fragSku = new FragmentOrderSku();
+//        ft.add(R.id.containerOrder, fragSku, "fragmentSku");
+//        ft.addToBackStack(null);
+//        ft.commit();
+
+        if (orderExtra.orderType == AppSettings.ORDER_TYPE_ORDER) {
+            setTitle(getOutletObject().outletName + "    Вид цен: " + getOutletObject().priceName + "   Заказ №: " + orderExtra.orderNumber);
+        }
+        else
+        if (orderExtra.orderType == AppSettings.ORDER_TYPE_STORECHECK) {
+            setTitle(getOutletObject().outletName + "   Сторчек №: " + orderExtra.orderNumber);
+        }
         fragGroup = (FragmentOrderSkuGroup) getFragmentManager().findFragmentById(R.id.fragmentGroup);
         fragGroup.fillListViewGroupSku();
-        fragSku = (FragmentOrderSku) getFragmentManager().findFragmentById(R.id.fragmentSku);
-        fragSku.displayTotal();
+        if (orderExtra.orderType == AppSettings.ORDER_TYPE_ORDER) {
+            fragSku = (FragmentOrderSku) getFragmentManager().findFragmentById(R.id.fragmentSku);
+                fragSku.displayTotal();
+            tvDeliveryDate = (TextView) findViewById(R.id.tvDeliveyDateSku);
+            tvDeliveryDate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showDialog(DIALOG_DATE);
+                }
+            });
+            displayDeliveryDate();
+        }
 
-        tvDeliveryDate = (TextView) findViewById(R.id.tvDeliveyDateSku);
+        if (orderExtra.orderType==AppSettings.ORDER_TYPE_STORECHECK)
+        {
+            //fragStorecheck = (FragmenStorecheckSku) getFragmentManager().findFragmentById(R.id.fragmentStorecheck);
+        }
 
-
-        tvDeliveryDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialog(DIALOG_DATE);
-            }
-        });
-        displayDeliveryDate();
     }
 
     protected Dialog onCreateDialog(int id) {

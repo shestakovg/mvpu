@@ -8,6 +8,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
+import core.AppSettings;
+
 /**
  * Created by shestakov.g on 02.06.2015.
  */
@@ -27,7 +29,7 @@ public class Order implements Parcelable {
     public String  notes="";
     public String outletId;
     public Boolean sended = false;
-
+    public int orderType = AppSettings.ORDER_TYPE_ORDER;
     public Order(int _id, int orderNumber, String orderUUID, Date orderDate, double orderSum) {
         //this.orderDescription = orderDescription;
         this._id = _id;

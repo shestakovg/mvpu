@@ -8,6 +8,9 @@
         <item
             android:id="@+id/menuDebt"
             android:title="Долги"/>
+        <item
+            android:id="@+id/menuStorecheck"
+            android:title="Сторчек"/>
         <!--<item-->
             <!--android:id="@+id/menu3"-->
             <!--android:title="menu item 3">-->

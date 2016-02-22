@@ -6,20 +6,28 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.uni.mvpu.ActivityOrder">
 
+    <fragment
+        android:id="@+id/fragmentGroup"
+        android:name="com.uni.mvpu.FragmentOrderSkuGroup"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        tools:layout="@layout/fragment_skugroup">
+    </fragment>
     <!--<fragment-->
-        <!--android:id="@+id/fragmentGroup"-->
-        <!--android:name="com.uni.mvpu.FragmentOrderSkuGroup"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_weight="1"-->
-        <!--tools:layout="@layout/fragment_skugroup">-->
+    <!--android:id="@+id/fragmentSku"-->
+    <!--android:name="com.uni.mvpu.FragmentOrderSku"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_weight="2"-->
+    <!--tools:layout="@layout/fragment_skuorder">-->
     <!--</fragment>-->
-    <!--<fragment-->
-        <!--android:id="@+id/fragmentSku"-->
-        <!--android:name="com.uni.mvpu.FragmentOrderSku"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_weight="2"-->
-        <!--tools:layout="@layout/fragment_skuorder">-->
-    <!--</fragment>-->
+    <fragment
+        android:id="@+id/fragmentStorecheck"
+        android:name="com.uni.mvpu.FragmenStorecheckSku"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        tools:layout="@layout/fragmen_storecheck_sku">
+    </fragment>
 </LinearLayout>
