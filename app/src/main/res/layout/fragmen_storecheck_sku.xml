@@ -1,8 +1,10 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context="com.uni.mvpu.FragmenStorecheckSku">
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <!-- TODO: Update blank fragment layout -->
+
+<!-- TODO: Update blank fragment layout -->
 
     <LinearLayout
         android:orientation="horizontal"
@@ -17,7 +19,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Заполнить сторчек"
+            android:text="Сторчек"
             android:id="@+id/btnStorechekDisplayAllRows"/>
         <Button
             android:layout_width="wrap_content"
@@ -30,7 +32,7 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_row="1"
         android:layout_rowWeight="1"
         android:layout_column="0">
@@ -42,4 +44,4 @@
             android:divider="@android:color/holo_blue_light" />
     </LinearLayout>
 
-</FrameLayout>
+</LinearLayout>

@@ -42,6 +42,7 @@ public class AppSettings implements IOrderControlParams {
 
     public  static final int ORDER_TYPE_ORDER = 0;
     public  static final int ORDER_TYPE_STORECHECK = 1;
+    public  static final String EMPTY_STORECHECK_DATE = "Не указано";
     public static final String PARAM_PRICEID_DEFAULT = "75a9d60f-cd75-11e4-826a-240a64c9314e";
     public static final Double PARAM_EMPTY_PAYMENT = 0.001;
 

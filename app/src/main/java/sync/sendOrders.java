@@ -22,6 +22,7 @@ import org.json.JSONStringer;
 import java.util.List;
 
 import Entitys.sendResult;
+import core.AppSettings;
 import core.appManager;
 import core.wputils;
 import db.DbOpenHelper;
@@ -97,7 +98,7 @@ public class sendOrders  extends AsyncTask<String, Integer, List<JSONObject>> {
             request.setHeader("Content-type", "application/json");
             Cursor cursor = db.rawQuery("select  h._id,  h.orderUUID,DATETIME(h.orderDate) as orderDate,DATETIME(h.deliveryDate) as deliveryDate," +
                     "  h.outletId,  h.orderNumber ,coalesce( h.notes,' ') notes," +
-                                "  coalesce(h.payType,0) payType ,coalesce(h.autoLoad,0) autoLoad from orderHeader h where  h._send=0", null);
+                                "  coalesce(h.payType,0) payType ,coalesce(h.autoLoad,0) autoLoad, h.orderType from orderHeader h where  h._send=0", null);
             cursor.moveToFirst();
 
             for (int i=0;i<cursor.getCount();i++)
@@ -116,6 +117,7 @@ public class sendOrders  extends AsyncTask<String, Integer, List<JSONObject>> {
                         .key("payType").value(cursor.getInt(cursor.getColumnIndex("payType")))
                             .key("autoLoad").value(cursor.getInt(cursor.getColumnIndex("autoLoad")))
                             .key("routeId").value(appManager.getOurInstance().appSetupInstance.getRouteId())
+                            .key("orderType").value(cursor.getInt(cursor.getColumnIndex("orderType")))
                         .endObject()
                         .endObject();
                 StringEntity entity = new StringEntity(orderHeader.toString());
@@ -131,7 +133,7 @@ public class sendOrders  extends AsyncTask<String, Integer, List<JSONObject>> {
                 else
                 {
 //                    //???????? ???????
-                    sendResult detailResult = sendOrderDetail(cursor.getInt(cursor.getColumnIndex("_id")));
+                    sendResult detailResult = sendOrderDetail(cursor.getInt(cursor.getColumnIndex("_id")),cursor.getInt(cursor.getColumnIndex("orderType")));
                     if (detailResult.getResult())
                     {
                         ServiceManager wcf=new ServiceManager(appManager.getOurInstance().appSetupInstance.getServiceUrl());
@@ -153,7 +155,7 @@ public class sendOrders  extends AsyncTask<String, Integer, List<JSONObject>> {
         return result;
     }
 
-    private sendResult sendOrderDetail(int orderId)
+    private sendResult sendOrderDetail(int orderId, int orderType)
     {
         sendResult result=new sendResult();
         DbOpenHelper dbOpenHelper=new DbOpenHelper(context);
@@ -162,9 +164,16 @@ public class sendOrders  extends AsyncTask<String, Integer, List<JSONObject>> {
             HttpPost request = new HttpPost(appManager.getOurInstance().appSetupInstance.getServiceUrl()+"/dictionary/savedetail");
             request.setHeader("Accept", "application/json");
             request.setHeader("Content-type", "application/json");
-            Cursor cursor = db.rawQuery("select orderUUID, skuId, qty1, qty2, PriceId from orderDetail where headerId = "+orderId, null);
+            Cursor cursor = db.rawQuery("select orderUUID, skuId, qty1, qty2, PriceId, DATETIME(finalDate) finalDate " +
+                    " from orderDetail where headerId = "+orderId+
+                            (orderType == AppSettings.ORDER_TYPE_STORECHECK ?
+                                                " and finalDate is not null":""),
+                    null);
             cursor.moveToFirst();
             for (int i=0;i<cursor.getCount();i++) {
+                String finalDate = cursor.getString(cursor.getColumnIndex("finalDate"));
+                if (orderType != AppSettings.ORDER_TYPE_STORECHECK)
+                    finalDate = "02/28/2016";
                 JSONStringer orderHeader = new JSONStringer()
                         .object()
                         .key("orderDetail")
@@ -173,7 +182,9 @@ public class sendOrders  extends AsyncTask<String, Integer, List<JSONObject>> {
                             key("skuId").value(cursor.getString(cursor.getColumnIndex("skuId"))).
                             key("qty1").value(cursor.getInt(cursor.getColumnIndex("qty1"))).
                             key("qty2").value(cursor.getInt(cursor.getColumnIndex("qty2"))).
-                            key("priceType").value(cursor.getString(cursor.getColumnIndex("PriceId"))).endObject()
+                            key("priceType").value(cursor.getString(cursor.getColumnIndex("PriceId"))).
+                            key("finalDate").value(finalDate)
+                        .endObject()
                         .endObject();
                 StringEntity entity = new StringEntity(orderHeader.toString());
                 request.setEntity(entity);

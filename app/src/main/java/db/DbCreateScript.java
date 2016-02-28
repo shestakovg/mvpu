@@ -22,7 +22,7 @@ public class DbCreateScript {
                 " orderDate DATETIME DEFAULT CURRENT_TIMESTAMP,deliveryDate DATETIME DEFAULT CURRENT_TIMESTAMP, orderNumber integer DEFAULT 0, notes text, responseText text, _1CDocNumber1 text,  _1CDocNumber2 text, payType integer DEFAULT 0, autoLoad integer DEFAULT 0, orderType integer default 0, _send integer DEFAULT 0)";
     private static String CREATE_ORDER_HEADER_IDX = "CREATE INDEX idx_orderHeader_UUID ON orderHeader (orderUUID)";
 
-    private static String CREATE_ORDER_DETAIL = "create table orderDetail(_id integer primary key autoincrement, headerId integer DEFAULT 0, orderUUID text, skuId text, qty1 integer, qty2 integer, PriceId text,finalDate DATETIME  _send integer DEFAULT 0)";
+    private static String CREATE_ORDER_DETAIL = "create table orderDetail(_id integer primary key autoincrement, headerId integer DEFAULT 0, orderUUID text, skuId text, qty1 integer, qty2 integer, PriceId text,finalDate DATETIME,  _send integer DEFAULT 0)";
     private static String CREATE_CREATE_ORDER_DETAIL_IDX = "CREATE UNIQUE INDEX idx_orderDetail_UUID ON orderDetail (orderUUID, skuId)";
     private static String CREATE_CREATE_ORDER_DETAIL2_IDX = "CREATE UNIQUE INDEX idx_orderDetail_ID ON orderDetail (headerId, skuId)";
 

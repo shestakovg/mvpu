@@ -183,7 +183,8 @@ public class appManager {
         DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("orderUUID", UUID.randomUUID().toString());
+        String orderUUID = UUID.randomUUID().toString();
+        values.put("orderUUID",orderUUID );
         values.put("outletId", outletid);
         values.put("orderNumber", orderNumber);
         values.put("orderDate", wputils.getDateTime(orderDate));
@@ -192,10 +193,33 @@ public class appManager {
         values.put("deliveryDate", wputils.getDateTime(deliveryDate));
         values.put("_send",0);
         values.put("orderType", orderType);
-        db.insert("orderHeader", null, values);
+        long headerid = db.insert("orderHeader", null, values);
         db.close();
+        if (orderType == AppSettings.ORDER_TYPE_STORECHECK)
+            fillStorecheck(context, outletid, orderUUID, headerid);
     }
 
+    public void fillStorecheck(Context context, String outletid, String orderUUID, long headerid)
+    {
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        Cursor cursor =db.rawQuery("select skuid from specification where outletid=?", new String[]{outletid});
+        cursor.moveToFirst();
+        for (int i=0;i<cursor.getCount();i++)
+        {
+            ContentValues values = new ContentValues();
+            values.put("SkuId", cursor.getString(0));
+            values.put("headerId", headerid);
+            values.put("orderUUID", orderUUID);
+            //values.put("priceId", priceId);
+            values.put("qty1", 0);
+            values.put("qty2", 0);
+            values.put("_send", 0);
+            db.insert("orderDetail", null, values);
+            cursor.moveToNext();
+        }
+        db.close();
+    }
     public void sendDataToServer(Context context, Activity owner)
     {
         sendOrders so = new  sendOrders(context, owner);

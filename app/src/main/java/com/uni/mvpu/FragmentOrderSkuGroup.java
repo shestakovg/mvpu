@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,7 +48,11 @@ public class FragmentOrderSkuGroup extends Fragment {
         btnUpGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBtnGroupUp(v);
+                try {
+                    onBtnGroupUp(v);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         });
 //        textCurrentGroup = (TextView) parentView.findViewById(R.id.tetxViewSelectedGroup);
@@ -66,7 +71,11 @@ public class FragmentOrderSkuGroup extends Fragment {
         lvGroup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                            @Override
                                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                               onItemClickGroup(parent, view, position, id);
+                                               try {
+                                                   onItemClickGroup(parent, view, position, id);
+                                               } catch (ParseException e) {
+                                                   e.printStackTrace();
+                                               }
                                            }
                                        }
 
@@ -89,8 +98,7 @@ public class FragmentOrderSkuGroup extends Fragment {
         super.onConfigurationChanged(newConfig);
     }
 
-    public void upToRootGroup()
-    {
+    public void upToRootGroup() throws ParseException {
         skuGroupStack.clear();
         skuGroupStack.add(
                 new groupSku(new UUID(0L, 0L).toString(), new UUID(0L, 0L).toString(), "")
@@ -98,8 +106,7 @@ public class FragmentOrderSkuGroup extends Fragment {
         fillListViewGroupSku();
     }
 
-    public void fillListViewGroupSku()
-    {
+    public void fillListViewGroupSku() throws ParseException {
 
 
         saGroupSku = new SimpleAdapter(parentView.getContext(), fillGroupList(skuGroupStack.get(skuGroupStack.size()-1)), android.R.layout.simple_expandable_list_item_1,
@@ -111,8 +118,7 @@ public class FragmentOrderSkuGroup extends Fragment {
         actOrder.refreshSku( skuGroupStack.get(skuGroupStack.size() - 1).getGroupId());
     }
 
-    private void groupUp()
-    {
+    private void groupUp() throws ParseException {
         if (skuGroupStack.size()>1)
             skuGroupStack.remove(skuGroupStack.size()-1);
         //textCurrentGroup.setText(skuGroupStack.get(skuGroupStack.size()-1).getGroupName());
@@ -145,15 +151,14 @@ public class FragmentOrderSkuGroup extends Fragment {
 
     }
 
-    private void onItemClickGroup(AdapterView<?> parent, View view, int position, long id) {
+    private void onItemClickGroup(AdapterView<?> parent, View view, int position, long id) throws ParseException {
         skuGroupStack.add(groupSkuList.get(position));
             //textCurrentGroup.setText(groupSkuList.get(position).getGroupName());
             btnUpGroup.setText(groupSkuList.get(position).getGroupName());
             fillListViewGroupSku();
     }
 
-    private void onBtnGroupUp(View v)
-    {
+    private void onBtnGroupUp(View v) throws ParseException {
         groupUp();
     }
 }

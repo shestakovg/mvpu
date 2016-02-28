@@ -27,6 +27,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -104,14 +105,18 @@ public class ActivityOrder extends TouchActivity implements IOrder  {
 //        ft.commit();
 
         if (orderExtra.orderType == AppSettings.ORDER_TYPE_ORDER) {
-            setTitle(getOutletObject().outletName + "    Заказ: " + getOutletObject().priceName + "   ????? ?: " + orderExtra.orderNumber);
+            setTitle(getOutletObject().outletName + "    Заказ: " + getOutletObject().priceName + "   Номер: " + orderExtra.orderNumber);
         }
         else
         if (orderExtra.orderType == AppSettings.ORDER_TYPE_STORECHECK) {
             setTitle(getOutletObject().outletName + "   Сторчек: " + orderExtra.orderNumber);
         }
         fragGroup = (FragmentOrderSkuGroup) getFragmentManager().findFragmentById(R.id.fragmentGroup);
-        fragGroup.fillListViewGroupSku();
+        try {
+            fragGroup.fillListViewGroupSku();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         if (orderExtra.orderType == AppSettings.ORDER_TYPE_ORDER) {
             fragSku = (FragmentOrderSku) getFragmentManager().findFragmentById(R.id.fragmentSku);
                 fragSku.displayTotal();
@@ -127,7 +132,7 @@ public class ActivityOrder extends TouchActivity implements IOrder  {
 
         if (orderExtra.orderType==AppSettings.ORDER_TYPE_STORECHECK)
         {
-            //fragStorecheck = (FragmenStorecheckSku) getFragmentManager().findFragmentById(R.id.fragmentStorecheck);
+            fragStorecheck = (FragmenStorecheckSku) getFragmentManager().findFragmentById(R.id.fragmentStorecheck);
         }
 
     }
@@ -158,14 +163,14 @@ public class ActivityOrder extends TouchActivity implements IOrder  {
             {
                 AlertDialog.Builder ad = new AlertDialog.Builder(context);
                 ad.setTitle(context.getString(R.string.orderControlMessage));
-                ad.setMessage(param.getControlMessage() + "\n" + " ????? ?? ????? ???? ????????!\n ??????? ??????");
-                ad.setPositiveButton("??", new DialogInterface.OnClickListener() {
+                ad.setMessage(param.getControlMessage() + "\n" + "Заказ сохранить невозможно!\nУдалить заказ?");
+                ad.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
                         OrderExtra.DeleteOrder(orderExtra, context);
                         finish();
                     }
                 });
-                ad.setNegativeButton("???", new DialogInterface.OnClickListener() {
+                ad.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
 
                     }
@@ -214,9 +219,19 @@ public class ActivityOrder extends TouchActivity implements IOrder  {
     }
 
 
-    public void refreshSku(String skuGroup) {
-        if (fragSku!=null && fragSku.isInLayout()) {
-            fragSku.fillSku( skuGroup);
+    public void refreshSku(String skuGroup) throws ParseException {
+        if (orderExtra.orderType == AppSettings.ORDER_TYPE_ORDER)
+        {
+            if (fragSku!=null && fragSku.isInLayout()) {
+                fragSku.fillSku( skuGroup);
+            }
+        }
+        else
+        {
+            if (fragStorecheck!=null && fragStorecheck.isInLayout())
+            {
+                fragStorecheck.fillSku(skuGroup);
+            }
         }
     }
 

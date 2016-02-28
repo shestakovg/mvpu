@@ -131,8 +131,8 @@ public class FragmentOrderSku extends Fragment implements IOrderTotal{
                 " count(d._id) rowCount from orderHeader h " +
                 " inner join orderDetail d on d.headerid= h._id" +
                 " left join price p on d.skuId = p.skuId and p.priceId = d.priceId " +
-                " where h._id = ? and (coalesce(d.qty1,0)>0 or coalesce(d.qty2,0)>0) and coalesce(h.orderType,0)=?";
-        Cursor cursor = db.rawQuery(query, new String[] {Integer.toString(((IOrder) getActivity()).getOrderExtra()._id), Integer.toString(((IOrder) getActivity()).getOrderExtra().orderType)});
+                " where h._id = ? and (coalesce(d.qty1,0)>0 or coalesce(d.qty2,0)>0)";
+        Cursor cursor = db.rawQuery(query, new String[] {Integer.toString(((IOrder) getActivity()).getOrderExtra()._id)});//, Integer.toString(((IOrder) getActivity()).getOrderExtra().orderType)});
                 //((IOrder) getActivity()).getOutletObject().priceId.toString()});
         cursor.moveToFirst();
         for (int i = 0; i < cursor.getCount(); i++) {

@@ -5,7 +5,11 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.UUID;
 
+import core.wputils;
 import db.DbOpenHelper;
 
 /**
@@ -25,10 +29,18 @@ public class orderSku {
     public double price;
     public double stockG;
     public double stockR;
-    public String priceId;
+    public String priceId = UUID.randomUUID().toString();
     public String priceName;
     public boolean checkMultiplicity = true;
     public boolean onlyFact = false;
+
+    public void setFinalDate(Calendar finalDate) {
+        this.finalDate = finalDate;
+        this.finalDateExists = true;
+    }
+
+    public Calendar finalDate = wputils.getCurrentDate();
+    public boolean finalDateExists = false;
     public int getCountInBox() {
         return (countInBox == 0 ? 1 : countInBox);
     }
@@ -86,8 +98,15 @@ public class orderSku {
         }
         db.execSQL("update orderDetail " +
                 " set _send = 0, qty1 = "+qtyMWH+" , qty2 = "+qtyRWH+", priceId = '"+priceId+"' "+
+                (finalDateExists ?
+                    ",finalDate=(DATETIME('%Y-%m-%d',"+ finalDate.get(Calendar.YEAR)+","+finalDate.get(Calendar.MONTH)+", 1))"
+                :"")+
                 " where _id = "+_id);
         if (dbNotExist) db.close();
+    }
+    public void deleteFromDB(SQLiteDatabase db)
+    {
+        db.execSQL("delete from orderDetail where _id = "+_id);
     }
     public void saveDb(Context context)
     {
@@ -95,12 +114,14 @@ public class orderSku {
 
         DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
-        if (exist)
+        if (exist && !finalDateExists)
         {
             updatePosition(context, db);
         }
         else
         {
+
+            deleteFromDB(db);
             ContentValues values = new ContentValues();
             values.put("SkuId", skuId);
             values.put("headerId", headerId);
@@ -108,6 +129,8 @@ public class orderSku {
             values.put("priceId", priceId);
             values.put("qty1", qtyMWH);
             values.put("qty2", qtyRWH);
+            if (finalDateExists)
+                values.put("finalDate", wputils.getDateTime(finalDate));
             values.put("_send", 0);
             this._id = db.insert("orderDetail", null, values);
         }
