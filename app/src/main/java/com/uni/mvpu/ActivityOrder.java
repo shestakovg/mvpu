@@ -104,11 +104,11 @@ public class ActivityOrder extends TouchActivity implements IOrder  {
 //        ft.commit();
 
         if (orderExtra.orderType == AppSettings.ORDER_TYPE_ORDER) {
-            setTitle(getOutletObject().outletName + "    Вид цен: " + getOutletObject().priceName + "   Заказ №: " + orderExtra.orderNumber);
+            setTitle(getOutletObject().outletName + "    Заказ: " + getOutletObject().priceName + "   ????? ?: " + orderExtra.orderNumber);
         }
         else
         if (orderExtra.orderType == AppSettings.ORDER_TYPE_STORECHECK) {
-            setTitle(getOutletObject().outletName + "   Сторчек №: " + orderExtra.orderNumber);
+            setTitle(getOutletObject().outletName + "   Сторчек: " + orderExtra.orderNumber);
         }
         fragGroup = (FragmentOrderSkuGroup) getFragmentManager().findFragmentById(R.id.fragmentGroup);
         fragGroup.fillListViewGroupSku();
@@ -158,14 +158,14 @@ public class ActivityOrder extends TouchActivity implements IOrder  {
             {
                 AlertDialog.Builder ad = new AlertDialog.Builder(context);
                 ad.setTitle(context.getString(R.string.orderControlMessage));
-                ad.setMessage(param.getControlMessage() + "\n" + " Заказ не может быть сохранен!\n Удалить заказ?");
-                ad.setPositiveButton("Да", new DialogInterface.OnClickListener() {
+                ad.setMessage(param.getControlMessage() + "\n" + " ????? ?? ????? ???? ????????!\n ??????? ??????");
+                ad.setPositiveButton("??", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
                         OrderExtra.DeleteOrder(orderExtra, context);
                         finish();
                     }
                 });
-                ad.setNegativeButton("Нет", new DialogInterface.OnClickListener() {
+                ad.setNegativeButton("???", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
 
                     }
@@ -235,7 +235,7 @@ public class ActivityOrder extends TouchActivity implements IOrder  {
         final OrderExtra currnentOrder = orderExtra;
         //Toast.makeText(context, sku.skuName, Toast.LENGTH_SHORT ).show();
         final Dialog dlgOrderParams =  new Dialog(this);
-        dlgOrderParams.setTitle("Параметры заказа");
+        dlgOrderParams.setTitle("Параметры");
         dlgOrderParams.setContentView(R.layout.dialog_order_params);
         dlgOrderParams.setCancelable(true);
         if (currnentOrder.payType == 0 )
@@ -274,12 +274,12 @@ public class ActivityOrder extends TouchActivity implements IOrder  {
         );
             //        (RadioButton) dlgOrderParams.findViewById(R.id.radioBtnCredit).
 //        Spinner spinner = (Spinner) dlgOrderParams.findViewById(R.id.spinerOrderPayType);
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, new String[] {"Кредит","Факт"});
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, new String[] {"??????","????"});
 //        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //        spinner.setAdapter(adapter);
-//        spinner.setPrompt("Тип продажи");
+//        spinner.setPrompt("??? ???????");
         TextView deliveryDate = (TextView) dlgOrderParams.findViewById(R.id.tvDeliveryDate);
-        deliveryDate.setText(DateFormat.format("  Дата доставки: dd.MM.yyyy", currnentOrder.deliveryDate));
+        deliveryDate.setText(DateFormat.format("Доставка: dd.MM.yyyy", currnentOrder.deliveryDate));
             dlgOrderParams.show();
         }
     }
