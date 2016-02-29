@@ -196,7 +196,7 @@ public class ActivityRoute extends TouchActivity {
         Calendar currentDate = Calendar.getInstance();
         currentDate.setTime(new Date());
         boolean paymentExists = appManager.getOurInstance().checkAnnouncedSum(getBaseContext(), selectedOutlet.customerId.toString(), currentDate);
-        if (!paymentExists && orderType== AppSettings.ORDER_TYPE_ORDER)
+        if (!paymentExists && appManager.getOurInstance().appSetupInstance.getRouteType()!=1)
         {
             AlertDialog.Builder builder = new AlertDialog.Builder(currentContext);
             builder.setTitle("Важное сообщение!")
@@ -218,7 +218,7 @@ public class ActivityRoute extends TouchActivity {
         boolean OverdueExists = false;
         OverdueExists =
                 (overdueSum - appManager.getOurInstance().appSetupInstance.getAllowOverdueSum()) >0 && appManager.getOurInstance().appSetupInstance.isDebtControl() ;
-        if (OverdueExists && orderType== AppSettings.ORDER_TYPE_ORDER)
+        if (OverdueExists && orderType== AppSettings.ORDER_TYPE_ORDER &&  appManager.getOurInstance().appSetupInstance.getRouteType()!=1)
         {
             //Toast.makeText(getBaseContext(), "Просрочка "+Double.toString(overdueSum), Toast.LENGTH_LONG).show();
             AlertDialog.Builder builder = new AlertDialog.Builder(currentContext);
@@ -241,7 +241,11 @@ public class ActivityRoute extends TouchActivity {
             appManager.getOurInstance().showOrderList(selectedOutlet, ActivityRoute.this, orderType);
         }
 
-        if (paymentExists && !OverdueExists && orderType== AppSettings.ORDER_TYPE_ORDER)
+        if (
+                (paymentExists && !OverdueExists && orderType== AppSettings.ORDER_TYPE_ORDER)
+                ||
+                        appManager.getOurInstance().appSetupInstance.getRouteType()==1
+                )
         {
             appManager.getOurInstance().showOrderList(selectedOutlet, ActivityRoute.this, orderType);
         }

@@ -2,6 +2,8 @@ package Adapters;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,12 +79,33 @@ public class storecheckSkuAdapter  extends BaseAdapter {
         textSkuName.setText(cursku.skuName);
         TextView textFinalDate = (TextView) view.findViewById(R.id.finalDate);
         if (!cursku.finalDateExists)
-            textFinalDate.setText(AppSettings.EMPTY_STORECHECK_DATE);
-        else
+        {    textFinalDate.setText(AppSettings.EMPTY_STORECHECK_DATE);
+            textFinalDate.setTextColor(Color.parseColor("#ff423aff"));}
+        else {
             textFinalDate.setText(wputils.getDateTimeString(cursku.finalDate));
+            textFinalDate.setTextColor(Color.parseColor("#FFFF0C12"));
+        }
         TextView qty = (TextView) view.findViewById(R.id.editMWH);
-        qty.setText(Integer.toString(cursku.qtyMWH));
+
+        if (cursku.qtyMWH==0)
+        {
+            qty.setTextColor(Color.parseColor("#ff423aff"));
+            qty.setText("-");
+        }
+        else
+        {
+            qty.setTextColor(Color.parseColor("#FFFF0C12"));
+            qty.setText(Integer.toString(cursku.qtyMWH));
+        }
+
         textSkuName.setTag(position);
+        view.setTag(position);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickSku(v);
+            }
+        });
         textSkuName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,7 +124,8 @@ public class storecheckSkuAdapter  extends BaseAdapter {
         dlgEditQty.setContentView(R.layout.dlg_edit_storecheck);
         dlgEditQty.setCancelable(true);
         final EditText dlgEditMWH = (EditText) dlgEditQty.findViewById(R.id.editDialogMWH);
-        dlgEditMWH.setText(Integer.toString(sku.qtyMWH));
+        if (sku.qtyMWH!=0)
+            dlgEditMWH.setText(Integer.toString(sku.qtyMWH));
         final DatePicker finalDatePicker = (DatePicker) dlgEditQty.findViewById(R.id.datePicker);
         if (sku.finalDateExists)
             finalDatePicker.updateDate(sku.finalDate.get(Calendar.YEAR), sku.finalDate.get(Calendar.MONTH),sku.finalDate.get(Calendar.DAY_OF_MONTH));

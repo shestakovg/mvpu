@@ -73,7 +73,10 @@ public class FragmentOrderSku extends Fragment implements IOrderTotal{
             whereClause=" where od.qty1>0 or od.qty2>0 ";
             params= new String[] {Integer.toString(((IOrder) getActivity()).getOrderExtra()._id)};
         }
-
+        String specificationFilter = "";
+        if (appManager.getOurInstance().appSetupInstance.getRouteType()==1)
+            specificationFilter="\n inner join specification spf on spf.skuid=s.skuid and spf.outletid='"+
+                    ((IOrder) getActivity()).getOrderExtra().outletId+ "'  \n";
         skuList = new ArrayList<>();
         final OutletObject locOutlet = ((IOrder) getActivity()).getOutletObject();
         DbOpenHelper dbOpenHelper = new DbOpenHelper(parentView.getContext());
@@ -84,6 +87,7 @@ public class FragmentOrderSku extends Fragment implements IOrderTotal{
                         "            left join  stock st on s.skuId = st.skuId  " +
                         "            left join price p on s.skuId = p.skuId and p.PriceId = '" +locOutlet.priceId.toString()+"' "+
                         joinKind + " join orderDetail od on od.skuId= s.skuId and od.headerId = ?  "+
+                        specificationFilter+
                         " left join price pOrder on s.skuId = pOrder.skuId and pOrder.PriceId = od.PriceId "+
                         " left join PriceNames pn on pn.PriceId = coalesce(od.PriceId,'"+locOutlet.priceId.toString()+"') "+
                         " left join skuFact sf on sf.skuId =s.skuId and sf.priceId = coalesce(od.PriceId,'"+locOutlet.priceId.toString()+"') "+
