@@ -195,7 +195,7 @@ public class appManager {
         values.put("orderType", orderType);
         long headerid = db.insert("orderHeader", null, values);
         db.close();
-        if (orderType == AppSettings.ORDER_TYPE_STORECHECK)
+        if (orderType == AppSettings.ORDER_TYPE_STORECHECK || appManager.getOurInstance().appSetupInstance.getRouteType()==1)
             fillStorecheck(context, outletid, orderUUID, headerid);
     }
 
@@ -203,6 +203,7 @@ public class appManager {
     {
         DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        OutletObject outletObject= OutletObject.getInstance(UUID.fromString(outletid), context);
         Cursor cursor =db.rawQuery("select skuid from specification where outletid=?", new String[]{outletid});
         cursor.moveToFirst();
         for (int i=0;i<cursor.getCount();i++)
@@ -211,7 +212,7 @@ public class appManager {
             values.put("SkuId", cursor.getString(0));
             values.put("headerId", headerid);
             values.put("orderUUID", orderUUID);
-            //values.put("priceId", priceId);
+            values.put("priceId", outletObject.priceId.toString());
             values.put("qty1", 0);
             values.put("qty2", 0);
             values.put("_send", 0);

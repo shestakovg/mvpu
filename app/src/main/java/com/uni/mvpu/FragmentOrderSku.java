@@ -57,6 +57,8 @@ public class FragmentOrderSku extends Fragment implements IOrderTotal{
                     }
                 }
         );
+        if (appManager.getOurInstance().appSetupInstance.getRouteType()==1)
+            fillSku("");
         return parentView;
     }
 
@@ -70,7 +72,7 @@ public class FragmentOrderSku extends Fragment implements IOrderTotal{
         if (skuGroup.isEmpty()) {
             orderByClause="od._id";
             joinKind="inner";
-            whereClause=" where od.qty1>0 or od.qty2>0 ";
+            whereClause=" where od.qty1>=0 or od.qty2>=0 ";
             params= new String[] {Integer.toString(((IOrder) getActivity()).getOrderExtra()._id)};
         }
         String specificationFilter = "";
@@ -145,8 +147,14 @@ public class FragmentOrderSku extends Fragment implements IOrderTotal{
             cursor.moveToNext();
         }
         db.close();
-        ((TextView) getView().findViewById(R.id.tvOrderSum)).setText(String.format("%.2f", orderSum));
-        ((TextView) getView().findViewById(R.id.tvOrderRowCount)).setText(Integer.toString(rowCount));
+        if (getView()!=null) {
+            TextView tvOrderSum = ((TextView) getView().findViewById(R.id.tvOrderSum));
+            if (tvOrderSum != null)
+                tvOrderSum.setText(String.format("%.2f", orderSum));
+            TextView tvOrderRowCount = ((TextView) getView().findViewById(R.id.tvOrderRowCount));
+            if (tvOrderRowCount != null)
+                tvOrderRowCount.setText(Integer.toString(rowCount));
+        }
         return new orderControlParams(rowCount, orderSum, appManager.getOurInstance().appSetupInstance, ((IOrder) getActivity()).getOrderExtra());
     }
 
