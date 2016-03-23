@@ -33,7 +33,7 @@ public class orderSku {
     public String priceName;
     public boolean checkMultiplicity = true;
     public boolean onlyFact = false;
-
+    public int outletStock = 0;
     public void setFinalDate(Calendar finalDate) {
         this.finalDate = finalDate;
         this.finalDateExists = true;

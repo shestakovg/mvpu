@@ -141,6 +141,9 @@ public class orderSkuAdapter extends BaseAdapter  {
         }
         edRWH.setTag(position);
         edRWH.setText(cursku.getQtyRWHForEditText());
+        TextView outletStock =  (TextView) view.findViewById(R.id.textOutletStock);
+        if (outletStock!=null)
+            outletStock.setText(Integer.toString(cursku.outletStock));
 
         Spinner spinnerPriceType = (Spinner) view.findViewById(R.id.spinnerPriceType);
         spinnerPriceType.setTag(position);
@@ -235,7 +238,7 @@ public class orderSkuAdapter extends BaseAdapter  {
         dlgEditQty.setContentView(R.layout.edit_orderqty);
         dlgEditQty.setCancelable(true);
         //((TextView) dlgEditQty.findViewById(R.id.tvEtitQtyDescription)).setText(sku.skuName);
-        String stockStr = "Остатки: главный "+String.format("%d", (long)  sku.stockG)+"   розница "+String.format("%d", (long)  sku.stockR)
+        String stockStr = "Остатки: Главный "+String.format("%d", (long)  sku.stockG)+"   Розница "+String.format("%d", (long)  sku.stockR)
                 + "     В ящ. "+String.format("%d", (int)  sku.getCountInBox());
         ((TextView) dlgEditQty.findViewById(R.id.tvEtitQtyStock)).setText(stockStr);
 
@@ -257,12 +260,12 @@ public class orderSkuAdapter extends BaseAdapter  {
                         Toast.makeText(context, context.getText(R.string.non_multiply_mvh), Toast.LENGTH_LONG).show();
                         AlertDialog.Builder ad = new AlertDialog.Builder(context);
                         ad.setTitle(context.getString(R.string.pAlert));
-                        ad.setMessage(context.getText(R.string.non_multiply_mvh) + " : " + sku.skuName + "  -  " + String.format("%d", (long) enteredQty) + " шт");
+                        ad.setMessage(context.getText(R.string.non_multiply_mvh) + " : " + sku.skuName + "  -  " + String.format("%d", (long) enteredQty) + " ящ");
                         ad.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int arg1) {
                             }
                         });
-//                        ad.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+//                        ad.setNegativeButton("??????", new DialogInterface.OnClickListener() {
 //                            public void onClick(DialogInterface dialog, int arg1) {
 //
 //                            }
@@ -309,7 +312,7 @@ public class orderSkuAdapter extends BaseAdapter  {
     {
         final orderSku sku = getSku(position);
         AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
-        builder1.setMessage("Удалить заказ по "+sku.skuName);
+        builder1.setMessage("Удалить порзицию "+sku.skuName);
         builder1.setCancelable(true);
         builder1.setPositiveButton("Да",
                 new DialogInterface.OnClickListener() {

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import core.AppSettings;
 import core.LocationDatabase;
 import core.RouteDay;
 import core.appManager;
@@ -87,6 +88,16 @@ public class MainActivityFragment extends Fragment {
             }
         });
 
+        ((Button) parentView.findViewById(R.id.btnMyStorecheck)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnMyStorecheck(v);
+            }
+        });
+
+//        if (appManager.getOurInstance().appSetupInstance.getRouteType() == 0 )
+//            ((Button) parentView.findViewById(R.id.btnMyStorecheck)).setVisibility(View.INVISIBLE);
+
         ((Button) parentView.findViewById(R.id.btnMyPays)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,7 +138,13 @@ public class MainActivityFragment extends Fragment {
 
     private void btnMyOrders(View v)
     {
-        appManager.getOurInstance().showOrderListByDay(getActivity());
+        appManager.getOurInstance().showOrderListByDay(getActivity(), AppSettings.ORDER_TYPE_ORDER);
+
+    }
+
+    private void btnMyStorecheck(View v)
+    {
+        appManager.getOurInstance().showOrderListByDay(getActivity(), AppSettings.ORDER_TYPE_STORECHECK);
 
     }
     private void btnSyncServer(View v)

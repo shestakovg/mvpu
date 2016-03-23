@@ -145,11 +145,12 @@ public class appManager {
         context.startActivity(intent);
     }
 
-    public void showOrderListByDay(Context context)
+    public void showOrderListByDay(Context context, int orderType )
     {
         Intent intent = new Intent(context, ActivityOrderList.class);
         //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("outletid", "");
+        intent.putExtra("orderType", orderType);
         context.startActivity(intent);
     }
 
