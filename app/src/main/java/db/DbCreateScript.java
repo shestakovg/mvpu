@@ -46,7 +46,7 @@ public class DbCreateScript {
     private static String CREATE_STOCK_IDX1 = "CREATE INDEX idx_stock ON stock (SkuId)";
 
     private static String CREATE_DEBT = "create table IF NOT EXISTS debts(partnerId text, customerId text,transactionId text,  transactionNumber text, transactionDate text, transactionSum double," +
-            "paymentDate text, debt double, overdueDebt double, overdueDays int)";
+            "paymentDate text, debt double, overdueDebt double, overdueDays int, color text)";
     private static String CREATE_DEBT_IDX1 = "CREATE INDEX idx_debt ON debts (customerId)";
 
     private static String CREATE_PAY = "create table pays (_id integer primary key autoincrement, payDate  DATETIME DEFAULT CURRENT_TIMESTAMP, transactionId text, customerid text, paySum double,  _send integer DEFAULT 0)";

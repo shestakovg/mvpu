@@ -28,6 +28,8 @@ public class DebtData {
 
     public double claimedSum;
 
+    public  String color;
+
     public static double getDebtSum(List<DebtData> debts)
     {
         double result = 0;

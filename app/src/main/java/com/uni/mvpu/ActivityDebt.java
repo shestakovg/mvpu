@@ -125,7 +125,7 @@ public class ActivityDebt extends TouchActivity implements IInputCustomerPay {
         DbOpenHelper dbOpenHelper = new DbOpenHelper(this);
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select  d.transactionNumber  , d.transactionDate  , d.transactionSum  , "  +
-                " d.paymentDate  , d.debt  , d.overdueDebt  , d.overdueDays, d.transactionId, coalesce(p.paySum,0) claimedSum, rt.CustomerName  from pays p " +
+                " d.paymentDate  , d.debt  , d.overdueDebt  , d.overdueDays, d.transactionId, coalesce(p.paySum,0) claimedSum, rt.CustomerName, p.color  from pays p " +
                 " left join debts d  on p.transactionId = d.transactionId " +
                 " left join (select distinct CustomerId ,CustomerName from route) rt on rt.CustomerId = d.customerId"+
                 " where p.payDate = ? order by DATE(substr( d.paymentDate,7,4)" +
@@ -146,6 +146,7 @@ public class ActivityDebt extends TouchActivity implements IInputCustomerPay {
             debtData.transactionId = cursor.getString(cursor.getColumnIndex("transactionId"));
             debtData.claimedSum = cursor.getDouble(cursor.getColumnIndex("claimedSum"));
             debtData.CustomerName = cursor.getString(cursor.getColumnIndex("CustomerName"));
+            debtData.color = cursor.getString(cursor.getColumnIndex("color"));
             debts.add(debtData);
             cursor.moveToNext();
         }
