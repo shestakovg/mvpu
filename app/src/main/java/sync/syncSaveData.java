@@ -196,6 +196,7 @@ public class syncSaveData {
                 values.put("debt", jsonObject.getDouble("debt"));
                 values.put("overdueDebt", jsonObject.getDouble("overdueDebt"));
                 values.put("overdueDays", jsonObject.getInt("overdueDays"));
+                values.put("color", jsonObject.getString("color"));
                 db.insert("debts", null, values);
             } catch (Exception e) {
 

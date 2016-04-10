@@ -78,16 +78,18 @@ public class debtListAdapter extends BaseAdapter {
 
 
         ((TextView) view.findViewById(R.id.tvClaimedSum)).setText(String.format("%.2f", debt.claimedSum));
+
         if (debt.overdueDays>=0) {
               if ((debt.overdueDebt - debt.claimedSum) > 0 )
               {
-                  ((LinearLayout) view.findViewById(R.id.llDebtList)).setBackgroundColor(Color.parseColor("#ffff2d58"));
+                  ((LinearLayout) view.findViewById(R.id.llDebtList)).setBackgroundColor( Color.parseColor(
+                                (debt.color == null ? "#ffff2d58" : debt.color)  ));//Color.parseColor("#ffff2d58"));
               }
               else
               {
                //FFFCFF05
                 //  ((LinearLayout) view.findViewById(R.id.llDebtList)).setBackgroundColor(Color.parseColor("#FF95AAFF"));
-                  ((LinearLayout) view.findViewById(R.id.llDebtList)).setBackgroundColor(Color.parseColor(debt.color));
+                  ((LinearLayout) view.findViewById(R.id.llDebtList)).setBackgroundColor(Color.parseColor((debt.color == null ? "#FF95AAFF" : debt.color) ));
               }
         }
         return view;

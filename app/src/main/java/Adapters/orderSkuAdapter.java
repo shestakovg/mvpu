@@ -133,7 +133,7 @@ public class orderSkuAdapter extends BaseAdapter  {
         TextView onlyFact = (TextView) view.findViewById(R.id.textViewOrderOnlyFact);
         if (cursku.onlyFact)
         {
-            onlyFact.setText("Факт ");
+            onlyFact.setText("Факт");
         }
         else
         {
@@ -260,7 +260,7 @@ public class orderSkuAdapter extends BaseAdapter  {
                         Toast.makeText(context, context.getText(R.string.non_multiply_mvh), Toast.LENGTH_LONG).show();
                         AlertDialog.Builder ad = new AlertDialog.Builder(context);
                         ad.setTitle(context.getString(R.string.pAlert));
-                        ad.setMessage(context.getText(R.string.non_multiply_mvh) + " : " + sku.skuName + "  -  " + String.format("%d", (long) enteredQty) + " ящ");
+                        ad.setMessage(context.getText(R.string.non_multiply_mvh) + " : " + sku.skuName + "  -  " + String.format("%d", (long) enteredQty) + " ??");
                         ad.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int arg1) {
                             }
@@ -312,9 +312,9 @@ public class orderSkuAdapter extends BaseAdapter  {
     {
         final orderSku sku = getSku(position);
         AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
-        builder1.setMessage("Удалить порзицию "+sku.skuName);
+        builder1.setMessage("Удалить позицию "+sku.skuName);
         builder1.setCancelable(true);
-        builder1.setPositiveButton("Да",
+        builder1.setPositiveButton("OK",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         sku.setQtyMWH(0);
