@@ -9,13 +9,13 @@ android {
     }
     compileOptions.encoding = 'windows-1251'
     compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    buildToolsVersion '23.0.3'
     defaultConfig {
         applicationId "com.uni.mvpu"
         minSdkVersion 15
         targetSdkVersion 22
         versionCode 1
-        versionName '1.41'
+        versionName '1.42'
     }
     buildTypes {
         release {
