@@ -291,6 +291,9 @@ public class ActivityRoute extends TouchActivity {
 //                                        "Вы выбрали PopupMenu 3",
 //                                        Toast.LENGTH_SHORT).show();
 //                                return true;
+                            case R.id.menuOutletInfo:
+                                showOutletInfo(selectedOutlet);
+                                return true;
                             default:
                                 return false;
                         }
@@ -311,5 +314,57 @@ public class ActivityRoute extends TouchActivity {
         }
 
         popupMenu.show();
+    }
+
+    private void showOutletInfo(OutletObject outlet)
+    {
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(this);
+        SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select Category ,Manager1 ,Manager2 ,Phone1 ,Phone2 ,DeliveryDay ,ManagerTime ,ReciveTime ,ContactPerson  from OutletInfo" +
+                " where OutletId=?", new String[] {outlet.outletId.toString()});
+        cursor.moveToFirst();
+        String Category ="";
+        String Manager1="";
+        String Manager2="";
+        String Phone1="";
+        String Phone2="";
+        String DeliveryDay="";
+        String ManagerTime="";
+        String ReciveTime="";
+        String ContactPerson="";
+        for (int i = 0; i < cursor.getCount(); i++) {
+            Category = cursor.getString(cursor.getColumnIndex("Category"));
+            Manager1 = cursor.getString(cursor.getColumnIndex("Manager1"));
+            Manager2 = cursor.getString(cursor.getColumnIndex("Manager2"));
+            Phone1 = cursor.getString(cursor.getColumnIndex("Phone1"));
+            Phone2 = cursor.getString(cursor.getColumnIndex("Phone2"));
+            DeliveryDay = cursor.getString(cursor.getColumnIndex("DeliveryDay"));
+            ManagerTime = cursor.getString(cursor.getColumnIndex("ManagerTime"));
+            ReciveTime = cursor.getString(cursor.getColumnIndex("ReciveTime"));
+            ContactPerson = cursor.getString(cursor.getColumnIndex("ContactPerson"));
+            cursor.moveToNext();
+        }
+        db.close();
+        String msg = "Категория: "+Category+"\n"+
+                     "ЛПР1: "+ (Manager1=="" ? ContactPerson : Manager1)+"\n"+
+                     "ЛПР2: "+ Manager2+"\n"+
+                     "Телефон ЛПР1: "+Phone1+"\n"+
+                     "Телефон ЛПР2: "+Phone2+"\n"+
+                     "День доставки: "+DeliveryDay+"\n"+
+                     "Время работы ЛПР: "+ManagerTime+"\n"+
+                     "Время приемки товара: "+ReciveTime;
+        AlertDialog.Builder builder = new AlertDialog.Builder(currentContext);
+        builder.setTitle("Клиент: !"+selectedOutlet.customerName)
+                .setMessage(msg)
+                .setIcon(R.drawable.hrn)
+                .setCancelable(false)
+                .setNegativeButton("ОК",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 }

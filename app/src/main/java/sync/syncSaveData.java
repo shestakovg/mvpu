@@ -247,5 +247,34 @@ public class syncSaveData {
         appManager.getOurInstance().appSetupInstance.readSetup(context);
     }
 
+    public static void saveOutletInfo(List<JSONObject> jsonObjects, Context context)
+    {
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        db.execSQL("delete from OutletInfo");
+        for (JSONObject jsonObject: jsonObjects) {
+            try
+            {
+                ContentValues values = new ContentValues();
+                values.put("outletId", jsonObject.getString("OutletId"));
+                values.put("Category", jsonObject.getString("Category"));
+                values.put("Manager1", jsonObject.getString("Manager1"));
+                values.put("Manager2", jsonObject.getString("Manager2"));
+                values.put("Phone1", jsonObject.getString("Phone1"));
+                values.put("Phone2", jsonObject.getString("Phone2"));
+                values.put("DeliveryDay", jsonObject.getString("DeliveryDay"));
+                values.put("ManagerTime", jsonObject.getString("ManagerTime"));
+                values.put("ReciveTime", jsonObject.getString("ReciveTime"));
+                values.put("ContactPerson", jsonObject.getString("ContactPerson"));
+                db.insert("OutletInfo", null, values);
+
+            } catch (Exception e)  {
+                e.printStackTrace();
+            }
+        }
+        db.close();
+        Toast.makeText(context, "Обновление  карточки клиента завершено", Toast.LENGTH_SHORT).show();
+    }
 
 }
+
