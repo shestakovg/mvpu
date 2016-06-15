@@ -106,6 +106,7 @@ public class syncSaveData {
                 values.put("Article", jsonObject.getString("Article"));
                 values.put("OnlyFact", jsonObject.getInt("OnlyFact"));
                 values.put("CheckCountInBox", jsonObject.getInt("CheckCountInBox"));
+                values.put("onlyMWH", jsonObject.getInt("onlyMWH"));
                 db.insert("sku", null, values);
             } catch (Exception e) {
                 Toast.makeText(context, "Could not save sku", Toast.LENGTH_SHORT).show();

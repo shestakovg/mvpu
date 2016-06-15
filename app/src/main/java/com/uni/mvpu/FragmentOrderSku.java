@@ -86,7 +86,7 @@ public class FragmentOrderSku extends Fragment implements IOrderTotal{
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
         String sqlStatement = "select  s.SkuId, s.SkuName, st.StockG, st.StockR,COALESCE(pOrder.Pric, COALESCE( p.Pric,0)) pric, COALESCE(od.qty1, 0) as QtyMWH, " +
                 "  COALESCE(od.qty2, 0) as QtyRWH, case when od.skuId is null then 0 else 1 end existPosition, od._id as detailId , s.QtyPack," +
-                " coalesce(od.PriceId,'"+locOutlet.priceId.toString()+"') PriceId,  "+" pn.PriceName, s.CheckCountInBox, case when sf.skuId is null then 0 else 1 end OnlyFact, COALESCE(ods.qty1,0) outletStock  from sku as s" +
+                " coalesce(od.PriceId,'"+locOutlet.priceId.toString()+"') PriceId,  "+" pn.PriceName, s.CheckCountInBox, case when sf.skuId is null then 0 else 1 end OnlyFact, COALESCE(ods.qty1,0) outletStock, s.onlyMWH  from sku as s" +
                 "            left join  stock st on s.skuId = st.skuId  " +
                 "            left join price p on s.skuId = p.skuId and p.PriceId = '" +locOutlet.priceId.toString()+"' "+
                 joinKind + " join orderDetail od on od.skuId= s.skuId and od.headerId = ?  "+
@@ -132,6 +132,7 @@ public class FragmentOrderSku extends Fragment implements IOrderTotal{
             sku.onlyFact = cursor.getInt(cursor.getColumnIndex("OnlyFact")) == 1;
             sku.checkMultiplicity = cursor.getInt(cursor.getColumnIndex("CheckCountInBox")) == 1;
             sku.outletStock = cursor.getInt(cursor.getColumnIndex("outletStock"));
+            sku.setOnlyMWH((cursor.getInt(cursor.getColumnIndex("onlyMWH")) == 1 ? true : false));
             skuList.add(sku);
             cursor.moveToNext();
         }

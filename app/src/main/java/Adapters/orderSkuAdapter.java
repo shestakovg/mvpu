@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.provider.Telephony;
 import android.support.v7.internal.widget.AdapterViewCompat;
@@ -244,10 +245,16 @@ public class orderSkuAdapter extends BaseAdapter  {
 
         final EditText dlgEditMWH = (EditText) dlgEditQty.findViewById(R.id.editDialogMWH);
         final EditText dlgEditRWH = (EditText) dlgEditQty.findViewById(R.id.editDialogRWH);
+        final TextView txtRWHname = (TextView) dlgEditQty.findViewById(R.id.textRWHname);
+
         checkRowSum chrs = new checkRowSum(sku.price);
         ((TextView) dlgEditQty.findViewById(R.id.editQtyTextMessage)).setText(chrs.getSkuPriceTitle());
         dlgEditMWH.setText(sku.getQtyMWHForEditText());
         dlgEditRWH.setText(sku.getQtyRWHForEditText());
+        if (sku.isOnlyMWH()) {
+            dlgEditRWH.setEnabled(false);
+            txtRWHname.setPaintFlags(txtRWHname.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        }
         Button btnOk =(Button) dlgEditQty.findViewById(R.id.btnEtitQtyOk);
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override

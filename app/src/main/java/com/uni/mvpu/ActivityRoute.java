@@ -356,7 +356,7 @@ public class ActivityRoute extends TouchActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(currentContext);
         builder.setTitle("Клиент: !"+selectedOutlet.customerName)
                 .setMessage(msg)
-                .setIcon(R.drawable.hrn)
+                //.setIcon(R.drawable.hrn)
                 .setCancelable(false)
                 .setNegativeButton("ОК",
                         new DialogInterface.OnClickListener() {

@@ -51,6 +51,15 @@ public class orderSku {
 
     public int countInBox;
 
+    public boolean isOnlyMWH() {
+        return onlyMWH;
+    }
+
+    public void setOnlyMWH(boolean onlyMWH) {
+        this.onlyMWH = onlyMWH;
+    }
+
+    private boolean onlyMWH;
     private boolean exist;
     public orderSku( String skuName, boolean exist) {
 
