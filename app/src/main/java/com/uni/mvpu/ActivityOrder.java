@@ -163,10 +163,10 @@ public class ActivityOrder extends TouchActivity implements IOrder  {
             {
                 AlertDialog.Builder ad = new AlertDialog.Builder(context);
                 ad.setTitle(context.getString(R.string.orderControlMessage));
-                ad.setMessage(param.getControlMessage() + "\n" + "Заказ сохранить невозможно!\nУдалить заказ?");
+                ad.setMessage(param.getControlMessage() + "\n" + "Заказ не будет отправлен!\nЗакрыть заказ?");
                 ad.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
-                        OrderExtra.DeleteOrder(orderExtra, context);
+                        OrderExtra.setOrderToInactive(orderExtra, context);
                         finish();
                     }
                 });
@@ -177,7 +177,11 @@ public class ActivityOrder extends TouchActivity implements IOrder  {
                 });
                 ad.show();
             }
-            else finish();
+            else
+            {
+                OrderExtra.setOrderToSend(orderExtra, context);
+                finish();
+            }
         }
         else
             super.onBackPressed();

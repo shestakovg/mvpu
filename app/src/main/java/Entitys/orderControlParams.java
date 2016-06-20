@@ -71,7 +71,7 @@ public class orderControlParams {
     }
     public Boolean allowOrderToSave(OrderExtra orderExtra,OutletObject currentOutlet, Context context)
     {
-        if (this.orderRows ==0 && this.orderSum == 0) return true;
+        //if (this.orderRows ==0 && this.orderSum == 0) return true;
         loadSumByOutlet(orderExtra, currentOutlet, context);
         checkOnlyFactSku(orderExtra,context);
         if (//this.orderRows < params.getMinOrderRowsQty() &&

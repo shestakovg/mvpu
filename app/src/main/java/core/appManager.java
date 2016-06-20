@@ -192,7 +192,7 @@ public class appManager {
         Calendar deliveryDate=(Calendar) orderDate.clone();
         deliveryDate.add(Calendar.DATE, 1);
         values.put("deliveryDate", wputils.getDateTime(deliveryDate));
-        values.put("_send",0);
+        values.put("_send",2);
         values.put("orderType", orderType);
         long headerid = db.insert("orderHeader", null, values);
         db.close();

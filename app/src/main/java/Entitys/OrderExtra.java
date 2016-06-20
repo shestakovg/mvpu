@@ -82,4 +82,23 @@ public class OrderExtra extends Order {
         db.close();
 
     }
+
+    public static void setOrderToSend(OrderExtra orderExtra, Context context)
+    {
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        db.execSQL("update  orderHeader set _send=0 where _id = ? ", new String[]{Integer.toString(orderExtra._id)});
+        db.execSQL("update  orderHeader set _send=0 where _id = ? ", new String[] { Integer.toString(orderExtra._id)});
+        db.close();
+
+    }
+
+    public static void setOrderToInactive(OrderExtra orderExtra, Context context)
+    {
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        db.execSQL("update  orderHeader set _send=2 where _id = ? ", new String[]{Integer.toString(orderExtra._id)});
+        db.execSQL("update  orderHeader set _send=2 where DATETIME(orderDate) = ? and  outletId = ? ", new String[] {wputils.getDateTime(orderExtra.orderDateCalendar), orderExtra.outletId});
+        db.close();
+    }
 }

@@ -29,6 +29,8 @@ public class Order implements Parcelable {
     public String  notes="";
     public String outletId;
     public Boolean sended = false;
+    public Boolean underSumLimit = true;
+
     public int orderType = AppSettings.ORDER_TYPE_ORDER;
     public Order(int _id, int orderNumber, String orderUUID, Date orderDate, double orderSum) {
         //this.orderDescription = orderDescription;

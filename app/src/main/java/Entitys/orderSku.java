@@ -144,7 +144,7 @@ public class orderSku {
             this._id = db.insert("orderDetail", null, values);
         }
         db.execSQL("update orderHeader " +
-                        " set _send = 0 where _id = "+headerId);
+                        " set _send = 2 where _id = "+headerId);
         exist = true;
         db.close();
     }

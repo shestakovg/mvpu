@@ -186,7 +186,14 @@ public class ActivityOrderList extends TouchActivity implements IUpdateOrderList
 
             order.orderSum = (orderType == AppSettings.ORDER_TYPE_ORDER ? getOrderSum(db, order._id) : 0);
             order.outletId = cursor.getString(cursor.getColumnIndex("outletId"));
-            order.sended = cursor.getInt(cursor.getColumnIndex("_send")) == 1;
+            if (cursor.getInt(cursor.getColumnIndex("_send"))==2)
+            {
+                order.underSumLimit =true;
+            }
+            else {
+                order.underSumLimit =false;
+                order.sended = cursor.getInt(cursor.getColumnIndex("_send")) == 1;
+            }
             orders.add(order);
             cursor.moveToNext();
         }
@@ -225,7 +232,14 @@ public class ActivityOrderList extends TouchActivity implements IUpdateOrderList
                     0);
             order.orderSum = (orderType == AppSettings.ORDER_TYPE_ORDER ? getOrderSum(db, order._id) : 0);
             order.outletId = cursor.getString(cursor.getColumnIndex("outletId"));
-            order.sended = cursor.getInt(cursor.getColumnIndex("_send")) == 1;
+            if (cursor.getInt(cursor.getColumnIndex("_send"))==2)
+            {
+                order.underSumLimit =true;
+            }
+            else {
+                order.underSumLimit =false;
+                order.sended = cursor.getInt(cursor.getColumnIndex("_send")) == 1;
+            }
             orders.add(order);
             cursor.moveToNext();
         }

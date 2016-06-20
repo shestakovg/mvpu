@@ -79,10 +79,16 @@ public class orderListAdapter extends BaseAdapter {
         ((TextView) view.findViewById(R.id.tvListOrderOutletName)).setText(olObj.outletName+"  "+olObj.outletAddress);
         ImageView orderSended = (ImageView) view.findViewById(R.id.ivImage);
         //orderSended.setImageResource(R.drawable.document_16);
-        if (order.sended)
-            orderSended.setImageResource(R.drawable.read);
-        else
-            orderSended.setImageResource(R.drawable.unread);
+        if (order.underSumLimit)
+        {
+            orderSended.setImageResource(R.drawable.unchecked);
+        }
+        else {
+            if (order.sended)
+                orderSended.setImageResource(R.drawable.read);
+            else
+                orderSended.setImageResource(R.drawable.unread);
+        }
         Button btn = (Button) view.findViewById(R.id.btnOrderListItem);
         btn.setTag(position);
         btn.setOnClickListener(new View.OnClickListener() {
