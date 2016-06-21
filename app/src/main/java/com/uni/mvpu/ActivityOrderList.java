@@ -75,7 +75,7 @@ public class ActivityOrderList extends TouchActivity implements IUpdateOrderList
 
         orderDate = Calendar.getInstance();
         orderDate.setTime(new Date());
-        tvOrderDate.setText(DateFormat.format((orderType == AppSettings.ORDER_TYPE_ORDER ? "Дата заказа:" : "Дата сторчека:") + " dd.MM.yyyy", orderDate));
+        tvOrderDate.setText(DateFormat.format((orderType == AppSettings.ORDER_TYPE_ORDER ? getResources().getString(R.string.order_list_title) : getResources().getString(R.string.storecheck_list_title)) + " dd.MM.yyyy", orderDate));
 
 
         tvOrderDate.setOnClickListener(new View.OnClickListener() {
@@ -270,7 +270,7 @@ public class ActivityOrderList extends TouchActivity implements IUpdateOrderList
 //            myMonth = monthOfYear;
 //            myDay = dayOfMonth;
             orderDate = new GregorianCalendar (year, monthOfYear, dayOfMonth);
-            tvOrderDate.setText(DateFormat.format("Дата заказа: dd.MM.yyyy",orderDate));
+            tvOrderDate.setText(DateFormat.format("Р”Р°С‚Р° Р·Р°РєР°Р·Р°: dd.MM.yyyy",orderDate));
 
             updateOrderList();
         }

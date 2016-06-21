@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
+import core.AppSettings;
 import core.wputils;
 import db.DbOpenHelper;
 
@@ -117,7 +118,7 @@ public class orderSku {
     {
         db.execSQL("delete from orderDetail where _id = "+_id);
     }
-    public void saveDb(Context context)
+    public void saveDb(Context context, int orderType )
     {
         if (qtyMWH<=0 && qtyRWH<=0) return;
 
@@ -143,8 +144,13 @@ public class orderSku {
             values.put("_send", 0);
             this._id = db.insert("orderDetail", null, values);
         }
-        db.execSQL("update orderHeader " +
+        if (orderType==AppSettings.ORDER_TYPE_ORDER)
+            db.execSQL("update orderHeader " +
                         " set _send = 2 where _id = "+headerId);
+        else
+            db.execSQL("update orderHeader " +
+                    " set _send = 0 where _id = "+headerId);
+
         exist = true;
         db.close();
     }

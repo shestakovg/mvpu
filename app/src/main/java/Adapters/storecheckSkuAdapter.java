@@ -141,7 +141,7 @@ public class storecheckSkuAdapter  extends BaseAdapter {
                 cal.set(Calendar.MONTH,finalDatePicker.getMonth());
                 cal.set(Calendar.DAY_OF_MONTH,finalDatePicker.getDayOfMonth());
                 sku.setFinalDate(cal);
-                sku.saveDb(context);
+                sku.saveDb(context, orderExtra.orderType);
                 currentAdapter.notifyDataSetChanged();
                 dlgEditQty.dismiss();
             }

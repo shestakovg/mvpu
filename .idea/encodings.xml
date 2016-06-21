@@ -3,6 +3,7 @@
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/app/src/main/java/Adapters/orderSkuAdapter.java" charset="windows-1251" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/uni/mvpu/ActivityOrder.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/uni/mvpu/ActivityOrderList.java" charset="UTF-8" />
     <file url="PROJECT" charset="windows-1251" />
   </component>
 </project>

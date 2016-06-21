@@ -223,7 +223,7 @@ public class orderSkuAdapter extends BaseAdapter  {
             cursku.price = priceTypeManager.getInstance().getPriceValue(cursku.skuId, cursku.priceId);
             cursku.onlyFact = getOnlyFact(cursku);
             cursku.calcRowSum();
-            cursku.saveDb(context);
+            cursku.saveDb(context, orderExtra.orderType);
             currentAdapter.notifyDataSetChanged();
             orderTotal.displayTotal();
 
@@ -296,7 +296,7 @@ public class orderSkuAdapter extends BaseAdapter  {
                 }
                 //
                 if (allowClose) {
-                    sku.saveDb(context);
+                    sku.saveDb(context, orderExtra.orderType);
                     currentAdapter.notifyDataSetChanged();
                     orderTotal.displayTotal();
                     dlgEditQty.dismiss();
