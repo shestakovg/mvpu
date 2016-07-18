@@ -19,6 +19,8 @@ public class orderControlParams {
     private boolean financeControl = true;
     private IOrderControlParams params;
     private OrderExtra order;
+    private OutletObject _outlet;
+
     public orderControlParams(int orderRows, double orderSum, IOrderControlParams params) {
         this.orderRows = orderRows;
         this.orderSum = orderSum;
@@ -75,7 +77,7 @@ public class orderControlParams {
         loadSumByOutlet(orderExtra, currentOutlet, context);
         checkOnlyFactSku(orderExtra,context);
         if (//this.orderRows < params.getMinOrderRowsQty() &&
-                this.orderSum < this.params.getMinOrderSum())
+                this.orderSum < this.params.getMinOrderSumByCategory(currentOutlet))
         {
             this.financeControl = false;
             return false;
@@ -85,7 +87,7 @@ public class orderControlParams {
         return true;
     }
 
-    public String getControlMessage()
+    public String getControlMessage(OutletObject currentOutlet)
     {
         String result = "";
 //        if (this.orderRows < params.getMinOrderRowsQty() && !this.financeControl)
@@ -94,7 +96,7 @@ public class orderControlParams {
 //        }
         if (this.orderSum < this.params.getMinOrderSum() && !this.financeControl)
         {
-            result+="Сумма заказа должна быть не меньше "+String.format("%.2f", this.params.getMinOrderSum())+" грн. Сумма заказа: "+String.format("%.2f", this.orderSum)+"\n";
+            result+="Сумма заказа должна быть не меньше "+String.format("%.2f", this.params.getMinOrderSumByCategory(currentOutlet))+" грн. Сумма заказа: "+String.format("%.2f", this.orderSum)+"\n";
         }
         if (!this.onlyFactSku)
             result+="В заказе есть позиции, которые можно отгружать только по факту!";

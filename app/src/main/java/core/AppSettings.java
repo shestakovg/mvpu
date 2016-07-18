@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.TimeZone;
 import java.util.UUID;
 
+import Entitys.OutletObject;
 import Entitys.priceTypeObject;
 import db.DbOpenHelper;
 import interfaces.IOrderControlParams;
@@ -111,6 +112,7 @@ public class AppSettings implements IOrderControlParams {
 
     private int minOrderRowsQty;
     private double minOrderSum;
+    private double minOrderSumForMarket = 300;
 
     public int getMinOrderRowsQty() {
         return minOrderRowsQty;
@@ -120,6 +122,12 @@ public class AppSettings implements IOrderControlParams {
         return minOrderSum;
     }
 
+    public double getMinOrderSumByCategory(OutletObject ob) {
+        if (ob.Category.equals("Рынок") || ob.Category.equals("Маф"))
+            return minOrderSumForMarket;
+        else
+            return minOrderSum;
+    }
     public Boolean getAllowGpsLog() {
         return allowGpsLog;
     }

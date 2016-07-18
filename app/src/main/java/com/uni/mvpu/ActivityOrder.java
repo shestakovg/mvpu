@@ -163,7 +163,7 @@ public class ActivityOrder extends TouchActivity implements IOrder  {
             {
                 AlertDialog.Builder ad = new AlertDialog.Builder(context);
                 ad.setTitle(context.getString(R.string.orderControlMessage));
-                ad.setMessage(param.getControlMessage() + "\n" + "Заказ не будет отправлен!\nЗакрыть заказ?");
+                ad.setMessage(param.getControlMessage(currentOutlet) + "\n" + "Заказ не будет отправлен!\nЗакрыть заказ?");
                 ad.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
                         OrderExtra.setOrderToInactive(orderExtra, context);
