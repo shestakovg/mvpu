@@ -190,8 +190,9 @@ public class appManager {
         values.put("orderNumber", orderNumber);
         values.put("orderDate", wputils.getDateTime(orderDate));
         Calendar deliveryDate=(Calendar) orderDate.clone();
-        deliveryDate.add(Calendar.DATE, 1);
+        //deliveryDate.add(Calendar.DATE, 1);
         values.put("deliveryDate", wputils.getDateTime(deliveryDate));
+        //values.putNull("deliveryDate");
         if (orderType==AppSettings.ORDER_TYPE_ORDER)
             values.put("_send",2);
         else

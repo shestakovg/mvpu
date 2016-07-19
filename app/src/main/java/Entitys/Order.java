@@ -21,6 +21,12 @@ public class Order implements Parcelable {
     public String orderUUID;
     public Calendar orderDateCalendar;
     public Date orderDate;
+
+    public void setDeliveryDate(Calendar deliveryDate) {
+        this.deliveryDate = deliveryDate;
+        this.deliveryDateInitialized = true;
+    }
+
     public Calendar deliveryDate;
     public double orderSum;
     public String responseText="";
@@ -30,6 +36,7 @@ public class Order implements Parcelable {
     public String outletId;
     public Boolean sended = false;
     public Boolean underSumLimit = true;
+    public Boolean deliveryDateInitialized = false;
 
     public int orderType = AppSettings.ORDER_TYPE_ORDER;
     public Order(int _id, int orderNumber, String orderUUID, Date orderDate, double orderSum) {

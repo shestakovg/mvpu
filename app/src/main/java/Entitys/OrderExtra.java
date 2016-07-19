@@ -34,7 +34,7 @@ public class OrderExtra extends Order {
         DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select  h.orderUUID, h.outletId, h.orderNumber, h.notes, h._1CDocNumber1, h._1CDocNumber2, " +
-                " h.responseText, h.payType , h.autoLoad ,(strftime('%s', h.deliveryDate) * 1000)  deliveryDate, (strftime('%s', h.orderDate) * 1000)  orderDate, orderType   " +
+                " h.responseText, h.payType , h.autoLoad ,(strftime('%s', h.deliveryDate) * 1000)  deliveryDate, (strftime('%s', h.orderDate) * 1000)  orderDate, orderType,deliveryDateInitialized   " +
             " from orderHeader h where h._id = ?", new String[]{Integer.toString(this._id)});
         cursor.moveToFirst();
         for (int i=0; i<cursor.getCount(); i++)
@@ -51,6 +51,7 @@ public class OrderExtra extends Order {
             this.deliveryDate = wputils.getCalendarFromDate(new Date(cursor.getLong((cursor.getColumnIndex("deliveryDate")))));
             this.orderDateCalendar = wputils.getCalendarFromDate(new Date(cursor.getLong((cursor.getColumnIndex("orderDate")))));
             this.orderType = cursor.getInt(cursor.getColumnIndex("orderType"));
+            this.deliveryDateInitialized = (cursor.getInt(cursor.getColumnIndex("deliveryDateInitialized"))== 1);
             cursor.moveToNext();
         }
         db.close();
@@ -66,8 +67,8 @@ public class OrderExtra extends Order {
         DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
         String dmlQuery = "update orderHeader set _send =0, payType =  "+this.payType+", autoLoad = "+(this.autoLoad ? 1 :0)+
-                ", notes = '"+this.notes+"', deliveryDate = '"+wputils.getDateTime(deliveryDate)+"' "+
-                " where _id = "+this._id;
+                ", notes = '"+this.notes+"', deliveryDate = '"+wputils.getDateTime(deliveryDate)+"' , "+"deliveryDateInitialized = "+(this.deliveryDateInitialized ? "1" : "0")+
+                "  where _id = "+this._id;
         //db.execSQL(dmlQuery, new String[] {wputils.getDateTime(wputils.getCalendarFromDate(deliveryDate))});
         db.execSQL(dmlQuery);
         db.close();

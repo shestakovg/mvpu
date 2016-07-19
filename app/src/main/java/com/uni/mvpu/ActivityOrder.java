@@ -63,7 +63,7 @@ public class ActivityOrder extends TouchActivity implements IOrder  {
         public void onDateSet(DatePicker view, int year, int monthOfYear,
                               int dayOfMonth) {
 
-            orderExtra.deliveryDate = new GregorianCalendar (year, monthOfYear, dayOfMonth);
+            orderExtra.setDeliveryDate( new GregorianCalendar (year, monthOfYear, dayOfMonth));
                     //wputils.getCalendarFromDate(new Date(year, monthOfYear,dayOfMonth));
             orderExtra.saveOrderParamsDb(getBaseContext());
             displayDeliveryDate();
@@ -152,7 +152,10 @@ public class ActivityOrder extends TouchActivity implements IOrder  {
 
     private void displayDeliveryDate()
     {
-         tvDeliveryDate.setText(DateFormat.format("Доставка: dd.MM.yyyy", orderExtra.deliveryDate));
+        if (orderExtra.deliveryDateInitialized)
+            tvDeliveryDate.setText(DateFormat.format("Доставка: dd.MM.yyyy", orderExtra.deliveryDate));
+        else
+            tvDeliveryDate.setText("Доставка: не указано");
     }
 
     @Override
@@ -163,7 +166,9 @@ public class ActivityOrder extends TouchActivity implements IOrder  {
             {
                 AlertDialog.Builder ad = new AlertDialog.Builder(context);
                 ad.setTitle(context.getString(R.string.orderControlMessage));
-                ad.setMessage(param.getControlMessage(currentOutlet) + "\n" + "Заказ не будет отправлен!\nЗакрыть заказ?");
+                ad.setMessage(param.getControlMessage(currentOutlet) + "\n"
+                       // + (orderExtra.deliveryDateInitialized ? "" : "Дата доставки не указана!\n")
+                        + "Заказ не будет отправлен!\nЗакрыть заказ?");
                 ad.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int arg1) {
                         OrderExtra.setOrderToInactive(orderExtra, context);
@@ -179,8 +184,14 @@ public class ActivityOrder extends TouchActivity implements IOrder  {
             }
             else
             {
-                OrderExtra.setOrderToSend(orderExtra, context);
-                finish();
+              if (orderExtra.deliveryDateInitialized) {
+                  OrderExtra.setOrderToSend(orderExtra, context);
+                  finish();
+              }
+              else
+              {
+                  Toast.makeText(this,"Дата доставки не указана!\nУкажите дату доставки!",Toast.LENGTH_SHORT).show();
+              }
             }
         }
         else

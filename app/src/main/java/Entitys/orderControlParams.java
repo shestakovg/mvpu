@@ -82,6 +82,8 @@ public class orderControlParams {
             this.financeControl = false;
             return false;
         }
+//        if (!orderExtra.deliveryDateInitialized)
+//            return false;
        // checkOnlyFactSku(context);
         if (!this.onlyFactSku) return false;
         return true;
@@ -100,7 +102,6 @@ public class orderControlParams {
         }
         if (!this.onlyFactSku)
             result+="В заказе есть позиции, которые можно отгружать только по факту!";
-
         return result;
     }
 
