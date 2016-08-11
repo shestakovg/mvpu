@@ -35,6 +35,10 @@ public class orderSku {
     public boolean checkMultiplicity = true;
     public boolean onlyFact = false;
     public int outletStock = 0;
+    public String GroupName = "";
+    public int PreviousOrderQty = 0;
+    public String PreviousOrderDate = "";
+
     public void setFinalDate(Calendar finalDate) {
         this.finalDate = finalDate;
         this.finalDateExists = true;

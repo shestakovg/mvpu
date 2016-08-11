@@ -2,8 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content">
-
-
             <LinearLayout
                 android:layout_width="fill_parent"
                 android:layout_height="40dp"
@@ -24,18 +22,32 @@
                     android:textStyle="bold"
                     android:text="Fact"
                     android:textColor="#ff1f1c" />
-                <TextView
+                <LinearLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/textViewOrderSkuName"
-                    android:text="Current sku"
-                    android:textStyle="bold"
-                    android:textSize="20dp"
-                    android:textIsSelectable="false"
-                    android:typeface="sans"
-                    android:singleLine="true"
-                    android:focusableInTouchMode="false"
-                    android:textColor="#ff000000" />
+
+                    android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/textViewOrderSkuName"
+                            android:text="Current sku"
+                            android:textStyle="bold"
+                            android:textSize="20dp"
+                            android:textIsSelectable="false"
+                            android:typeface="sans"
+                            android:singleLine="true"
+                            android:focusableInTouchMode="false"
+                            android:textColor="#ff000000" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textViewOrderSkuGroupName"
+                        android:textSize="10dp"
+                        android:text="SKU GROUP"
+                        
+                         />
+                </LinearLayout>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -132,4 +144,44 @@
                     />
 
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Предыдущий заказ         "
+                    android:id="@+id/textPrevOrderCaption"
+                    android:textColor="@color/material_deep_teal_500"
+                    android:textStyle="bold" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/material_blue_grey_800"
+                    android:text="Дата:   "/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/material_blue_grey_800"
+                    android:id="@+id/textPrevOrderDate"
+                    android:text="Prev date"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="     "/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/material_blue_grey_800"
+                    android:text="Количество:   "/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/material_blue_grey_800"
+                    android:id="@+id/textPrevQty"
+                    android:text="Prev date"/>
+            </LinearLayout>
 </LinearLayout>
+
+

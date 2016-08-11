@@ -14,7 +14,7 @@ import java.util.ListIterator;
 public class DbCreateScript {
     // Create table
     private static String CREATE_BASEPARAMS="create table IF NOT EXISTS baseParams (ParamId text, paramValue text, PRIMARY KEY(ParamId ASC)) ";
-    private static String CREATE_ROUTE="create table if not exists route (outletId text, outletName text, VisitDay text , VisitDayId int,VisitOrder int, CustomerId text,CustomerName text, partnerId text, partnerName text, address text, IsRoute integer)";
+    private static String CREATE_ROUTE="create table if not exists route (outletId text, outletName text, VisitDay text , VisitDayId int,VisitOrder int, CustomerId text,CustomerName text, partnerId text, partnerName text, address text, IsRoute integer, CustomerClass text)";
     private static String CREATE_ROUTE_IDX = "CREATE  INDEX idx_route_outlet ON route (outletId)";
     private static String CREATE_ROUTE_IDX_DAY = "CREATE  INDEX idx_route_day ON route (VisitDay)";
 
@@ -67,6 +67,10 @@ public class DbCreateScript {
     private static String CREATE_SPECIFICATION = "create table Specification(outletId text, skuId text)";
     private static String CREATE_OUTLETINFO ="create table OutletInfo(OutletId text, Category text,Manager1 text,Manager2 text,Phone1 text,Phone2 text,DeliveryDay text,ManagerTime text,ReciveTime text,ContactPerson text)";
     private static String CREATE_OUTLETINFO_IDX1 = "CREATE INDEX idx1_OutletInfo ON routesDay (OutletId)";
+
+    private static String CREATE_CLIENT_CARD_SKU ="create table ClientCardSku(OutletId text, SkuId text, LastDate text, Qty integer)";
+    private static String CREATE_CLIENT_CARD_SKU_IDX1 = "CREATE INDEX idx1_CLIENT_CARD_SKU ON ClientCardSku(OutletId)";
+
     public static  ArrayList<String> getCreateDataBaseScripts()
     {
         ArrayList<String> list = new ArrayList<String>();
@@ -106,6 +110,8 @@ public class DbCreateScript {
         list.add(CREATE_SPECIFICATION);
         list.add(CREATE_OUTLETINFO);
         list.add(CREATE_OUTLETINFO_IDX1);
+        list.add(CREATE_CLIENT_CARD_SKU);
+        list.add(CREATE_CLIENT_CARD_SKU_IDX1);
         return list;
     }
 
@@ -127,6 +133,7 @@ public class DbCreateScript {
     private static String DROP_SKU_FACT="DROP TABLE skuFact";
     private static String DROP_SPECIFICATION="DROP TABLE Specification";
     private static String DROP_OUTLETINFO="DROP TABLE OutletInfo";
+    private static String DROP_CLIENT_CARD_SKU="DROP TABLE ClientCardSku";
 
     public static ArrayList<String>  getDropTableScripts()
     {
@@ -148,6 +155,8 @@ public class DbCreateScript {
         list.add(DROP_SKU_FACT);
         list.add(DROP_SPECIFICATION);
         list.add(DROP_OUTLETINFO);
+        list.add(DROP_CLIENT_CARD_SKU);
         return list;
     }
 }
+

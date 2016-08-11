@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import Entitys.OrderExtra;
 import Entitys.OutletObject;
 import Entitys.orderSku;
+import core.AppSettings;
 import core.checkRowSum;
 import core.priceTypeManager;
 import db.DbOpenHelper;
@@ -114,6 +115,11 @@ public class orderSkuAdapter extends BaseAdapter  {
 
         ((TextView) view.findViewById(R.id.textViewMWH)).setText(String.format("%d", (long) cursku.stockG));
         ((TextView) view.findViewById(R.id.textViewRWH)).setText(String.format("%d", (long) cursku.stockR));
+        ((TextView) view.findViewById(R.id.textPrevOrderDate)).setText(cursku.PreviousOrderDate);
+        ((TextView) view.findViewById(R.id.textPrevQty)).setText(String.format("%d", (long) cursku.PreviousOrderQty));
+        ((TextView) view.findViewById(R.id.textViewOrderSkuGroupName)).setText(cursku.GroupName);
+        if (cursku.PreviousOrderDate.isEmpty())
+            ((TextView) view.findViewById(R.id.textPrevOrderCaption)).setTextColor(Color.parseColor("#bdbdbd"));
         Button btnEdit = (Button) view.findViewById(R.id.btnEditSkuRow);
         btnEdit.setTag(position);
         btnEdit.setOnClickListener(new View.OnClickListener() {
@@ -198,6 +204,11 @@ public class orderSkuAdapter extends BaseAdapter  {
 
     private boolean getOnlyFact(orderSku sku)
     {
+        if (outlet.CustomerClass.equals(AppSettings.CUSTOMER_CLASS_CREDIT))
+        {
+            return false;
+        }
+
         DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from skuFact where skuId=? and priceId=?", new String[]{sku.skuId, sku.priceId});

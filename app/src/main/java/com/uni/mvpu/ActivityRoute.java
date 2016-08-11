@@ -320,8 +320,9 @@ public class ActivityRoute extends TouchActivity {
     {
         DbOpenHelper dbOpenHelper = new DbOpenHelper(this);
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select Category ,Manager1 ,Manager2 ,Phone1 ,Phone2 ,DeliveryDay ,ManagerTime ,ReciveTime ,ContactPerson  from OutletInfo" +
-                " where OutletId=?", new String[] {outlet.outletId.toString()});
+        Cursor cursor = db.rawQuery("select oi.Category ,oi.Manager1 ,oi.Manager2 ,oi.Phone1 ,oi.Phone2 ,oi.DeliveryDay ,oi.ManagerTime ,oi.ReciveTime ,oi.ContactPerson, r.CustomerClass  from OutletInfo oi " +
+                " inner join route r on r.outletId = oi.OutletId"+
+                " where oi.OutletId=?", new String[] {outlet.outletId.toString()});
         cursor.moveToFirst();
         String Category ="";
         String Manager1="";
@@ -332,6 +333,7 @@ public class ActivityRoute extends TouchActivity {
         String ManagerTime="";
         String ReciveTime="";
         String ContactPerson="";
+        String CustomerClass = "";
         for (int i = 0; i < cursor.getCount(); i++) {
             Category = cursor.getString(cursor.getColumnIndex("Category"));
             Manager1 = cursor.getString(cursor.getColumnIndex("Manager1"));
@@ -342,6 +344,7 @@ public class ActivityRoute extends TouchActivity {
             ManagerTime = cursor.getString(cursor.getColumnIndex("ManagerTime"));
             ReciveTime = cursor.getString(cursor.getColumnIndex("ReciveTime"));
             ContactPerson = cursor.getString(cursor.getColumnIndex("ContactPerson"));
+            CustomerClass = cursor.getString(cursor.getColumnIndex("CustomerClass"));
             cursor.moveToNext();
         }
         db.close();
@@ -352,7 +355,8 @@ public class ActivityRoute extends TouchActivity {
                      "Телефон ЛПР2: "+Phone2+"\n"+
                      "День доставки: "+DeliveryDay+"\n"+
                      "Время работы ЛПР: "+ManagerTime+"\n"+
-                     "Время приемки товара: "+ReciveTime;
+                     "Время приемки товара: "+ReciveTime+"\n"+
+                     "Класс: "+CustomerClass   ;
         AlertDialog.Builder builder = new AlertDialog.Builder(currentContext);
         builder.setTitle("Клиент: !"+selectedOutlet.customerName)
                 .setMessage(msg)

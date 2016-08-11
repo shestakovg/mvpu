@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import core.AppSettings;
 import core.wputils;
 import db.DbOpenHelper;
 import interfaces.IOrder;
@@ -60,6 +61,11 @@ public class orderControlParams {
             this.onlyFactSku =true;
             return;
         }
+        if (_outlet.CustomerClass.equals(AppSettings.CUSTOMER_CLASS_CREDIT))
+        {
+            this.onlyFactSku =true;
+            return;
+        }
         DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
         String query="select count(*) from orderDetail d inner join skuFact s on s.SkuId = d.skuid and d.PriceId=s.PriceId where d.orderUUID = ? and (coalesce(d.qty1,0)+coalesce(d.qty2,0))<>0";
@@ -73,6 +79,7 @@ public class orderControlParams {
     }
     public Boolean allowOrderToSave(OrderExtra orderExtra,OutletObject currentOutlet, Context context)
     {
+       this._outlet = currentOutlet;
         //if (this.orderRows ==0 && this.orderSum == 0) return true;
         loadSumByOutlet(orderExtra, currentOutlet, context);
         checkOnlyFactSku(orderExtra,context);

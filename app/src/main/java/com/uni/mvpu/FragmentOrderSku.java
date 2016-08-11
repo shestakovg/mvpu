@@ -45,11 +45,18 @@ public class FragmentOrderSku extends Fragment implements IOrderTotal{
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        fillSku("");
+                        fillSku("", false);
                     }
                 }
         );
-
+        ((Button) parentView.findViewById(R.id.btnOrderClintCardSku)).setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        fillSku("", true);
+                    }
+                }
+        );
         ((Button) parentView.findViewById(R.id.btnOrderParamsDialog)).setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -59,43 +66,61 @@ public class FragmentOrderSku extends Fragment implements IOrderTotal{
                 }
         );
         if (appManager.getOurInstance().appSetupInstance.getRouteType()==1)
-            fillSku("");
+            fillSku("", false);
+        else
+            fillSku("", true);
         return parentView;
     }
 
-    public void fillSku( String skuGroup)
+    public void fillSku( String skuGroup, Boolean showClientCard )
     {
         String orderByClause = " s.SkuName ";
         String whereClause = " where s.skuParentId = ? ";
         String joinKind = " left ";
         String[] params= new String[] {Integer.toString(((IOrder) getActivity()).getOrderExtra()._id),
                 skuGroup};
-        if (skuGroup.isEmpty()) {
-            orderByClause=" od._id ";
+        if (skuGroup.isEmpty() && !showClientCard) {
+            orderByClause= " grp.GroupName, s.SkuName "; //" od._id ";
             joinKind=" inner ";
-            whereClause=" where od.qty1>=0 or od.qty2>=0 ";
+            whereClause=" where od.qty1>0 or od.qty2>0 ";
             params= new String[] {Integer.toString(((IOrder) getActivity()).getOrderExtra()._id)};
         }
         String specificationFilter = "";
         if (appManager.getOurInstance().appSetupInstance.getRouteType()==1)
             specificationFilter="\n inner join specification spf on spf.skuid=s.skuid and spf.outletid='"+
                     ((IOrder) getActivity()).getOrderExtra().outletId+ "'  \n";
+
+        String clientCardSku = "";
+        String clientCardSkuJoin = " left ";
+
+        if (appManager.getOurInstance().appSetupInstance.getRouteType()!=1 && showClientCard)
+        {
+            orderByClause = " grp.GroupName, s.SkuName ";
+            clientCardSkuJoin = " inner ";
+            whereClause =  " where s.skuParentId <> ? ";
+        }
+
+        clientCardSku +=clientCardSkuJoin+"  join ClientCardSku ccs on ccs.outletId= '"+ ((IOrder) getActivity()).getOrderExtra().outletId+"' and ccs.SkuId = od.skuId and s.skuid = ccs.SkuId ";
+
         skuList = new ArrayList<>();
         final OutletObject locOutlet = ((IOrder) getActivity()).getOutletObject();
         DbOpenHelper dbOpenHelper = new DbOpenHelper(parentView.getContext());
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
         String sqlStatement = "select  s.SkuId, s.SkuName, st.StockG, st.StockR,COALESCE(pOrder.Pric, COALESCE( p.Pric,0)) pric, COALESCE(od.qty1, 0) as QtyMWH, " +
                 "  COALESCE(od.qty2, 0) as QtyRWH, case when od.skuId is null then 0 else 1 end existPosition, od._id as detailId , s.QtyPack," +
-                " coalesce(od.PriceId,'"+locOutlet.priceId.toString()+"') PriceId,  "+" pn.PriceName, s.CheckCountInBox, case when sf.skuId is null then 0 else 1 end OnlyFact, COALESCE(ods.qty1,0) outletStock, s.onlyMWH  from sku as s" +
+                " coalesce(od.PriceId,'"+locOutlet.priceId.toString()+"') PriceId,  "+" pn.PriceName, s.CheckCountInBox, case when sf.skuId is null then 0 else 1 end OnlyFact, COALESCE(ods.qty1,0) outletStock, s.onlyMWH, grp.GroupName,  " +
+                " coalesce(ccs.LastDate,'') as PreviousOrderDate,coalesce(ccs.Qty ,0) as PreviousOrderQty from sku as s" +
                 "            left join  stock st on s.skuId = st.skuId  " +
                 "            left join price p on s.skuId = p.skuId and p.PriceId = '" +locOutlet.priceId.toString()+"' "+
                 joinKind + " join orderDetail od on od.skuId= s.skuId and od.headerId = ?  "+
-                specificationFilter+
+                specificationFilter+clientCardSku+
+                " left join skuGroup grp on grp.GroupId = s.SkuParentId "+
                 " left join price pOrder on s.skuId = pOrder.skuId and pOrder.PriceId = od.PriceId "+
                 " left join PriceNames pn on pn.PriceId = coalesce(od.PriceId,'"+locOutlet.priceId.toString()+"') "+
                 " left join skuFact sf on sf.skuId =s.skuId and sf.priceId = coalesce(od.PriceId,'"+locOutlet.priceId.toString()+"') "+
                 " left join orderHeader oh on oh._id=od.headerId "+
                 " left join (select max(_id) _id , orderDate, outletId from  orderHeader  where orderType = 1 " +
+
                 " group by orderDate, outletId) ohs on "+
                 " ohs.orderDate = oh.orderDate and ohs.outletId = oh.outletId "+
                 " left join orderDetail ods on ods.headerId = ohs._id and ods.skuId = s.skuId   "+
@@ -112,6 +137,7 @@ public class FragmentOrderSku extends Fragment implements IOrderTotal{
         }
         //, wputils.getDateTime(orderDate)
         cursor.moveToFirst();
+
         for (int i=0;i<cursor.getCount();i++)
         {
             boolean exist = false;
@@ -129,10 +155,13 @@ public class FragmentOrderSku extends Fragment implements IOrderTotal{
             sku.setCountInBox(cursor.getInt(cursor.getColumnIndex("QtyPack")));
             sku.priceId = cursor.getString(cursor.getColumnIndex("PriceId"));
             sku.priceName = cursor.getString(cursor.getColumnIndex("PriceName"));
-            sku.onlyFact = cursor.getInt(cursor.getColumnIndex("OnlyFact")) == 1;
-            sku.checkMultiplicity = cursor.getInt(cursor.getColumnIndex("CheckCountInBox")) == 1;
+            sku.onlyFact = cursor.getInt(cursor.getColumnIndex("OnlyFact")) == 1 && !((IOrder) getActivity()).getOutletObject().CustomerClass.equals(AppSettings.CUSTOMER_CLASS_CREDIT);
+            sku.checkMultiplicity = cursor.getInt(cursor.getColumnIndex("CheckCountInBox")) == 1 ;
             sku.outletStock = cursor.getInt(cursor.getColumnIndex("outletStock"));
             sku.setOnlyMWH((cursor.getInt(cursor.getColumnIndex("onlyMWH")) == 1 ? true : false));
+            sku.GroupName = cursor.getString(cursor.getColumnIndex("GroupName"));
+            sku.PreviousOrderQty =  cursor.getInt(cursor.getColumnIndex("PreviousOrderQty"));
+            sku.PreviousOrderDate = cursor.getString(cursor.getColumnIndex("PreviousOrderDate"));
             skuList.add(sku);
             cursor.moveToNext();
         }

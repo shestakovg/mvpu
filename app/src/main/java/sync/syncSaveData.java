@@ -39,6 +39,7 @@ public class syncSaveData {
                 values.put("partnerName", jsonObject.getString("PartnerName"));
                 values.put("address", jsonObject.getString("address"));
                 values.put("IsRoute", jsonObject.getInt("IsRoute"));
+                values.put("CustomerClass", jsonObject.getString("CustomerClass"));
                 db.insert("route", null, values);
             } catch (Exception e) {
 
@@ -46,6 +47,27 @@ public class syncSaveData {
         }
         db.close();
         Toast.makeText(context, "Обновление маршрута завершено", Toast.LENGTH_SHORT).show();
+    }
+
+    public static void saveClientCardSku(List<JSONObject> jsonObjects, Context context)
+    {
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        db.execSQL("delete from ClientCardSku");
+        for (JSONObject jsonObject: jsonObjects) {
+            try {
+                ContentValues values = new ContentValues();
+                values.put("OutletId", jsonObject.getString("OutletId"));
+                values.put("SkuId", jsonObject.getString("SkuId"));
+                values.put("LastDate", jsonObject.getString("LastDate"));
+                values.put("Qty", jsonObject.getInt("Qty"));
+                db.insert("ClientCardSku", null, values);
+            } catch (Exception e) {
+
+            }
+        }
+        db.close();
+        Toast.makeText(context, "Обновление sku клиента завершено", Toast.LENGTH_SHORT).show();
     }
 
     public static void saveContracts(List<JSONObject> jsonObjects, Context context)

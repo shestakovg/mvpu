@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import Entitys.priceType;
 import core.TouchActivity;
 import core.appManager;
+import sync.syncClientCardSku;
 import sync.syncContracts;
 import sync.syncDebt;
 import sync.syncDebtParams;
@@ -185,6 +186,9 @@ public class ActivitySync extends TouchActivity {
                     case IDLI_OUTLETINFO:
                         syncOutletInfo syncInfo = new syncOutletInfo(this, pd);
                         syncInfo.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getoutletinfo/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
+
+                        syncClientCardSku syncInfoClientCard = new syncClientCardSku(this, pd);
+                        syncInfoClientCard.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getclientcardsku/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
                         break;
                 }
             }

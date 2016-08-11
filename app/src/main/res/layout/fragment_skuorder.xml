@@ -65,6 +65,11 @@
                 android:layout_height="wrap_content"
                 android:text="Параметры"
                 android:id="@+id/btnOrderParamsDialog"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Карточка"
+                android:id="@+id/btnOrderClintCardSku"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -74,7 +79,7 @@
                 android:layout_gravity="center"
                 android:gravity="center_vertical|center_horizontal"
                 android:textColor="@android:color/background_light"
-                android:text="Доставка: 22.06.2015"/>
+                android:text="Дост: 22.06.2015"/>
         </LinearLayout>
 
         <LinearLayout

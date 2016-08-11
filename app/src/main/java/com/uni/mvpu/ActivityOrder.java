@@ -238,7 +238,7 @@ public class ActivityOrder extends TouchActivity implements IOrder  {
         if (orderExtra.orderType == AppSettings.ORDER_TYPE_ORDER)
         {
             if (fragSku!=null && fragSku.isInLayout()) {
-                fragSku.fillSku( skuGroup);
+                fragSku.fillSku( skuGroup, false);
             }
         }
         else
