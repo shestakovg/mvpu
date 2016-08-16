@@ -165,7 +165,7 @@ public class sendOrders  extends AsyncTask<String, Integer, List<JSONObject>> {
             request.setHeader("Accept", "application/json");
             request.setHeader("Content-type", "application/json");
             Cursor cursor = db.rawQuery("select orderUUID, skuId, qty1, qty2, PriceId, DATETIME(finalDate) finalDate " +
-                    " from orderDetail where headerId = "+orderId+
+                    " from orderDetail where (qty1+qty2)>0 and  headerId = "+orderId+
                             (orderType == AppSettings.ORDER_TYPE_STORECHECK ?
                                                 " and finalDate is not null":""),
                     null);

@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/tvOrderRowCount"
                 android:text="Строк: "
-                android:textSize="20dp"
+                android:textSize="16dp"
                 android:textStyle="bold"
                 android:layout_gravity="center"
                 android:gravity="center_vertical|center_horizontal"
@@ -50,31 +50,34 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/tvOrderSum"
                 android:text="Строк: "
-                android:textSize="20dp"
+                android:textSize="16dp"
                 android:textStyle="bold"
                 android:layout_gravity="center"
                 android:gravity="center_vertical|center_horizontal"
                 android:textColor="@android:color/background_light"/>
             <Button
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="Заказ"
+                android:textSize="16dp"
                 android:id="@+id/btnOrderDisplayAllRows"/>
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Параметры"
+                android:text="Парам"
+                android:textSize="16dp"
                 android:id="@+id/btnOrderParamsDialog"/>
             <Button
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Карточка"
+                android:layout_height="match_parent"
+                android:text="Карт"
+                android:textSize="16dp"
                 android:id="@+id/btnOrderClintCardSku"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tvDeliveyDateSku"
-                android:textSize="20dp"
+                android:textSize="16dp"
                 android:textStyle="bold"
                 android:layout_gravity="center"
                 android:gravity="center_vertical|center_horizontal"
