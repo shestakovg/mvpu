@@ -41,9 +41,10 @@ public class GPSLoggerService  extends Service {
 
     private final DecimalFormat sevenSigDigits = new DecimalFormat("0.#######");
     private final DateFormat timestampFormat = new SimpleDateFormat("yyyyMMddHHmmss");
-    private static long minTimeMillis = 2000;
-    private static long minDistanceMeters = 10;
-    private static float minAccuracyMeters = 35;
+    private static long minTimeMillis = 5000;
+    private static long minDistanceMeters =30;// 10;
+    private static float minAccuracyMeters = 10 ;// 10;
+    private static float minAccuracyMetersCheckIn = 40 ;
 
     /** Called when the activity is first created. */
     private void startLoggerService() {
@@ -74,16 +75,33 @@ public class GPSLoggerService  extends Service {
         public void onLocationChanged(Location loc) {
             if (loc != null) {
                 boolean pointIsRecorded = false;
-                if (loc.hasAccuracy() && loc.getAccuracy() <= minAccuracyMeters) {
+
+                if (loc.hasAccuracy() && loc.getAccuracy() <= minAccuracyMeters /*&& loc.getProvider().equals(LocationManager.GPS_PROVIDER)*/) {
                     pointIsRecorded = true;
                     //Write to DB
                     Log.d(TAG, " loc.getLatitude() "+ loc.getLatitude());
                     Log.d(TAG, " loc.getLongitude() "+ loc.getLongitude());
                     if (LocationDatabase.getInstance()!=null)
                     {
+                        LocationDatabase.getInstance().setLatitude(loc.getLatitude());
+                        LocationDatabase.getInstance().setLongtitude(loc.getLongitude());
+                        LocationDatabase.getInstance().setSateliteTime( loc.getTime());
                         LocationDatabase.getInstance().SaveLocationData(loc.getLatitude(),loc.getLongitude(), loc.getTime() );
                     }
                 }
+                else   if (loc.hasAccuracy())// && loc.getAccuracy() <= minAccuracyMetersCheckIn)
+                {
+                    if (LocationDatabase.getInstance()!=null) {
+                        LocationDatabase.getInstance().setLatitude(loc.getLatitude());
+                        LocationDatabase.getInstance().setLongtitude(loc.getLongitude());
+                        LocationDatabase.getInstance().setSateliteTime(loc.getTime());
+                    }
+                }
+                else
+                {
+                    LocationDatabase.getInstance().setLocated(false);
+                }
+
 
 //                if (pointIsRecorded) {
 //                    if (showingDebugToast) Toast.makeText(
@@ -108,6 +126,7 @@ public class GPSLoggerService  extends Service {
         public void onProviderDisabled(String provider) {
             if (showingDebugToast) Toast.makeText(getBaseContext(), "onProviderDisabled: " + provider,
                     Toast.LENGTH_SHORT).show();
+            LocationDatabase.getInstance().setLocated(false);
 
         }
 
@@ -118,18 +137,19 @@ public class GPSLoggerService  extends Service {
         }
 
         public void onStatusChanged(String provider, int status, Bundle extras) {
+
             String showStatus = null;
-            if (status == LocationProvider.AVAILABLE)
-                showStatus = "Available";
-            if (status == LocationProvider.TEMPORARILY_UNAVAILABLE)
-                showStatus = "Temporarily Unavailable";
-            if (status == LocationProvider.OUT_OF_SERVICE)
-                showStatus = "Out of Service";
-            if (status != lastStatus && showingDebugToast) {
-                Toast.makeText(getBaseContext(),
-                        "new status: " + showStatus,
-                        Toast.LENGTH_SHORT).show();
-            }
+//            if (status == LocationProvider.AVAILABLE)
+//                showStatus = "Available";
+//            if (status == LocationProvider.TEMPORARILY_UNAVAILABLE)
+//                showStatus = "Temporarily Unavailable";
+//            if (status == LocationProvider.OUT_OF_SERVICE)
+//                showStatus = "Out of Service";
+//            if (status != lastStatus && showingDebugToast) {
+//                Toast.makeText(getBaseContext(),
+//                        "new status: " + showStatus,
+//                        Toast.LENGTH_SHORT).show();
+//            }
             lastStatus = status;
         }
     }
@@ -154,8 +174,8 @@ public class GPSLoggerService  extends Service {
         mNM.cancel(R.string.local_service_started);
 
         // Tell the user we stopped.
-        Toast.makeText(this, R.string.local_service_stopped,
-                Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, R.string.local_service_stopped,
+//                Toast.LENGTH_SHORT).show();
     }
 
     private void showNotification() {
@@ -194,3 +214,4 @@ public class GPSLoggerService  extends Service {
         super.onRebind(intent);
     }
 }
+

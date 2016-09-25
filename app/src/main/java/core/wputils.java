@@ -1,6 +1,7 @@
 package core;
 
 import android.database.Cursor;
+import android.text.format.DateFormat;
 
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
@@ -34,6 +35,23 @@ public final class wputils {
                 calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)));
     }
 
+    public static String getDateStringFromLong(Long longDate)
+    {
+        Calendar cal = Calendar.getInstance();
+        int offset = cal.getTimeZone().getOffset(cal.getTimeInMillis());
+        Date da = new Date();
+        da = new Date(longDate);//-(long)offset);
+        cal.setTime(da);
+        SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+        String time =format.format(cal.getTime());//.toLocaleString();
+        return time;// cal.getTime().toLocaleString();// getDateTimeString2(cal);
+    }
+
+
+    public static String convertDate(String dateInMilliseconds,String dateFormat) {
+        return DateFormat.format(dateFormat, Long.parseLong(dateInMilliseconds)).toString();
+    }
+
     public static String formatDate(Date date)
     {
         SimpleDateFormat dateFormat = new SimpleDateFormat(
@@ -45,6 +63,16 @@ public final class wputils {
         //  if (year>3900) year-=1900;
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "dd.MM.yyyy", Locale.getDefault());
+        //Date date = new Date();
+        return dateFormat.format(new Date(year - 1900,
+                calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)));
+    }
+
+    public static String getDateTimeString2(Calendar calendar) {
+        int year = calendar.get(Calendar.YEAR);
+        //  if (year>3900) year-=1900;
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "dd.MM.yyyy hh:mm:ss.SSS", Locale.getDefault());
         //Date date = new Date();
         return dateFormat.format(new Date(year - 1900,
                 calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)));

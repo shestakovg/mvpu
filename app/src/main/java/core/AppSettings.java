@@ -3,6 +3,7 @@ package core;
 import android.app.Application;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.widget.ArrayAdapter;
@@ -136,7 +137,7 @@ public class AppSettings implements IOrderControlParams {
         this.allowGpsLog = allowGpsLog;
     }
 
-    private Boolean allowGpsLog = false;
+    private Boolean allowGpsLog = true;
 
     public int getLockTimeOut() {
         return LockTimeOut;
@@ -289,6 +290,16 @@ public class AppSettings implements IOrderControlParams {
     public String getDefaultPrice(){
         return PARAM_PRICEID_DEFAULT;
     }
+
+    public Intent getGpsServiceIntent() {
+        return gpsServiceIntent;
+    }
+
+    public void setGpsServiceIntent(Intent gpsServiceIntent) {
+        this.gpsServiceIntent = gpsServiceIntent;
+    }
+
+    private Intent gpsServiceIntent = null;
 
 }
 

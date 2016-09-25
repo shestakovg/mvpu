@@ -8,78 +8,101 @@
     tools:context="com.uni.mvpu.SetupActivity"
     android:focusable="true">
 
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Cервисы"/>
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Cервисы"/>
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editTextServiceLink" />
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Маршрут"/>
+            <EditText
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/editTextRouteName"
+                    android:textStyle="bold"
+                    android:layout_gravity="left"
+                    android:textSize="30dp"
+                     />
+             <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Выбрать маршрут"
+                    android:textStyle="bold"
+                    android:onClick="onClickSelectRoute"
+                    android:layout_gravity="left"
+                    android:fontFamily="@string/hello_world" />
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Сотрудник"/>
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editTextEmployeeName"
+                android:textSize="30dp"
+                android:layout_gravity="left"
 
-    <EditText
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/editTextServiceLink" />
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Маршрут"/>
-    <EditText
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/editTextRouteName"
-            android:textStyle="bold"
-            android:layout_gravity="left"
-            android:textSize="30dp"
              />
-     <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Выбрать маршрут"
-            android:textStyle="bold"
-            android:onClick="onClickSelectRoute"
-            android:layout_gravity="left"
-            android:fontFamily="@string/hello_world" />
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Сотрудник"/>
-    <EditText
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/editTextEmployeeName"
-        android:textSize="30dp"
-        android:layout_gravity="left"
 
-     />
+            <!--<CheckBox-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="GPS логгер"-->
+                <!--android:id="@+id/chbAllowGps"-->
+                <!--android:layout_gravity="left"-->
+                <!--android:visibility="invisible" />-->
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="GPS логгер"
-        android:id="@+id/chbAllowGps"
-        android:layout_gravity="left" />
+            <!--<ToggleButton-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="New ToggleButton"-->
+                <!--android:id="@+id/toggleButton" />-->
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Сохранить настройки"
-        android:id="@+id/btnSave"
-        android:onClick="onClickBtnSave"
-        android:focusable="true"
-        android:layout_gravity="left" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Установить пароль"
-        android:id="@+id/btnSetLockPassword"
-        android:onClick="onClickSetLockPassword"
-        android:focusable="true"
-        android:layout_gravity="left" />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Обновить приложение"
-        android:id="@+id/btnDownloadVersion"
-        android:onClick="onClickDownloadVersion" />
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="GPS"
+                android:id="@+id/switchAllowGps"
+                android:checked="true"
+                android:background="@color/bright_foreground_material_dark"
+                android:clickable="true"
+                android:enabled="true"
+                android:gravity="left" />
+
+
+            <LinearLayout
+                android:id="@+id/RelativeLayout01"
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" >
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Сохранить настройки"
+                    android:id="@+id/btnSave"
+                    android:onClick="onClickBtnSave"
+                    android:focusable="true"
+                    android:layout_gravity="left" />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Установить пароль"
+                    android:id="@+id/btnSetLockPassword"
+                    android:onClick="onClickSetLockPassword"
+                    android:focusable="true" />
+            </LinearLayout>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Обновить приложение"
+                android:id="@+id/btnDownloadVersion"
+                android:onClick="onClickDownloadVersion" />
 
 
 </LinearLayout>

@@ -35,6 +35,7 @@ import java.util.UUID;
 import Entitys.Order;
 import Entitys.OutletObject;
 import core.AppSettings;
+import core.LocationDatabase;
 import core.TouchActivity;
 import core.appManager;
 import core.wputils;
@@ -196,6 +197,18 @@ public class ActivityRoute extends TouchActivity {
         Calendar currentDate = Calendar.getInstance();
         currentDate.setTime(new Date());
         boolean paymentExists = appManager.getOurInstance().checkAnnouncedSum(getBaseContext(), selectedOutlet.customerId.toString(), currentDate);
+
+        Calendar checkInDate = Calendar.getInstance();
+        checkInDate.setTime(new Date());
+
+        if (LocationDatabase.getInstance().isLocated() && appManager.getOurInstance().appSetupInstance.getAllowGpsLog() )
+        {
+            if (appManager.getOurInstance().getYesNoWithExecutionStop("Отметка в торговой точке","Отметить посещение "+selectedOutlet.outletName, currentContext, R.drawable.placeholder,
+                    LocationDatabase.getInstance().IsOutletCheckIn(selectedOutlet.outletId.toString(), checkInDate))) {
+
+                LocationDatabase.getInstance().SaveOutletCheckIn(selectedOutlet.outletId.toString(), checkInDate);
+            }
+        }
         if (!paymentExists && appManager.getOurInstance().appSetupInstance.getRouteType()!=1)
         {
             AlertDialog.Builder builder = new AlertDialog.Builder(currentContext);
@@ -371,4 +384,6 @@ public class ActivityRoute extends TouchActivity {
         AlertDialog alert = builder.create();
         alert.show();
     }
+
+
 }

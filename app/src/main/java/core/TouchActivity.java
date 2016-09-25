@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 import Dialogs.DlgInputPay;
 import Dialogs.DlgLockApp;
+import sync.sendLocation;
 
 /**
  * Created by shestakov.g on 20.10.2015.
@@ -21,6 +22,8 @@ import Dialogs.DlgLockApp;
 public class TouchActivity extends ActionBarActivity {
     Timer t;
     TimerTask task;
+    Timer tSendLocation;
+    TimerTask taskSendLocation;
     protected final TouchActivity TouchActivityInstance = this;
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
@@ -61,6 +64,25 @@ public class TouchActivity extends ActionBarActivity {
 
     }
 
+    protected void ResetSendLocationTimer() {
+        if (tSendLocation != null)
+        {
+
+        }
+        else {
+            tSendLocation = new Timer();
+            createSendLocationTimerTask();
+            try {
+                tSendLocation.scheduleAtFixedRate(taskSendLocation, 60*5*1000,60 * 20 * 1000);//appManager.getOurInstance().appSetupInstance.getLockTimeOut()*60*1000);
+//text
+            }
+            catch (Exception e)
+            {
+                Toast.makeText(TouchActivityInstance, e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
     private boolean allowLockApp()
     {
         Calendar calendar= Calendar.getInstance(TimeZone.getDefault());
@@ -98,17 +120,46 @@ public class TouchActivity extends ActionBarActivity {
         };
     }
 
+    private void createSendLocationTimerTask()
+    {
+        if (this.taskSendLocation != null)
+        {
+            return;
+        }
+        this.taskSendLocation = new TimerTask() {
+
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        sendLocation syncr = new sendLocation(appManager.getOurInstance().appSetupInstance.getActiveWindow());
+                        syncr.execute(null, null);
+                    }
+                });
+            }
+        };
+    }
+
     public void LockApp()
     {
         //Toast.makeText(TouchActivityInstance, "Timer", Toast.LENGTH_SHORT).show();
+        if (appManager.getOurInstance().appSetupInstance.isAppLocked())  return;
         DlgLockApp dlg = new DlgLockApp(appManager.getOurInstance().appSetupInstance.getActiveWindow());
-        dlg.show();
+            dlg.show();
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         appManager.getOurInstance().appSetupInstance.setActiveWindow(this);
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        appManager.getOurInstance().appSetupInstance.setAppLocked(false);
     }
 
     @Override

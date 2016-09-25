@@ -52,8 +52,12 @@ public class DbCreateScript {
     private static String CREATE_PAY = "create table pays (_id integer primary key autoincrement, payDate  DATETIME DEFAULT CURRENT_TIMESTAMP, transactionId text, customerid text, paySum double,  _send integer DEFAULT 0)";
     private static String CREATE_PAY_IDX1 = "CREATE INDEX idx_pays ON pays (payDate,transactionId )";
 
-    private static String CREATE_GPS_LOG = "create table gpsLog (  _id integer  primary key, routeDayId integer, longtitude real, latitude real, logDate DATETIME DEFAULT CURRENT_TIMESTAMP, _send integer DEFAULT 0 )";
+    private static String CREATE_GPS_LOG = "create table gpsLog (  _id integer  primary key, routeDayId integer, longtitude real, latitude real, logDate DATETIME DEFAULT CURRENT_TIMESTAMP, sateliteTime real, _send integer DEFAULT 0 )";
     private static String CREATE_GPS_LOG_IDX1 = "CREATE INDEX idx1_gpsLog ON gpsLog (_send)";
+
+    private static String CREATE_OUTLET_CHECKIN = "create table outletCheckIn (  _id integer  primary key, outletId text, longtitude real, latitude real, logDate DATETIME DEFAULT CURRENT_TIMESTAMP, sateliteTime real, _send integer DEFAULT 0 )";
+    private static String CREATE_OUTLET_CHECKIN_IDX1 = "CREATE INDEX idx1_outletCheckIn ON gpsLog (_send)";
+
 
     private static String CREATE_ROUTE_DAY = "create table routesDay (_id integer primary key autoincrement, routeDay DATETIME DEFAULT CURRENT_TIMESTAMP, timeBeginning DATETIME DEFAULT CURRENT_TIMESTAMP, " +
             "timeCompletion DATETIME DEFAULT CURRENT_TIMESTAMP, status integer DEFAULT 0, AutomaticClosed integer DEFAULT 0, _send integer DEFAULT 0)";
@@ -112,6 +116,8 @@ public class DbCreateScript {
         list.add(CREATE_OUTLETINFO_IDX1);
         list.add(CREATE_CLIENT_CARD_SKU);
         list.add(CREATE_CLIENT_CARD_SKU_IDX1);
+        list.add(CREATE_OUTLET_CHECKIN);
+        list.add(CREATE_OUTLET_CHECKIN_IDX1);
         return list;
     }
 
@@ -134,6 +140,7 @@ public class DbCreateScript {
     private static String DROP_SPECIFICATION="DROP TABLE Specification";
     private static String DROP_OUTLETINFO="DROP TABLE OutletInfo";
     private static String DROP_CLIENT_CARD_SKU="DROP TABLE ClientCardSku";
+    private static String DROP_OUTLET_CHECKIN = "DROP TABLE outletCheckIn";
 
     public static ArrayList<String>  getDropTableScripts()
     {
@@ -156,6 +163,7 @@ public class DbCreateScript {
         list.add(DROP_SPECIFICATION);
         list.add(DROP_OUTLETINFO);
         list.add(DROP_CLIENT_CARD_SKU);
+        list.add(DROP_OUTLET_CHECKIN);
         return list;
     }
 }

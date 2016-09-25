@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +22,8 @@ public class SetupActivity extends TouchActivity {
     private EditText txtServiceLink;
     private EditText txtRouteName;
     private EditText txtEmployeeName;
-    private CheckBox chbAllowGps;
+    //private CheckBox chbAllowGps;
+    private Switch chbAllowGps;
     private appManager m_appManager = appManager.getOurInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +33,8 @@ public class SetupActivity extends TouchActivity {
         txtServiceLink.setText(m_appManager.appSetupInstance.getServiceUrl());
         txtRouteName = (EditText) findViewById(R.id.editTextRouteName);
         txtEmployeeName  = (EditText) findViewById(R.id.editTextEmployeeName);
-        chbAllowGps = (CheckBox) findViewById(R.id.chbAllowGps);
+        //chbAllowGps = (CheckBox) findViewById(R.id.chbAllowGps);
+        chbAllowGps = (Switch) findViewById(R.id.switchAllowGps);
         refreshSetup();
     }
 
@@ -80,6 +83,10 @@ public class SetupActivity extends TouchActivity {
         m_appManager.appSetupInstance.setAllowGpsLog(chbAllowGps.isChecked());
         m_appManager.appSetupInstance.saveSetup(this);
         m_appManager.appSetupInstance.readSetup(this);
+        if ( m_appManager.appSetupInstance.getAllowGpsLog())
+            appManager.getOurInstance().gpsLoggerManager.startGPSLogger();
+        else
+            appManager.getOurInstance().gpsLoggerManager.stopGPSLogger();
     }
 
     public void onClickBtnSave(View v)

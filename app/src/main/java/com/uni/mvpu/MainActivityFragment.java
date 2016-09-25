@@ -16,6 +16,8 @@ import core.LocationDatabase;
 import core.RouteDay;
 import core.appManager;
 import core.wputils;
+import sync.sendLocation;
+import sync.syncRoute;
 
 
 /**
@@ -102,6 +104,13 @@ public class MainActivityFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 appManager.getOurInstance().showPayList(parentView.getContext());
+            }
+        });
+        ((Button) parentView.findViewById(R.id.btnTest)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendLocation syncr = new sendLocation(parentView.getContext());
+                syncr.execute(null, null);
             }
         });
         String versionName ="Версия:  "+BuildConfig.VERSION_NAME;

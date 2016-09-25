@@ -4,19 +4,23 @@ import android.app.Application;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.net.Uri;
+import android.provider.Settings;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 //import core.MyApplication;
 import Dialogs.DlgLockApp;
 import core.LocationDatabase;
 import core.TouchActivity;
 import core.appManager;
+import interfaces.IManagementGPSLogger;
 
 
-public class MainActivity extends TouchActivity {
+public class MainActivity extends TouchActivity implements IManagementGPSLogger {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,12 +28,17 @@ public class MainActivity extends TouchActivity {
         setContentView(R.layout.activity_main);
 
         appManager.getOurInstance(this);
+        appManager.getOurInstance().gpsLoggerManager = this;
         ResetTimer();
+        ResetSendLocationTimer();
 //        if ( !appManager.getOurInstance().appSetupInstance.isAppLocked()) {
 //            DlgLockApp dlg = new DlgLockApp(this);
 //            dlg.show();
 //        }
-       //  startGPSLogger();
+         if (appManager.getOurInstance().appSetupInstance.getAllowGpsLog())
+         {
+             appManager.getOurInstance().gpsLoggerManager.startGPSLogger();
+         }
     }
 
     @Override
@@ -75,16 +84,34 @@ public class MainActivity extends TouchActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void startGPSLogger()
+    public void startGPSLogger()
     {
+        turnGPSOn();
         if (LocationDatabase.locDb == null)
             LocationDatabase.locDb = new LocationDatabase(this);
-        startService(new Intent(MainActivity.this,                GPSLoggerService.class));
+        appManager.getOurInstance().appSetupInstance.setGpsServiceIntent(new Intent(MainActivity.this,                GPSLoggerService.class));
+        startService(appManager.getOurInstance().appSetupInstance.getGpsServiceIntent());
+
     }
 
-    private void stopGPSLogger()
+    public void stopGPSLogger()
     {
-        stopService(new Intent(MainActivity.this,
-                GPSLoggerService.class));
+        if (appManager.getOurInstance().appSetupInstance.getGpsServiceIntent()!=null)
+            stopService(appManager.getOurInstance().appSetupInstance.getGpsServiceIntent());
     }
+
+    private void turnGPSOn(){
+        String provider = Settings.Secure.getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+
+        if(!provider.contains("gps")){ //if gps is disabled
+            final Intent poke = new Intent();
+            poke.setClassName("com.android.settings", "com.android.settings.widget.SettingsAppWidgetProvider");
+            poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
+            poke.setData(Uri.parse("3"));
+            sendBroadcast(poke);
+            Toast.makeText(this, "GPS выключен. Включите в настройках",Toast.LENGTH_LONG).show();
+        }
+    }
+
 }
+

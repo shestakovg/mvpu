@@ -46,6 +46,19 @@ public class DlgLockApp extends Dialog {
         });
     }
 
+    @Override
+    public void hide() {
+        super.hide();
+        appManager.getOurInstance().appSetupInstance.setAppLocked(false);
+        appManager.getOurInstance().appSetupInstance.setLastTouch();
+    }
+
+    @Override
+    public void show() {
+        super.show();
+        appManager.getOurInstance().appSetupInstance.setAppLocked(true);
+    }
+
     private boolean checkPassword(String password)
     {
         if (password.equals(appManager.getOurInstance().appSetupInstance.getLockPasswod()))

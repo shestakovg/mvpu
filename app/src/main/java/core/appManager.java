@@ -1,17 +1,24 @@
 package core;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.annotation.NonNull;
 
 import com.uni.mvpu.ActivityDebt;
 import com.uni.mvpu.ActivityOrder;
 import com.uni.mvpu.ActivityOrderList;
 import com.uni.mvpu.ActivitySync;
+import com.uni.mvpu.R;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -21,10 +28,12 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.UUID;
 
+
 import Entitys.Order;
 import Entitys.OutletObject;
 import Entitys.priceType;
 import db.DbOpenHelper;
+import interfaces.IManagementGPSLogger;
 import sync.sendOrders;
 import sync.sendPays;
 
@@ -305,6 +314,51 @@ public class appManager {
         String result = cursor.getString(0);
         db.close();
         return result;
+    }
+
+    public IManagementGPSLogger gpsLoggerManager;
+
+    private  boolean mResult = false;
+
+    public boolean getYesNoWithExecutionStop(String title, String message, Context context, int iconId, boolean showNoButton) {
+
+        // make a handler that throws a runtime exception when a message is received
+        final Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message mesg) {
+                throw new RuntimeException();
+            }
+        };
+
+        // make a text input dialog and show it
+        AlertDialog.Builder alert = new AlertDialog.Builder(context);
+        alert.setTitle(title);
+        //alert.setIcon(R.drawable.placeholder);
+        if (iconId > 0)
+                    alert.setIcon(iconId);
+        alert.setMessage(message);
+
+        alert.setPositiveButton("Да", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                mResult = true;
+                handler.sendMessage(handler.obtainMessage());
+            }
+        });
+        if (showNoButton) {
+            alert.setNegativeButton("Нет", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int whichButton) {
+                    mResult = false;
+                    handler.sendMessage(handler.obtainMessage());
+                }
+            });
+        }
+        alert.show();
+
+        // loop till a runtime exception is triggered.
+        try { Looper.loop(); }
+        catch(RuntimeException e2) {}
+
+        return mResult;
     }
 
 }
