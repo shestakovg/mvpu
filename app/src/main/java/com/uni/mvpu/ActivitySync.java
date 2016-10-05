@@ -156,7 +156,7 @@ public class ActivitySync extends TouchActivity {
                         syncSkuGroup syncGroup = new syncSkuGroup(this, pd);
                         syncGroup.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getskugroup/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
                         syncSku syncSku = new syncSku(this, pd);
-                        syncSku.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getsku"});
+                        syncSku.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getskuext/"+ appManager.getOurInstance().appSetupInstance.getRouteId()});
                         syncSkuFact skuFact = new syncSkuFact(this, pd);
                         skuFact.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getskufact"});
                         break;

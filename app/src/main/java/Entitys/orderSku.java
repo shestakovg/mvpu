@@ -164,5 +164,6 @@ public class orderSku {
         updatePosition(context, null);
     }
 
-
+    public String Color;
+    public String OutStockColor;
 }

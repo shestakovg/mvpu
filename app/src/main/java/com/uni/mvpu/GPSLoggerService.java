@@ -43,7 +43,7 @@ public class GPSLoggerService  extends Service {
     private final DateFormat timestampFormat = new SimpleDateFormat("yyyyMMddHHmmss");
     private static long minTimeMillis = 5000;
     private static long minDistanceMeters =30;// 10;
-    private static float minAccuracyMeters = 10 ;// 10;
+    private static float minAccuracyMeters = 15 ;// 10;
     private static float minAccuracyMetersCheckIn = 40 ;
 
     /** Called when the activity is first created. */

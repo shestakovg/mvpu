@@ -194,6 +194,11 @@ public class ActivityRoute extends TouchActivity {
 
     private void showOrders(int orderType)
     {
+//        if (!LocationDatabase.getInstance().isLocated())
+//        {
+//            Toast.makeText(this,"Геолокация невозможна\nВыключена геолокация на устройстве\nВключите в настройках планшета/смартфона",Toast.LENGTH_LONG).show();
+//            return;
+//        }
         Calendar currentDate = Calendar.getInstance();
         currentDate.setTime(new Date());
         boolean paymentExists = appManager.getOurInstance().checkAnnouncedSum(getBaseContext(), selectedOutlet.customerId.toString(), currentDate);
@@ -201,7 +206,7 @@ public class ActivityRoute extends TouchActivity {
         Calendar checkInDate = Calendar.getInstance();
         checkInDate.setTime(new Date());
 
-        if (LocationDatabase.getInstance().isLocated() && appManager.getOurInstance().appSetupInstance.getAllowGpsLog() )
+        if (appManager.getOurInstance().appSetupInstance.getAllowGpsLog() && LocationDatabase.getInstance().isLocated() )
         {
             if (appManager.getOurInstance().getYesNoWithExecutionStop("Отметка в торговой точке","Отметить посещение "+selectedOutlet.outletName, currentContext, R.drawable.placeholder,
                     LocationDatabase.getInstance().IsOutletCheckIn(selectedOutlet.outletId.toString(), checkInDate))) {

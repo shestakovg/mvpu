@@ -27,6 +27,13 @@
     <string name="outdoor_route_does_not_exist">Нет открытого маршрута</string>
     <string name="order_list_title">Дата заказов</string>
     <string name="storecheck_list_title">Дата сторчека</string>
+    <string name="dialogNo">Нет</string>
+    <string name="deleteSku">Удалить позицию</string>
+    <string name="StringStock">Остатки</string>
+    <string name="StringMainWH">Главный</string>
+    <string name="StringRWH">Розница</string>
+    <string name="StringInBox">В ящ.</string>
+    <string name="StringFact">Факт</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_map">Map</string>

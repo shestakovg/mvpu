@@ -33,7 +33,7 @@ public class DbCreateScript {
     private static String CREATE_SKUGROUP_IDX1 = "CREATE INDEX idx_skuGroup1 ON skuGroup (GroupId)";
     private static String CREATE_SKUGROUP_IDX2 = "CREATE INDEX idx_skuGroup2 ON skuGroup (GroupParentId)";
 
-    private static String CREATE_SKU = "create table sku(SkuId text, SkuName text, SkuParentId text, QtyPack double, Article text, OnlyFact integer,CheckCountInBox integer, onlyMWH integer )";
+    private static String CREATE_SKU = "create table sku(SkuId text, SkuName text, SkuParentId text, QtyPack double, Article text, OnlyFact integer,CheckCountInBox integer, onlyMWH integer, Color text, OutStockColor text)";
     private static String CREATE_SKU_IDX1 = "CREATE INDEX idx_sku ON sku (SkuId)";
     private static String CREATE_SKU_IDX2 = "CREATE INDEX idx_sku2 ON sku (SkuParentId)";
 

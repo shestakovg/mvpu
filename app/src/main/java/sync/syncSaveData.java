@@ -138,6 +138,33 @@ public class syncSaveData {
         Toast.makeText(context, "Обновление номенклатуры завершено", Toast.LENGTH_SHORT).show();
     }
 
+    public static void saveSkuExt(List<JSONObject> jsonObjects, Context context)
+    {
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        db.execSQL("delete from sku");
+        for (JSONObject jsonObject: jsonObjects) {
+            try {
+                ContentValues values = new ContentValues();
+                values.put("SkuId", jsonObject.getString("SkuId"));
+                values.put("SkuName", jsonObject.getString("SkuName"));
+                values.put("SkuParentId", jsonObject.getString("SkuParentId"));
+                values.put("QtyPack", jsonObject.getDouble("QtyPack"));
+                values.put("Article", jsonObject.getString("Article"));
+                values.put("OnlyFact", jsonObject.getInt("OnlyFact"));
+                values.put("CheckCountInBox", jsonObject.getInt("CheckCountInBox"));
+                values.put("onlyMWH", jsonObject.getInt("onlyMWH"));
+                values.put("Color", jsonObject.getString("Color"));
+                values.put("OutStockColor", jsonObject.getString("OutStockColor"));
+                db.insert("sku", null, values);
+            } catch (Exception e) {
+                Toast.makeText(context, "Could not save sku", Toast.LENGTH_SHORT).show();
+            }
+        }
+        db.close();
+        Toast.makeText(context, "Обновление номенклатуры завершено", Toast.LENGTH_SHORT).show();
+    }
+
     public static void saveSkuFact(List<JSONObject> jsonObjects, Context context)
     {
         DbOpenHelper dbOpenHelper = new DbOpenHelper(context);

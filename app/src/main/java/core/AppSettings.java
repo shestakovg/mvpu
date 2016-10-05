@@ -137,7 +137,7 @@ public class AppSettings implements IOrderControlParams {
         this.allowGpsLog = allowGpsLog;
     }
 
-    private Boolean allowGpsLog = true;
+    private Boolean allowGpsLog = false;
 
     public int getLockTimeOut() {
         return LockTimeOut;
@@ -284,6 +284,7 @@ public class AppSettings implements IOrderControlParams {
             }
             cursor.moveToNext();
         }
+        this.allowGpsLog = false;
         db.close();
     }
 

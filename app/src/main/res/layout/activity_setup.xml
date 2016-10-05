@@ -73,7 +73,8 @@
                 android:background="@color/bright_foreground_material_dark"
                 android:clickable="true"
                 android:enabled="true"
-                android:gravity="left" />
+                android:gravity="left"
+                android:visibility="invisible" />
 
 
             <LinearLayout

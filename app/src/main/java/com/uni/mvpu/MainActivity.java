@@ -109,7 +109,7 @@ public class MainActivity extends TouchActivity implements IManagementGPSLogger 
             poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
             poke.setData(Uri.parse("3"));
             sendBroadcast(poke);
-            Toast.makeText(this, "GPS выключен. Включите в настройках",Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Геолокация выключена. Включите в настройках планшета/смартфона",Toast.LENGTH_LONG).show();
         }
     }
 

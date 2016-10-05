@@ -102,12 +102,12 @@ public class orderSkuAdapter extends BaseAdapter  {
         if ((cursku.stockG <=0 ) && (cursku.stockR <= 0))
         {
                 textSkuName.setTypeface(null, Typeface.NORMAL);
-                textSkuName.setTextColor(Color.parseColor("#bdbdbd"));
+                textSkuName.setTextColor(Color.parseColor(cursku.OutStockColor));
         }
         else
         {
                 textSkuName.setTypeface(null, Typeface.BOLD);
-                textSkuName.setTextColor(Color.parseColor("#ff000000"));
+                textSkuName.setTextColor(Color.parseColor(cursku.Color));
         }
 
         ((TextView) view.findViewById(R.id.textViewPrice)).setText(String.format("%.2f",   cursku.price));
@@ -140,7 +140,7 @@ public class orderSkuAdapter extends BaseAdapter  {
         TextView onlyFact = (TextView) view.findViewById(R.id.textViewOrderOnlyFact);
         if (cursku.onlyFact)
         {
-            onlyFact.setText("Факт");
+            onlyFact.setText(context.getText(R.string.StringFact));
         }
         else
         {
@@ -250,8 +250,8 @@ public class orderSkuAdapter extends BaseAdapter  {
         dlgEditQty.setContentView(R.layout.edit_orderqty);
         dlgEditQty.setCancelable(true);
         //((TextView) dlgEditQty.findViewById(R.id.tvEtitQtyDescription)).setText(sku.skuName);
-        String stockStr = "Остатки: Главный "+String.format("%d", (long)  sku.stockG)+"   Розница "+String.format("%d", (long)  sku.stockR)
-                + "     В ящ. "+String.format("%d", (int)  sku.getCountInBox());
+        String stockStr =context.getText(R.string.StringStock)+": "+context.getText(R.string.StringMainWH) +String.format("%d", (long)  sku.stockG)+"    "+context.getText(R.string.StringRWH)+String.format("%d", (long)  sku.stockR)
+                + "     "+ context.getText(R.string.StringInBox)+" "+String.format("%d", (int)  sku.getCountInBox());
         ((TextView) dlgEditQty.findViewById(R.id.tvEtitQtyStock)).setText(stockStr);
 
         final EditText dlgEditMWH = (EditText) dlgEditQty.findViewById(R.id.editDialogMWH);
@@ -330,7 +330,7 @@ public class orderSkuAdapter extends BaseAdapter  {
     {
         final orderSku sku = getSku(position);
         AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
-        builder1.setMessage("Удалить позицию "+sku.skuName);
+        builder1.setMessage(context.getText(R.string.deleteSku)+sku.skuName);
         builder1.setCancelable(true);
         builder1.setPositiveButton("OK",
                 new DialogInterface.OnClickListener() {
@@ -343,7 +343,7 @@ public class orderSkuAdapter extends BaseAdapter  {
                         dialog.cancel();
                     }
                 });
-        builder1.setNegativeButton("Нет",
+        builder1.setNegativeButton(context.getText(R.string.dialogNo),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();

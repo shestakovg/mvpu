@@ -43,7 +43,7 @@ public class syncSku extends AsyncTask<String, Integer, List<JSONObject>> {
             Toast.makeText(context, R.string.no_connection, Toast.LENGTH_SHORT).show();
             return;
         }
-        syncSaveData.saveSku(jsonObjects, context);
+        syncSaveData.saveSkuExt(jsonObjects, context);
         if (pd.getProgress() == pd.getMax())
             this.pd.dismiss();
     }
