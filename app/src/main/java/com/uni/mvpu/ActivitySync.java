@@ -22,6 +22,7 @@ import sync.syncContracts;
 import sync.syncDebt;
 import sync.syncDebtParams;
 import sync.syncOutletInfo;
+import sync.syncPlanFact;
 import sync.syncPrice;
 import sync.syncRoute;
 import sync.syncSku;
@@ -41,7 +42,8 @@ public class ActivitySync extends TouchActivity {
     private final String IDLI_DEBT = "Долги";
     private final String IDLI_OUTLETINFO = "Карточка клиента";
     private final String IDLI_SPECIFICATION = "Спецификации";
-    private String[] mSyncOptions = {IDLI_ROUTE, IDLI_PRODUCT,  IDLI_DOCS, IDLI_STOCK, IDLI_DEBT, IDLI_OUTLETINFO};
+    private final String IDLI_PLANFACT = "План/Факт";
+    private String[] mSyncOptions = {IDLI_ROUTE, IDLI_PRODUCT,  IDLI_DOCS, IDLI_STOCK, IDLI_DEBT, IDLI_OUTLETINFO, IDLI_PLANFACT};
     private ArrayAdapter listAdapter;
     private ArrayList<priceType> priceList;
     private ArrayList<String> priceNameList;
@@ -189,6 +191,10 @@ public class ActivitySync extends TouchActivity {
 
                         syncClientCardSku syncInfoClientCard = new syncClientCardSku(this, pd);
                         syncInfoClientCard.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getclientcardsku/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
+                        break;
+                    case IDLI_PLANFACT:
+                        syncPlanFact planFact = new syncPlanFact(this, pd);
+                        planFact.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getsalesfact/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
                         break;
                 }
             }

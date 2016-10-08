@@ -93,6 +93,26 @@ public class syncSaveData {
         Toast.makeText(context, "Обновление договоров завершено", Toast.LENGTH_SHORT).show();
     }
 
+    public static void savePlanFact(List<JSONObject> jsonObjects, Context context)
+    {
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        db.execSQL("delete from salesfact");
+        for (JSONObject jsonObject: jsonObjects) {
+            try {
+                ContentValues values = new ContentValues();
+                values.put("GroupId", jsonObject.getString("GroupId"));
+                values.put("FactAmount", jsonObject.getDouble("FactAmount"));
+                values.put("FactOutletCount", jsonObject.getInt("FactOutletCount"));
+                db.insert("salesfact", null, values);
+            } catch (Exception e) {
+
+            }
+        }
+        db.close();
+        Toast.makeText(context, "Обновление План факт завершено", Toast.LENGTH_SHORT).show();
+    }
+
     public static void saveSkuGroup(List<JSONObject> jsonObjects, Context context)
     {
         DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
@@ -104,6 +124,9 @@ public class syncSaveData {
                 values.put("GroupId", jsonObject.getString("GroupId"));
                 values.put("GroupName", jsonObject.getString("GroupName"));
                 values.put("GroupParentId", jsonObject.getString("GroupParentId"));
+                values.put("Amount", jsonObject.getDouble("Amount"));
+                values.put("OutletCount", jsonObject.getInt("OutletCount"));
+                values.put("Color", jsonObject.getString("Color"));
                 db.insert("skuGroup", null, values);
             } catch (Exception e) {
 

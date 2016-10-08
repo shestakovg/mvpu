@@ -29,7 +29,7 @@ public class DbCreateScript {
     private static String CREATE_CONTRACT = "create table contracts (CustomerId text, PriceId text, PriceName text, LimitSum double, Reprieve text, PartnerId text)";
     private static String CREATE_CONTRACT_IDX ="CREATE INDEX idx_contracts ON contracts (PartnerId)";
 
-    private static String CREATE_SKUGROUP = "create table skuGroup (GroupId text, GroupName text, GroupParentId text)";
+    private static String CREATE_SKUGROUP = "create table skuGroup (GroupId text, GroupName text, GroupParentId text, Amount real, OutletCount integer, Color text)";
     private static String CREATE_SKUGROUP_IDX1 = "CREATE INDEX idx_skuGroup1 ON skuGroup (GroupId)";
     private static String CREATE_SKUGROUP_IDX2 = "CREATE INDEX idx_skuGroup2 ON skuGroup (GroupParentId)";
 
@@ -75,6 +75,8 @@ public class DbCreateScript {
     private static String CREATE_CLIENT_CARD_SKU ="create table ClientCardSku(OutletId text, SkuId text, LastDate text, Qty integer)";
     private static String CREATE_CLIENT_CARD_SKU_IDX1 = "CREATE INDEX idx1_CLIENT_CARD_SKU ON ClientCardSku(OutletId)";
 
+    private static  String CREATE_SALESFACT = "create table salesfact(GroupId text, FactAmount real, FactOutletCount integer)";
+
     public static  ArrayList<String> getCreateDataBaseScripts()
     {
         ArrayList<String> list = new ArrayList<String>();
@@ -118,6 +120,7 @@ public class DbCreateScript {
         list.add(CREATE_CLIENT_CARD_SKU_IDX1);
         list.add(CREATE_OUTLET_CHECKIN);
         list.add(CREATE_OUTLET_CHECKIN_IDX1);
+        list.add(CREATE_SALESFACT);
         return list;
     }
 
@@ -141,6 +144,7 @@ public class DbCreateScript {
     private static String DROP_OUTLETINFO="DROP TABLE OutletInfo";
     private static String DROP_CLIENT_CARD_SKU="DROP TABLE ClientCardSku";
     private static String DROP_OUTLET_CHECKIN = "DROP TABLE outletCheckIn";
+    private static String DROP_SALESFACT = "DROP TABLE salesfact";
 
     public static ArrayList<String>  getDropTableScripts()
     {
@@ -164,6 +168,7 @@ public class DbCreateScript {
         list.add(DROP_OUTLETINFO);
         list.add(DROP_CLIENT_CARD_SKU);
         list.add(DROP_OUTLET_CHECKIN);
+        list.add(DROP_SALESFACT);
         return list;
     }
 }

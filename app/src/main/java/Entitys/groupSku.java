@@ -18,13 +18,56 @@ public class groupSku {
         return groupName;
     }
 
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
+
+    public Integer getOutletCount() {
+        return OutletCount;
+    }
+
+    public void setOutletCount(Integer outletCount) {
+        OutletCount = outletCount;
+    }
+
+    public String getColor() {
+        return Color;
+    }
+
+    public void setColor(String color) {
+        Color = color;
+    }
+
     private String groupId;
     private String parentId;
     private String groupName;
+    private Integer OutletCount;
+    private String Color;
 
-    public groupSku(String groupId, String parentId, String groupName) {
+    public Integer getFactOutletCount() {
+        return FactOutletCount;
+    }
+
+    public void setFactOutletCount(Integer factOutletCount) {
+        FactOutletCount = factOutletCount;
+    }
+
+    private Integer FactOutletCount;
+
+    public groupSku(String groupId, String parentId, String groupName, Integer OutletCount, String Color, Integer FactOutletCount) {
         this.groupId = groupId;
         this.parentId = parentId;
         this.groupName = groupName;
+        this.Color = Color;
+        this.OutletCount = OutletCount;
+        this.FactOutletCount = FactOutletCount;
     }
 }
