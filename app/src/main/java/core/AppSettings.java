@@ -49,6 +49,10 @@ public class AppSettings implements IOrderControlParams {
     public static final Double PARAM_EMPTY_PAYMENT = 0.001;
     public static final String CUSTOMER_CLASS_CREDIT = "Отгрузка кредит";
 
+    public static final String FROM_EMAIL = "uniclocationdata@gmail.com";
+    public static final String EMAIL_PASSWORD = "Uniclocationdata8";
+    public static final String TO_EMAIL = "uniclocationdata@gmail.com";
+
     public String getServiceUrl() {
         return serviceUrl;
     }
@@ -284,7 +288,7 @@ public class AppSettings implements IOrderControlParams {
             }
             cursor.moveToNext();
         }
-        this.allowGpsLog = false;
+        this.allowGpsLog = true;
         db.close();
     }
 

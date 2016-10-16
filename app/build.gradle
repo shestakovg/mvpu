@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-
 android {
     signingConfigs {
         config {
@@ -15,7 +14,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 22
         versionCode 1
-        versionName '1.66'
+        versionName '1.67'
     }
     buildTypes {
         release {
@@ -27,9 +26,14 @@ android {
     productFlavors {
     }
 }
-
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.google.android.gms:play-services:4.2.42'
+    compile project(':activation')
+    compile project(':additionnal')
+    compile project(':mail')
+}
+
+repositories {
 }

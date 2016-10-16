@@ -29,6 +29,7 @@ import java.util.ListIterator;
 import Entitys.LocationEntitys.OutletCheckIn;
 import Entitys.LocationEntitys.TrackingEntity;
 import Entitys.sendResult;
+import core.AppSettings;
 import core.appManager;
 import core.wputils;
 import db.DbOpenHelper;
@@ -45,12 +46,16 @@ public class sendLocation extends AsyncTask<String, Integer, List<JSONObject>> {
 
     public sendLocation(Context context) {
         this.context = context;
+        this.sheckInList = this.getSheckInList();
+        this.trackingList = this.getTrackingOutletCheckInList();
     }
 
     @Override
     protected List<JSONObject> doInBackground(String... params) {
         this.send();
+        if (!this.success)        this.sendMailCheckIn();
         this.sendTracking();
+        if (!this.successTracking) this.sendMailLocation();
         return null;
     }
 
@@ -62,39 +67,45 @@ public class sendLocation extends AsyncTask<String, Integer, List<JSONObject>> {
     @Override
     protected void onPostExecute(List<JSONObject> jsonObjects) {
         super.onPostExecute(jsonObjects);
-        if (this.success && this.successTracking)
-            Toast.makeText(this.context, "Send location success", Toast.LENGTH_SHORT).show();
-        else
-            Toast.makeText(this.context, "Send location fail", Toast.LENGTH_SHORT).show();
+
+//        if (this.success && this.successTracking)
+//            Toast.makeText(this.context, "Send location success", Toast.LENGTH_SHORT).show();
+//        else
+//            Toast.makeText(this.context, "Send location fail", Toast.LENGTH_SHORT).show();
+    }
+
+    private JSONArray getJSONCheckIn(ArrayList<OutletCheckIn>  checkInArrayList)
+    {
+        JSONArray jsonArray = new JSONArray();
+        for (OutletCheckIn chk : checkInArrayList)
+        {
+            JSONObject jsonCheckIn  = new JSONObject();
+            try{
+                jsonCheckIn.put("routeId", chk.getRouteId());
+                jsonCheckIn.put("outletId", chk.getOutletId());
+                jsonCheckIn.put("longtitude", chk.getLongtitude());
+                jsonCheckIn.put("latitude",chk.getLatitude());
+                jsonCheckIn.put("sateliteTime", chk.getSateliteTime());
+                jsonArray.put(jsonCheckIn);
+            }
+            catch (JSONException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return jsonArray;
     }
 
     private void send()
     {
-        ArrayList<OutletCheckIn> checkInArrayList =  this.getSheckInList();
+        ArrayList<OutletCheckIn> checkInArrayList = this.sheckInList;
         if (checkInArrayList.size()==0 )
         {
             this.success = true;
-            return;
+            return ;
         }
         try {
-            JSONArray jsonArray = new JSONArray();
-            for (OutletCheckIn chk : checkInArrayList)
-            {
-                JSONObject jsonCheckIn  = new JSONObject();
-                try{
-                    jsonCheckIn.put("routeId", chk.getRouteId());
-                    jsonCheckIn.put("outletId", chk.getOutletId());
-                    jsonCheckIn.put("longtitude", chk.getLongtitude());
-                    jsonCheckIn.put("latitude",chk.getLatitude());
-                    jsonCheckIn.put("sateliteTime", chk.getSateliteTime());
-                    jsonArray.put(jsonCheckIn);
-                }
-                catch (JSONException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-
+            JSONArray jsonArray = getJSONCheckIn(checkInArrayList);
             URL myurl=new URL(appManager.getOurInstance().appSetupInstance.getServiceUrl()+"/dictionary/checkin");
             HttpURLConnection connection = (HttpURLConnection) myurl.openConnection();
             connection.setDoOutput(true);
@@ -115,19 +126,6 @@ public class sendLocation extends AsyncTask<String, Integer, List<JSONObject>> {
             if (connection != null){
                 connection.disconnect();
             }
-//            HttpPost request = new HttpPost(appManager.getOurInstance().appSetupInstance.getServiceUrl()+"/dictionary/savecheckin");
-//            request.setHeader("Accept", "application/json");
-//            request.setHeader("Content-type", "application/json");
-////            JSONObject checkInObj = new JSONObject();
-////            checkInObj.put("checkInArray", jsonArray);
-//            StringEntity entity = new StringEntity(jsonArray.toString());
-//            request.setEntity(entity);
-//            DefaultHttpClient httpClient = new DefaultHttpClient();
-//            HttpResponse response = httpClient.execute(request);
-//            int responceCode=response.getStatusLine().getStatusCode();
-//            if (responceCode== HttpStatus.SC_OK) {
-//                this.success = true;
-//            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -138,31 +136,36 @@ public class sendLocation extends AsyncTask<String, Integer, List<JSONObject>> {
         }
     }
 
+    private JSONArray getJSONLocation( ArrayList<TrackingEntity> trackList)
+    {
+        JSONArray jsonArray = new JSONArray();
+        for (TrackingEntity chk : trackList)
+        {
+            JSONObject jsonCheckIn  = new JSONObject();
+            try{
+                jsonCheckIn.put("routeId", chk.getRouteId());
+                jsonCheckIn.put("longtitude", chk.getLongtitude());
+                jsonCheckIn.put("latitude",chk.getLatitude());
+                jsonCheckIn.put("sateliteTime", chk.getSateliteTime());
+                jsonArray.put(jsonCheckIn);
+            }
+            catch (JSONException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        return jsonArray;
+    }
+
     private void sendTracking()
     {
-        ArrayList<TrackingEntity> trackList =  this.getTrackingOutletCheckInList();
+        ArrayList<TrackingEntity> trackList =  this.trackingList;
         if (trackList.size()==0 ) {
             this.successTracking = true;
             return;
         }
         try {
-            JSONArray jsonArray = new JSONArray();
-            for (TrackingEntity chk : trackList)
-            {
-                JSONObject jsonCheckIn  = new JSONObject();
-                try{
-                    jsonCheckIn.put("routeId", chk.getRouteId());
-                    jsonCheckIn.put("longtitude", chk.getLongtitude());
-                    jsonCheckIn.put("latitude",chk.getLatitude());
-                    jsonCheckIn.put("sateliteTime", chk.getSateliteTime());
-                    jsonArray.put(jsonCheckIn);
-                }
-                catch (JSONException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-
+            JSONArray jsonArray = getJSONLocation(trackList);
             URL myurl=new URL(appManager.getOurInstance().appSetupInstance.getServiceUrl()+"/dictionary/tracking");
             HttpURLConnection connection = (HttpURLConnection) myurl.openConnection();
             connection.setDoOutput(true);
@@ -222,7 +225,7 @@ public class sendLocation extends AsyncTask<String, Integer, List<JSONObject>> {
         sendResult result=new sendResult();
         DbOpenHelper dbOpenHelper=new DbOpenHelper(context);
         SQLiteDatabase db= dbOpenHelper.getReadableDatabase();
-        Cursor cursor =db.rawQuery("select * from gpsLog where _send = 0 limit 100", null);
+        Cursor cursor =db.rawQuery("select * from gpsLog where _send = 0 limit 150", null);
         cursor.moveToFirst();
 
         for (int i=0;i<cursor.getCount();i++) {
@@ -261,6 +264,67 @@ public class sendLocation extends AsyncTask<String, Integer, List<JSONObject>> {
             db.execSQL("update outletCheckIn set _send = 1 where _id = "+String.valueOf(checkIn.getId()));
         }
         db.close();
+    }
+
+    private void sendMailCheckIn()
+    {
+        if (this.sheckInList.size()==0)
+        {
+            this.success = true;
+            return;
+        }
+
+        try {
+            JSONArray jsonArray = getJSONCheckIn(this.sheckInList);
+            JSONObject checkInObj = new JSONObject();
+            checkInObj.put("checkInArray", jsonArray);
+            Mail m = new Mail(AppSettings.FROM_EMAIL, AppSettings.EMAIL_PASSWORD);
+
+            String[] toArr = {AppSettings.TO_EMAIL};
+            m.setTo(toArr);
+            m.setFrom(AppSettings.FROM_EMAIL);
+            m.setSubject("checkin");
+
+            m.setBody(checkInObj.toString());
+            if (m.send())
+            {
+                this.markAsSend();
+                this.success = true;
+            }
+        } catch (Exception e) {
+            this.success = false;
+            e.printStackTrace();
+        }
+    }
+
+    private void sendMailLocation()
+    {
+        if (this.trackingList.size()==0)
+        {
+            this.successTracking = true;
+            return;
+        }
+
+        try {
+            JSONArray jsonArray = getJSONLocation(this.trackingList);
+            JSONObject checkInObj = new JSONObject();
+            checkInObj.put("checkInArray", jsonArray);
+            Mail m = new Mail(AppSettings.FROM_EMAIL, AppSettings.EMAIL_PASSWORD);
+
+            String[] toArr = {AppSettings.TO_EMAIL};
+            m.setTo(toArr);
+            m.setFrom(AppSettings.FROM_EMAIL);
+            m.setSubject("location");
+            m.setBody(checkInObj.toString());
+            if (m.send())
+            {
+                this.markTrakingAsSend();
+                this.successTracking = true;
+            }
+        } catch (Exception e) {
+            this.successTracking = false;
+            e.printStackTrace();
+        }
     }
 }
 

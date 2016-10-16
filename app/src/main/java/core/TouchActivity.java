@@ -73,7 +73,8 @@ public class TouchActivity extends ActionBarActivity {
             tSendLocation = new Timer();
             createSendLocationTimerTask();
             try {
-                tSendLocation.scheduleAtFixedRate(taskSendLocation, 60*5*1000,60 * 5 * 1000);//appManager.getOurInstance().appSetupInstance.getLockTimeOut()*60*1000);
+                tSendLocation.scheduleAtFixedRate(taskSendLocation, 60*3*1000,60 * 3 * 1000);//appManager.getOurInstance().appSetupInstance.getLockTimeOut()*60*1000);
+              //  tSendLocation.scheduleAtFixedRate(taskSendLocation, 1000,60 * 1 * 1000);
 //text
             }
             catch (Exception e)
