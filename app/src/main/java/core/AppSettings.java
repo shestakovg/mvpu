@@ -52,6 +52,7 @@ public class AppSettings implements IOrderControlParams {
     public static final String FROM_EMAIL = "uniclocationdata@gmail.com";
     public static final String EMAIL_PASSWORD = "Uniclocationdata8";
     public static final String TO_EMAIL = "uniclocationdata@gmail.com";
+    public static final int SENDMAIL_DELAY = 1;
 
     public String getServiceUrl() {
         return serviceUrl;

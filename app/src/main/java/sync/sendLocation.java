@@ -285,7 +285,7 @@ public class sendLocation extends AsyncTask<String, Integer, List<JSONObject>> {
             m.setFrom(AppSettings.FROM_EMAIL);
             m.setSubject("checkin");
 
-            m.setBody(checkInObj.toString());
+            m.setBody(jsonArray.toString());
             if (m.send())
             {
                 this.markAsSend();
@@ -315,7 +315,7 @@ public class sendLocation extends AsyncTask<String, Integer, List<JSONObject>> {
             m.setTo(toArr);
             m.setFrom(AppSettings.FROM_EMAIL);
             m.setSubject("location");
-            m.setBody(checkInObj.toString());
+            m.setBody(jsonArray.toString());
             if (m.send())
             {
                 this.markTrakingAsSend();

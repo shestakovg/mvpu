@@ -95,7 +95,7 @@ public class downloadNewVwersion extends AsyncTask<String, Integer, String> {
         InputStream is = null;
         try {
             is = c.getInputStream();
-            byte[] buffer = new byte[1024];
+            byte[] buffer = new byte[1024 * 10];
             int len1 = 0;
 
             while ((len1 = is.read(buffer)) != -1) {
