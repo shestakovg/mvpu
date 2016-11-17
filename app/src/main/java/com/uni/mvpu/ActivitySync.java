@@ -21,10 +21,13 @@ import sync.syncClientCardSku;
 import sync.syncContracts;
 import sync.syncDebt;
 import sync.syncDebtParams;
+import sync.syncDeliveryArea;
+import sync.syncOutletCategory;
 import sync.syncOutletInfo;
 import sync.syncPlanFact;
 import sync.syncPrice;
 import sync.syncRoute;
+import sync.syncRouteDays;
 import sync.syncSku;
 import sync.syncSkuFact;
 import sync.syncSkuGroup;
@@ -126,6 +129,16 @@ public class ActivitySync extends TouchActivity {
             pd.show();
             syncDebtParams debtParams = new syncDebtParams(this, pd);
             debtParams.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getdebtparams/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
+
+            syncOutletCategory soc = new syncOutletCategory(this);
+            soc.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getoutletcategory"});
+
+            syncRouteDays srd = new syncRouteDays(this);
+            srd.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getroutedays"});
+
+            syncDeliveryArea sda = new syncDeliveryArea(this);
+            sda.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getdeliveryarea"});
+
         }
 
         for (int i=0; i<checkedItems.size();i++)
@@ -141,6 +154,8 @@ public class ActivitySync extends TouchActivity {
                     Toast.makeText(this, "Обновление цен по прайс листу "+priceList.get(itemIndex).getPriceName(), Toast.LENGTH_SHORT).show();
                     syncPrice syncPrice = new syncPrice(this, priceList.get(itemIndex), pd);
                     syncPrice.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getprice/" + priceList.get(itemIndex).getPriceId()});
+
+
                 }
                 switch (listAdapter.getItem(position).toString())
                 {

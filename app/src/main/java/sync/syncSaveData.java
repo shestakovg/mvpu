@@ -348,6 +348,69 @@ public class syncSaveData {
         db.close();
         Toast.makeText(context, "Обновление  карточки клиента завершено", Toast.LENGTH_SHORT).show();
     }
+    public static void saveDeliveryArea(List<JSONObject> jsonObjects, Context context)
+    {
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        db.execSQL("delete from DeliveryArea");
+        for (JSONObject jsonObject: jsonObjects) {
+            try
+            {
+                ContentValues values = new ContentValues();
+                values.put("idRef", jsonObject.getString("idRef"));
+                values.put("Description", jsonObject.getString("Description"));
+                db.insert("DeliveryArea", null, values);
+            }
+            catch (Exception e)  {
+                e.printStackTrace();}
+
+        }
+        db.close();
+        Toast.makeText(context, "Обновление районов доставки завершено", Toast.LENGTH_SHORT).show();
+    }
+
+    public static void saveOutletCategory(List<JSONObject> jsonObjects, Context context)
+    {
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        db.execSQL("delete from OutletCategoryes");
+        for (JSONObject jsonObject: jsonObjects) {
+            try
+            {
+                ContentValues values = new ContentValues();
+                values.put("categoryName", jsonObject.getString("Name"));
+                values.put("categoryOrder", jsonObject.getString("Order"));
+                db.insert("OutletCategoryes", null, values);
+            }
+            catch (Exception e)  {
+                e.printStackTrace();}
+
+        }
+        db.close();
+        Toast.makeText(context, "Обновление категорий тт завершено", Toast.LENGTH_SHORT).show();
+    }
+
+    public static void saveRouteDays(List<JSONObject> jsonObjects, Context context)
+    {
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        db.execSQL("delete from dayOfWeek");
+        for (JSONObject jsonObject: jsonObjects) {
+            try
+            {
+                ContentValues values = new ContentValues();
+                values.put("dayName", jsonObject.getString("Name"));
+                values.put("dayOrder", jsonObject.getString("Order"));
+                db.insert("dayOfWeek", null, values);
+            }
+            catch (Exception e)  {
+                e.printStackTrace();}
+
+        }
+        db.close();
+        Toast.makeText(context, "Обновление дней визита завершено", Toast.LENGTH_SHORT).show();
+    }
+
 
 }
 

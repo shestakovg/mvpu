@@ -113,6 +113,13 @@ public class MainActivityFragment extends Fragment {
                 syncr.execute(null, null);
             }
         });
+        ((Button) parentView.findViewById(R.id.btnNewCustomers)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnNewCustomers(v);
+            }
+        });
+
         String versionName ="Версия:  "+BuildConfig.VERSION_NAME;
         appManager.getOurInstance().appSetupInstance.version = BuildConfig.VERSION_NAME;
                 //parentView.getContext().getPackageManager().getPackageInfo(parentView.getContext().getPackageName(), 0).versionName;
@@ -163,6 +170,15 @@ public class MainActivityFragment extends Fragment {
         //intent.putExtra("w", selectedValue);
         startActivity(intent);
     }
+
+    private void btnNewCustomers(View v)
+    {
+        Intent intent = new Intent(getActivity(), NewCustomersList.class);
+        //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        //intent.putExtra("w", selectedValue);
+        startActivity(intent);
+    }
+
 
     private void btnRouteDay(View v)
     {

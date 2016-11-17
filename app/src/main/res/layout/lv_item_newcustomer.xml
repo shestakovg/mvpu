@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:orientation="horizontal"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp">
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="77dp"
+                    android:id="@+id/btnNewCustomerEdit"
+                    android:background="@android:drawable/ic_menu_edit"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:orientation="vertical"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvNewCustomerName"
+                    android:text="New Customer name"
+                    android:fontFamily="sans-serif"
+                    android:textSize="24sp"
+                    android:textStyle="normal|bold"
+                    android:textColor="@color/abc_input_method_navigation_guard"
+                    android:paddingLeft="6dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvNewCustomerAddress"
+                    android:text="New Customer address"
+                    android:fontFamily="sans-serif"
+                    android:textSize="18sp"
+                    android:paddingLeft="6dp"
+                    android:textStyle="normal|bold" />
+            </LinearLayout>
+</LinearLayout>

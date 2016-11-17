@@ -76,6 +76,15 @@ public class DbCreateScript {
     private static String CREATE_CLIENT_CARD_SKU_IDX1 = "CREATE INDEX idx1_CLIENT_CARD_SKU ON ClientCardSku(OutletId)";
 
     private static  String CREATE_SALESFACT = "create table salesfact(GroupId text, FactAmount real, FactOutletCount integer)";
+    private static String CREATE_NEW_CUSTOMERS = "create table NewCustomers(_id integer primary key autoincrement, RegistrationDate DATETIME DEFAULT CURRENT_TIMESTAMP, Territory text, RouteId text, CustomerName text, " +
+            " DeliveryAddress text, OutletCategoty int, PriceType text, VisitDay int, DeliveryDay int, Manager1Name text, Manager1Phone text, Manager2Name text, Manager2Phone text, AdditionalInfo text,  _send integer DEFAULT 0)";
+
+
+    public static String CREATE_OUTLET_CATEGORYES = "create table OutletCategoryes( categoryName text, categoryOrder int)";
+    public static String CREATE_DAY_OF_WEEK = "create table dayOfWeek(dayName text, dayOrder int)";
+
+    public static String CREATE_DELIVERY_AREA = "create table DeliveryArea(idRef text, Description text)";
+
 
     public static  ArrayList<String> getCreateDataBaseScripts()
     {
@@ -121,6 +130,11 @@ public class DbCreateScript {
         list.add(CREATE_OUTLET_CHECKIN);
         list.add(CREATE_OUTLET_CHECKIN_IDX1);
         list.add(CREATE_SALESFACT);
+        list.add(CREATE_NEW_CUSTOMERS);
+        list.add(CREATE_OUTLET_CATEGORYES);
+        list.add(CREATE_DAY_OF_WEEK);
+        list.add(CREATE_DELIVERY_AREA);
+
         return list;
     }
 
@@ -145,6 +159,11 @@ public class DbCreateScript {
     private static String DROP_CLIENT_CARD_SKU="DROP TABLE ClientCardSku";
     private static String DROP_OUTLET_CHECKIN = "DROP TABLE outletCheckIn";
     private static String DROP_SALESFACT = "DROP TABLE salesfact";
+    private static String DROP_NEW_CUSTOMERS = "drop table NewCustomers";
+    private static String DROP_OUTLET_CATEGORYES = "drop table OutletCategoryes";
+    private static String DROP_DAY_OF_WEEK ="drop table dayOfWeek";
+    private static String DROP_DELIVERY_AREA="drop table DeliveryArea";
+
 
     public static ArrayList<String>  getDropTableScripts()
     {
@@ -169,6 +188,11 @@ public class DbCreateScript {
         list.add(DROP_CLIENT_CARD_SKU);
         list.add(DROP_OUTLET_CHECKIN);
         list.add(DROP_SALESFACT);
+        list.add(DROP_NEW_CUSTOMERS);
+        list.add(DROP_OUTLET_CATEGORYES);
+        list.add(DROP_DAY_OF_WEEK);
+        list.add(DROP_DELIVERY_AREA);
+
         return list;
     }
 }

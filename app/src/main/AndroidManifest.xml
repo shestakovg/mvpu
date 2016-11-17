@@ -50,6 +50,8 @@
         <activity
             android:name=".ActivityDebt"
             android:label="@string/title_activity_activity_debt"></activity>
+        <activity
+            android:name=".NewCustomersList"></activity>
 
         <service
             android:name=".GPSLoggerService"

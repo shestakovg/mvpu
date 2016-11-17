@@ -16,7 +16,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:rowCount="10"
+        android:rowCount="15"
         android:columnCount="2">
         <Button
             android:layout_width="wrap_content"
@@ -78,7 +78,7 @@
             android:layout_height="wrap_content"
             android:text="Настройки"
             android:id="@+id/btnSetup"
-            android:layout_row="8"
+            android:layout_row="9"
             android:layout_column="0"
             android:layout_gravity="center_horizontal"
             android:textSize="25dp"
@@ -89,7 +89,17 @@
             android:layout_height="wrap_content"
             android:text="Синхронизация"
             android:id="@+id/btnSyncServer"
-            android:layout_row="9"
+            android:layout_row="10"
+            android:layout_column="0"
+            android:layout_gravity="center_horizontal"
+            android:textSize="25dp"
+            android:textStyle="bold" />
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Новые клиенты"
+            android:id="@+id/btnNewCustomers"
+            android:layout_row="8"
             android:layout_column="0"
             android:layout_gravity="center_horizontal"
             android:textSize="25dp"
