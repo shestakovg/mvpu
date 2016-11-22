@@ -76,6 +76,7 @@ public class DbCreateScript {
     private static String CREATE_CLIENT_CARD_SKU_IDX1 = "CREATE INDEX idx1_CLIENT_CARD_SKU ON ClientCardSku(OutletId)";
 
     private static  String CREATE_SALESFACT = "create table salesfact(GroupId text, FactAmount real, FactOutletCount integer)";
+
     private static String CREATE_NEW_CUSTOMERS = "create table NewCustomers(_id integer primary key autoincrement, RegistrationDate DATETIME DEFAULT CURRENT_TIMESTAMP, Territory text, RouteId text, CustomerName text, " +
             " DeliveryAddress text, OutletCategoty int, PriceType text, VisitDay int, DeliveryDay int, Manager1Name text, Manager1Phone text, Manager2Name text, Manager2Phone text, AdditionalInfo text,  _send integer DEFAULT 0)";
 

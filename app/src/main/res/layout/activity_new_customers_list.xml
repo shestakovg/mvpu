@@ -24,7 +24,7 @@
                     android:paddingBottom="5dp">
                     <Button
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="55dp"
                         android:id="@+id/btnAddNewCustomer"
                         android:background="@android:drawable/ic_input_add" />
                     <TextView
@@ -35,6 +35,22 @@
                         android:textColor="@color/abc_search_url_text_pressed"
                         android:textStyle="normal|bold"
                         android:paddingLeft="10dp" />
+
+                    <!--<LinearLayout-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:gravity="right"-->
+                        <!--android:orientation="horizontal"-->
+                        <!--android:paddingTop="5dp"-->
+                        <!--android:paddingBottom="5dp">-->
+                            <!--<Button-->
+                                <!--android:layout_width="wrap_content"-->
+                                <!--android:layout_height="55dp"-->
+                                <!--android:id="@+id/btnSendNewCustomer"-->
+                                <!--android:background="@android:drawable/ic_menu_send"-->
+                                 <!--/>-->
+                    <!--</LinearLayout>-->
+
 
                 </LinearLayout>
         </TableRow>

@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_edit_new_customer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.uni.mvpu.ActivityEditNewCustomer">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="?android:attr/editTextColor"
+            android:textStyle="normal|bold"
+            android:text="ЧП/ФОП"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/newCustEditCustomerName"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Адрес доставки"
+            android:textColor="?android:attr/editTextColor"
+            android:textStyle="normal|bold" />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/newCustEditDeliveryAddress"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Территория"
+            android:textColor="?android:attr/editTextColor"
+            android:textStyle="normal|bold" />
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/newCustSpinnerDeliveryArea"
+            android:text="Территория"
+            android:spinnerMode="dialog"
+            android:foreground="@android:color/black"
+            app:spinnerMode="dropdown" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:baselineAligned="@bool/abc_action_bar_embed_tabs">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Тип торговой точки"
+                    android:textColor="?android:attr/editTextColor"
+                    android:textStyle="normal|bold" />
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/newCustSpinnerOutletCategory"
+                    android:text="Тип торговой точки"
+                    android:spinnerMode="dialog"
+                    android:foreground="@android:color/black"
+                    app:spinnerMode="dropdown" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="15dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Вид цены"
+                    android:textColor="?android:attr/editTextColor"
+                    android:textStyle="normal|bold" />
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/newCustSpinnerPriceType"
+                    android:text="Вид цены"
+                    android:spinnerMode="dialog"
+                    android:foreground="@android:color/black"
+                    app:spinnerMode="dropdown" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="15dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="День визита"
+                    android:textColor="?android:attr/editTextColor"
+                    android:textStyle="normal|bold" />
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/newCustSpinnerVisitDay"
+                    android:text="День визита"
+                    android:spinnerMode="dialog"
+                    android:foreground="@android:color/black"
+                    app:spinnerMode="dropdown" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="15dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="День доставки"
+                    android:textColor="?android:attr/editTextColor"
+                    android:textStyle="normal|bold" />
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/newCustSpinnerDeliveyDay"
+                    android:text="День доставки"
+                    android:spinnerMode="dialog"
+                    android:foreground="@android:color/black"
+                    app:spinnerMode="dropdown" />
+            </LinearLayout>
+        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="?android:attr/editTextColor"
+            android:textStyle="normal|bold"
+            android:text="ФИО ЛПР 1"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/newCustEditManager1Name"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="?android:attr/editTextColor"
+            android:textStyle="normal|bold"
+            android:text="Телефон ЛПР 1"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/newCustEditManager1Phone"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="?android:attr/editTextColor"
+            android:textStyle="normal|bold"
+            android:text="ФИО ЛПР 2"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/newCustEditManager2Name"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="?android:attr/editTextColor"
+            android:textStyle="normal|bold"
+            android:text="Телефон ЛПР 2"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/newCustEditManager2Phone"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="?android:attr/editTextColor"
+            android:textStyle="normal|bold"
+            android:text="Дополнительная информация"/>
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:inputType="textMultiLine"
+            android:ems="10"
+            android:id="@+id/newCustEditAdditionalInfo" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <Button
+                android:layout_width="250dp"
+                android:layout_height="50dp"
+                android:text="Сохранить"
+                android:id="@+id/newCustsOK"
+                />
+            <!--<Button-->
+                <!--android:layout_width="150dp"-->
+                <!--android:layout_height="fill_parent"-->
+                <!--android:text="Отмена"-->
+                <!--android:id="@+id/newCustCancel"-->
+                <!--android:visibility="invisible" />-->
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

@@ -1,11 +1,20 @@
 package Entitys;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.widget.Toast;
 
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.StringTokenizer;
+
+import core.DayOfWeekController;
+import core.DeliveryAreaController;
+import core.OutletCategoryController;
+import core.PriceTypeController;
+import db.DbOpenHelper;
 
 /**
  * Created by shest on 11/13/2016.
@@ -15,35 +24,40 @@ public class NewCustomer  implements Serializable {
     private Calendar registrationDate;
     private int id = -1;
 
-    private String TerritoryId;
-    private String TerritoryName;
+    private String TerritoryId = "";
+    private String TerritoryName = "";
 
     private String RouteId;
     private String CustomerName = "";
     private String DeliveryAddress = "";
 
-    private int OutletCategotyId;
-    private String OutletCategotyName;
+    private int OutletCategotyId = -1;
+    private String OutletCategotyName = "";
 
-    private String PriceTypeId;
-    private String PriceTypeName;
+    private String PriceTypeId = "";
+    private String PriceTypeName = "";
 
-    private int VisitDayId;
-    private String VisitDayName;
+    private int VisitDayId = -1;
+    private String VisitDayName = "";
 
-    private int DeliveryDayId;
-    private String DeliveryDayName;
+    private int DeliveryDayId = -1;
+    private String DeliveryDayName = "";
 
-    private String Manager1Name;
-    private String Manager2Name;
+    private String Manager1Name = "";
+    private String Manager2Name = "";
 
-    private String Manager1Phone;
-    private String Manager2Phone;
+    private String Manager1Phone = "";
+    private String Manager2Phone = "";
 
     private Context context;
 
     public NewCustomer(Context context) {
         this.context = context;
+    }
+
+    public NewCustomer(Context context, String routeId) {
+        this.context = context;
+        this.RouteId = routeId;
     }
 
     public String getAdditionalInfo() {
@@ -206,7 +220,7 @@ public class NewCustomer  implements Serializable {
         Manager2Phone = manager2Phone;
     }
 
-    private String AdditionalInfo;
+    private String AdditionalInfo = "";
 
     public boolean isSend() {
         return send;
@@ -214,11 +228,20 @@ public class NewCustomer  implements Serializable {
 
     public void setSend(boolean send) {
         this.send = send;
+
+    }
+
+    public void markAsSend()
+    {
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        db.execSQL("update NewCustomers set _send = 1 where _id="+ this.getId());
+        db.close();
     }
 
     private boolean send;
 
-    private boolean isNew()
+    public boolean isNew()
     {
         if (this.id < 0)
             return true;
@@ -232,15 +255,127 @@ public class NewCustomer  implements Serializable {
             insertNewCustomer();
         else
             updateNewCustomer();
+        this.hasChanged = false;
     }
+
+    public boolean isHasChanged() {
+        return hasChanged;
+    }
+
+    public void setHasChanged(boolean hasChanged) {
+        this.hasChanged = hasChanged;
+    }
+
+    private boolean hasChanged = false;
 
     private void insertNewCustomer()
     {
-
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("Territory",this.getTerritoryId());
+        values.put("RouteId",this.getRouteId());
+        values.put("CustomerName",this.getCustomerName());
+        values.put("DeliveryAddress",this.getDeliveryAddress());
+        values.put("OutletCategoty",this.getOutletCategotyId());
+        values.put("PriceType",this.getPriceTypeId());
+        values.put("VisitDay",this.getVisitDayId());
+        values.put("DeliveryDay",this.getDeliveryDayId());
+        values.put("Manager1Name",this.getManager1Name());
+        values.put("Manager2Name",this.getManager2Name());
+        values.put("Manager1Phone",this.getManager1Phone());
+        values.put("Manager2Phone",this.getManager2Phone());
+        values.put("AdditionalInfo",this.getAdditionalInfo());
+        db.insert("NewCustomers", null, values);
+        db.close();
     }
 
     private void updateNewCustomer()
     {
-
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        String query =
+                "UPDATE NewCustomers\n" +
+                "   SET \n" +
+                "      Territory = '" +this.getTerritoryId()+"'"+
+                "      ,CustomerName = '" +this.getCustomerName()+"'"+
+                "      ,DeliveryAddress = '" +this.getDeliveryAddress()+"'"+
+                "      ,OutletCategoty = " +this.getOutletCategotyId()+
+                "      ,PriceType = '" +this.getPriceTypeId()+"'"+
+                "      ,VisitDay = " +this.getVisitDayId()+
+                "      ,DeliveryDay = " +this.getDeliveryDayId()+
+                "      ,Manager1Name = '" +this.getManager1Name()+"'"+
+                "      ,Manager1Phone = '" +this.getManager1Phone()+"'"+
+                "      ,Manager2Name = '" +this.getManager2Name()+"'"+
+                "      ,Manager2Phone = '" +this.getManager2Phone()+"'"+
+                "      ,AdditionalInfo = '" +this.getAdditionalInfo()+"'"+
+                "      ,_send = 0 " +
+                " WHERE _id = "+this.getId();
+        db.execSQL(query);
+        db.close();
     }
+
+    public boolean isValid()
+    {
+        boolean result = true;
+        this.validationMessage = "";
+        if (CustomerName.isEmpty()) {
+            result = false;
+            this.validationMessage += "Не указано наименование ЧП/ФОП\n";
+        }
+
+        if (DeliveryAddress.isEmpty()) {
+            result = false;
+            this.validationMessage += "Не указан адрес доставки\n";
+        }
+
+        if (TerritoryId.isEmpty() || TerritoryName.equals(DeliveryAreaController.DEFAULT_VALUE)) {
+            result = false;
+            this.validationMessage += "Не указана территория\n";
+        }
+
+        if (PriceTypeId.isEmpty() || PriceTypeName.equals(PriceTypeController.DEFAULT_VALUE)) {
+            result = false;
+            this.validationMessage += "Не указан тип цен\n";
+        }
+
+        if (OutletCategotyId < 0  || OutletCategotyName.equals(OutletCategoryController.DEFAULT_VALUE)) {
+            result = false;
+            this.validationMessage += "Не указана категория торговой точки\n";
+        }
+        if (DeliveryDayId < 0  || DeliveryDayName.equals(DayOfWeekController.DEFAULT_VALUE)) {
+            result = false;
+            this.validationMessage += "Не указан день доставки\n";
+        }
+        if (VisitDayId < 0  || VisitDayName.equals(DayOfWeekController.DEFAULT_VALUE)) {
+            result = false;
+            this.validationMessage += "Не указан день визита\n";
+        }
+
+        if (Manager1Name.isEmpty() && Manager2Name.isEmpty())
+        {
+            result = false;
+            this.validationMessage += "Не указано ни одного ЛПР\n";
+        }
+
+        if (Manager1Phone.isEmpty() && Manager2Phone.isEmpty())
+        {
+            result = false;
+            this.validationMessage += "Не указано ни одного телефона ЛПР\n";
+        }
+        return result;
+    }
+
+    private String validationMessage = "";
+
+    public String getValidationMessage( )
+    {
+        return this.validationMessage;
+    }
+
+    public void showSendError()
+    {
+        Toast.makeText(context, "Не удалось отправить: "+this.getCustomerName(), Toast.LENGTH_LONG).show();
+    }
+
 }

@@ -2,13 +2,18 @@ package Adapters;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.uni.mvpu.ActivityEditNewCustomer;
 import com.uni.mvpu.R;
 
 import java.util.ArrayList;
@@ -17,6 +22,7 @@ import java.util.Date;
 import Entitys.NewCustomer;
 import core.wputils;
 import db.DbOpenHelper;
+import sync.sendNewCustomer;
 
 /**
  * Created by shest on 11/13/2016.
@@ -24,6 +30,7 @@ import db.DbOpenHelper;
 
 public class NewCustomerAdapter extends BaseAdapter {
     Context context;
+    NewCustomerAdapter currentAdapter;
     LayoutInflater lInflater;
     ArrayList<NewCustomer> customerList = new ArrayList<NewCustomer>() ;
 
@@ -32,11 +39,13 @@ public class NewCustomerAdapter extends BaseAdapter {
         this.lInflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        GetDataFromDB();
+        this.customerList = NewCustomerAdapter.GetDataFromDB(this.context, -1);
+        currentAdapter = this;
     }
 
-    public void GetDataFromDB()
+    public static ArrayList<NewCustomer>  GetDataFromDB(Context context, int defaultId)
     {
+        ArrayList<NewCustomer> customerList = new ArrayList<NewCustomer>();
         DbOpenHelper dbOpenHelper=new DbOpenHelper(context);
         SQLiteDatabase db= dbOpenHelper.getReadableDatabase();
         Cursor cursor = null;
@@ -52,7 +61,8 @@ public class NewCustomerAdapter extends BaseAdapter {
                     " left join dayOfWeek dw on dw.dayOrder = h.VisitDay " +
                     " left join dayOfWeek dw1 on dw1.dayOrder =  h.DeliveryDay " +
                     " left join PriceNames pn on pn.PriceId = h.PriceType " +
-                    " order by h.RegistrationDate ", null);
+                    (defaultId>=0 ? " where h._id = "+defaultId : " ")+
+                    "  order by h._id desc", null);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -61,7 +71,7 @@ public class NewCustomerAdapter extends BaseAdapter {
         cursor.moveToFirst();
 
         for (int i=0;i<cursor.getCount();i++) {
-            NewCustomer nc = new NewCustomer(this.context);
+            NewCustomer nc = new NewCustomer(context);
             nc.setCustomerName(cursor.getString(cursor.getColumnIndex("CustomerName")));
             nc.setDeliveryAddress(cursor.getString(cursor.getColumnIndex("DeliveryAddress")));
             nc.setId(cursor.getInt(cursor.getColumnIndex("_id")));
@@ -97,6 +107,7 @@ public class NewCustomerAdapter extends BaseAdapter {
             cursor.moveToNext();
         }
         db.close();
+        return customerList;
     }
 
     @Override
@@ -120,6 +131,52 @@ public class NewCustomerAdapter extends BaseAdapter {
         if (view == null) {
             view = lInflater.inflate(R.layout.lv_item_newcustomer, parent, false);
         }
+        NewCustomer customer =(NewCustomer) this.getItem(position);
+        ((TextView) view.findViewById(R.id.tvNewCustomerName)).setText(customer.getCustomerName());
+        ((TextView) view.findViewById(R.id.tvNewCustomerAddress)).setText(customer.getDeliveryAddress());
+        ((TextView) view.findViewById(R.id.tvNewCustomerDate)).setText(wputils.getDateTimeString(customer.getRegistrationDate()));
+
+        Button editBtn = (Button) view.findViewById(R.id.btnNewCustomerEdit);
+        editBtn.setTag(position);
+        editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                OnClickBtnEdit(v);
+            }
+        });
+
+        Button sendBtn = (Button) view.findViewById(R.id.btnNewCustomerSend);
+        sendBtn.setTag(position);
+        if (customer.isSend())
+            sendBtn.setVisibility(View.GONE);
+        else
+        {
+            sendBtn.setVisibility(View.VISIBLE);
+            sendBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int _id =(int) v.getTag();
+                    sendNewCustomer snc = new sendNewCustomer((NewCustomer)  currentAdapter.getItem(_id), currentAdapter);
+                    snc.execute();
+                }
+            });
+        }
+
+        Button sendedBtn = (Button) view.findViewById(R.id.btnNewCustomerSended);
+        sendedBtn.setTag(position);
+        if (!customer.isSend())
+            sendedBtn.setVisibility(View.GONE);
+        else
+            sendedBtn.setVisibility(View.VISIBLE);
         return view;
+    }
+
+    private void OnClickBtnEdit(View v)
+    {
+        int _id =(int) v.getTag();
+       // Toast.makeText(context,"Id = " + _id , Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(context, ActivityEditNewCustomer.class);
+        intent.putExtra("newCustomer",((NewCustomer)  currentAdapter.getItem(_id)).getId());
+        context.startActivity(intent);
     }
 }

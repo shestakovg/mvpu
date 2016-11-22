@@ -8,8 +8,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
-
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
     <application
         android:allowBackup="true"
@@ -39,25 +38,27 @@
             android:label="@string/title_activity_activity_sync" />
         <activity
             android:name=".ActivityOrderList"
-            android:label="@string/title_activity_activity_order_list"></activity>
+            android:label="@string/title_activity_activity_order_list" />
         <activity
             android:name=".ActivityOrder"
             android:label="@string/title_activity_activity_order"
-            android:screenOrientation="landscape"></activity>
+            android:screenOrientation="landscape" />
         <activity
             android:name=".ActivitygetVersion"
-            android:label="@string/title_activity_activityget_version"></activity>
+            android:label="@string/title_activity_activityget_version" />
         <activity
             android:name=".ActivityDebt"
-            android:label="@string/title_activity_activity_debt"></activity>
-        <activity
-            android:name=".NewCustomersList"></activity>
+            android:label="@string/title_activity_activity_debt" />
+        <activity android:name=".NewCustomersList"
+            android:label="@string/title_activity_bew_customers"/>
 
         <service
             android:name=".GPSLoggerService"
             android:enabled="true"
             android:exported="true"
-            android:label="@string/service_name"></service>
+            android:label="@string/service_name" />
+
+        <activity android:name=".ActivityEditNewCustomer"></activity>
     </application>
 
 </manifest> <!-- android:screenOrientation="landscape" -->
