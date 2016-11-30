@@ -99,6 +99,7 @@ public class sendNewCustomer  extends AsyncTask<Void, Void,Boolean> {
         else
         {
             customer.showSendError();
+            adapter.notifyDataSetChanged();
         }
     }
 }

@@ -155,6 +155,7 @@ public class NewCustomerAdapter extends BaseAdapter {
             sendBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    ((Button) v).setEnabled(false);
                     int _id =(int) v.getTag();
                     sendNewCustomer snc = new sendNewCustomer((NewCustomer)  currentAdapter.getItem(_id), currentAdapter);
                     snc.execute();
