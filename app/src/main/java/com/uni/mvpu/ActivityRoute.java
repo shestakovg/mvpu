@@ -206,7 +206,7 @@ public class ActivityRoute extends TouchActivity {
         Calendar checkInDate = Calendar.getInstance();
         checkInDate.setTime(new Date());
 
-        if (appManager.getOurInstance().appSetupInstance.getAllowGpsLog() && LocationDatabase.getInstance().isLocated() )
+        if (appManager.getOurInstance().appSetupInstance.getAllowGpsLog() && LocationDatabase.getInstance()!=null && LocationDatabase.getInstance().isLocated() )
         {
             if (appManager.getOurInstance().getYesNoWithExecutionStop("Отметка в торговой точке","Отметить посещение "+selectedOutlet.outletName, currentContext, R.drawable.placeholder,
                     LocationDatabase.getInstance().IsOutletCheckIn(selectedOutlet.outletId.toString(), checkInDate))) {
@@ -214,6 +214,7 @@ public class ActivityRoute extends TouchActivity {
                 LocationDatabase.getInstance().SaveOutletCheckIn(selectedOutlet.outletId.toString(), checkInDate);
             }
         }
+
         if (!paymentExists && appManager.getOurInstance().appSetupInstance.getRouteType()!=1)
         {
             AlertDialog.Builder builder = new AlertDialog.Builder(currentContext);

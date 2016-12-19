@@ -66,7 +66,7 @@ public class FragmentOrderSku extends Fragment implements IOrderTotal{
                 }
         );
         if (appManager.getOurInstance().appSetupInstance.getRouteType()==1)
-            fillSku("", false);
+            fillSku("", true);
         else
             fillSku("", true);
         return parentView;
@@ -83,6 +83,13 @@ public class FragmentOrderSku extends Fragment implements IOrderTotal{
             orderByClause= " grp.GroupName, s.SkuName "; //" od._id ";
             joinKind=" inner ";
             whereClause=" where od.qty1>0 or od.qty2>0 ";
+            params= new String[] {Integer.toString(((IOrder) getActivity()).getOrderExtra()._id)};
+        }
+
+        if (skuGroup.isEmpty() && showClientCard && appManager.getOurInstance().appSetupInstance.getRouteType()==1) {
+            orderByClause= " grp.GroupName, s.SkuName "; //" od._id ";
+            //joinKind=" inner ";
+            whereClause="  ";
             params= new String[] {Integer.toString(((IOrder) getActivity()).getOrderExtra()._id)};
         }
         String specificationFilter = "";

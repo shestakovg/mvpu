@@ -42,8 +42,8 @@ public class GPSLoggerService  extends Service {
     private final DecimalFormat sevenSigDigits = new DecimalFormat("0.#######");
     private final DateFormat timestampFormat = new SimpleDateFormat("yyyyMMddHHmmss");
     private static long minTimeMillis = 5000;
-    private static long minDistanceMeters =30;// 10;
-    private static float minAccuracyMeters = 15 ;// 10;
+    private static long minDistanceMeters =40;// 10;
+    private static float minAccuracyMeters =30 ;// 10;
     private static float minAccuracyMetersCheckIn = 40 ;
 
     /** Called when the activity is first created. */
@@ -89,7 +89,9 @@ public class GPSLoggerService  extends Service {
                         LocationDatabase.getInstance().SaveLocationData(loc.getLatitude(),loc.getLongitude(), loc.getTime() );
                     }
                 }
-                else   if (loc.hasAccuracy())// && loc.getAccuracy() <= minAccuracyMetersCheckIn)
+                else   if (loc.hasAccuracy(
+
+                ))// && loc.getAccuracy() <= minAccuracyMetersCheckIn)
                 {
                     if (LocationDatabase.getInstance()!=null) {
                         LocationDatabase.getInstance().setLatitude(loc.getLatitude());

@@ -214,6 +214,11 @@ public class appManager {
             fillStorecheck(context, outletid, orderUUID, headerid);
         }
         else
+        if (orderType == AppSettings.ORDER_TYPE_ORDER || appManager.getOurInstance().appSetupInstance.getRouteType()==1)
+        {
+            fillStorecheck(context, outletid, orderUUID, headerid);
+        }
+        else
         {
             fillDefaultOrder(context, outletid, orderUUID, headerid);
         }
