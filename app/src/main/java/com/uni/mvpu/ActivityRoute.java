@@ -192,6 +192,43 @@ public class ActivityRoute extends TouchActivity {
 
     }
 
+    private void askForCheckIn()
+    {
+        final Calendar checkInDate = Calendar.getInstance();
+        checkInDate.setTime(new Date());
+
+        if (appManager.getOurInstance().appSetupInstance.getAllowGpsLog() && LocationDatabase.getInstance() != null && LocationDatabase.getInstance().isLocated()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(currentContext);
+            builder.setTitle("Отметка в торговой точке")
+                    .setMessage("Отметить посещение " + selectedOutlet.outletName)
+                    .setIcon(R.drawable.placeholder)
+                    .setCancelable(false)
+                    .setPositiveButton("ОК",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                    LocationDatabase.getInstance().SaveOutletCheckIn(selectedOutlet.outletId.toString(), checkInDate);
+                                    showOrders(AppSettings.ORDER_TYPE_ORDER);
+                                }
+                            });
+            if (LocationDatabase.getInstance().IsOutletCheckIn(selectedOutlet.outletId.toString(), checkInDate)) {
+                builder.setNegativeButton("Нет", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                        showOrders(AppSettings.ORDER_TYPE_ORDER);
+                    }
+                });
+            }
+            AlertDialog alert = builder.create();
+            alert.show();
+        }
+        else
+        {
+            showOrders(AppSettings.ORDER_TYPE_ORDER);
+        }
+    }
+
     private void showOrders(int orderType)
     {
 //        if (!LocationDatabase.getInstance().isLocated())
@@ -203,40 +240,45 @@ public class ActivityRoute extends TouchActivity {
         currentDate.setTime(new Date());
         boolean paymentExists = appManager.getOurInstance().checkAnnouncedSum(getBaseContext(), selectedOutlet.customerId.toString(), currentDate);
 
-        Calendar checkInDate = Calendar.getInstance();
-        checkInDate.setTime(new Date());
 
-        if (appManager.getOurInstance().appSetupInstance.getAllowGpsLog() && LocationDatabase.getInstance()!=null && LocationDatabase.getInstance().isLocated() )
-        {
-            if (appManager.getOurInstance().getYesNoWithExecutionStop("Отметка в торговой точке","Отметить посещение "+selectedOutlet.outletName, currentContext, R.drawable.placeholder,
-                    LocationDatabase.getInstance().IsOutletCheckIn(selectedOutlet.outletId.toString(), checkInDate))) {
 
-                LocationDatabase.getInstance().SaveOutletCheckIn(selectedOutlet.outletId.toString(), checkInDate);
-            }
+//        try {
+//            if (appManager.getOurInstance().appSetupInstance.getAllowGpsLog() && LocationDatabase.getInstance() != null && LocationDatabase.getInstance().isLocated()) {
+//                if (appManager.getOurInstance().getYesNoWithExecutionStop("Отметка в торговой точке", "Отметить посещение " + selectedOutlet.outletName, currentContext, R.drawable.placeholder,
+//                        LocationDatabase.getInstance().IsOutletCheckIn(selectedOutlet.outletId.toString(), checkInDate))) {
+//
+//                    LocationDatabase.getInstance().SaveOutletCheckIn(selectedOutlet.outletId.toString(), checkInDate);
+//                }
+//            }
+//        }
+//        catch (Exception e)   { Toast.makeText(currentContext,e.getMessage(),Toast.LENGTH_SHORT).show();      }
+
+        try {
+                if (!paymentExists && appManager.getOurInstance().appSetupInstance.getRouteType()!=1)
+                {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(currentContext);
+                    builder.setTitle("Важное сообщение!")
+                            .setMessage("По клиенту " + selectedOutlet.customerName + " не заявлена оплата. Заявите сумму платежа!")
+                            .setIcon(R.drawable.hrn)
+                            .setCancelable(false)
+                            .setNegativeButton("ОК",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int id) {
+                                            dialog.cancel();
+                                        }
+                                    });
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                    return ;
+                }
         }
-
-        if (!paymentExists && appManager.getOurInstance().appSetupInstance.getRouteType()!=1)
-        {
-            AlertDialog.Builder builder = new AlertDialog.Builder(currentContext);
-            builder.setTitle("Важное сообщение!")
-                    .setMessage("По клиенту " + selectedOutlet.customerName + " не заявлена оплата. Заявите сумму платежа!")
-                    .setIcon(R.drawable.hrn)
-                    .setCancelable(false)
-                    .setNegativeButton("ОК",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.cancel();
-                                }
-                            });
-            AlertDialog alert = builder.create();
-            alert.show();
-            return ;
-        }
+        catch (Exception e)   { Toast.makeText(currentContext,"paymentExists  \n"+e.getMessage(),Toast.LENGTH_SHORT).show();      }
 
         double overdueSum =  appManager.getOurInstance().getOverdueSum(getBaseContext(),selectedOutlet.customerId.toString(), currentDate);
         boolean OverdueExists = false;
         OverdueExists =
                 (overdueSum - appManager.getOurInstance().appSetupInstance.getAllowOverdueSum()) >0 && appManager.getOurInstance().appSetupInstance.isDebtControl() ;
+
         if (OverdueExists && orderType== AppSettings.ORDER_TYPE_ORDER &&  appManager.getOurInstance().appSetupInstance.getRouteType()!=1)
         {
             //Toast.makeText(getBaseContext(), "Просрочка "+Double.toString(overdueSum), Toast.LENGTH_LONG).show();
@@ -297,7 +339,8 @@ public class ActivityRoute extends TouchActivity {
 //                                Toast.makeText(getApplicationContext(),
 //                                        "Вы выбрали PopupMenu 1",
 //                                        Toast.LENGTH_SHORT).show();
-                                showOrders(AppSettings.ORDER_TYPE_ORDER);
+                                //showOrders(AppSettings.ORDER_TYPE_ORDER);
+                                askForCheckIn();
                                 return true;
                             case R.id.menuStorecheck:
                                 showOrders(AppSettings.ORDER_TYPE_STORECHECK);

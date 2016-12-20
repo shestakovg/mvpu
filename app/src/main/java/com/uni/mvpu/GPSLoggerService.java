@@ -87,16 +87,28 @@ public class GPSLoggerService  extends Service {
                         LocationDatabase.getInstance().setLongtitude(loc.getLongitude());
                         LocationDatabase.getInstance().setSateliteTime( loc.getTime());
                         LocationDatabase.getInstance().SaveLocationData(loc.getLatitude(),loc.getLongitude(), loc.getTime() );
+//                        Toast.makeText(
+//                                getBaseContext(),
+//                                "Location  enough: \nLat: " + sevenSigDigits.format(loc.getLatitude())
+//                                        + " \nLon: " + sevenSigDigits.format(loc.getLongitude())
+//                                        + " \nAlt: " + (loc.hasAltitude() ? loc.getAltitude()+"m":"?")
+//                                        + " \nAcc: " + (loc.hasAccuracy() ? loc.getAccuracy()+"m":"?"),
+//                                Toast.LENGTH_SHORT).show();
                     }
                 }
-                else   if (loc.hasAccuracy(
-
-                ))// && loc.getAccuracy() <= minAccuracyMetersCheckIn)
+                else   if (loc.hasAccuracy())// && loc.getAccuracy() <= minAccuracyMetersCheckIn)
                 {
                     if (LocationDatabase.getInstance()!=null) {
                         LocationDatabase.getInstance().setLatitude(loc.getLatitude());
                         LocationDatabase.getInstance().setLongtitude(loc.getLongitude());
                         LocationDatabase.getInstance().setSateliteTime(loc.getTime());
+//                        Toast.makeText(
+//                            getBaseContext(),
+//                            "Location not accurate enough: \nLat: " + sevenSigDigits.format(loc.getLatitude())
+//                                    + " \nLon: " + sevenSigDigits.format(loc.getLongitude())
+//                                    + " \nAlt: " + (loc.hasAltitude() ? loc.getAltitude()+"m":"?")
+//                                    + " \nAcc: " + (loc.hasAccuracy() ? loc.getAccuracy()+"m":"?"),
+//                            Toast.LENGTH_SHORT).show();
                     }
                 }
                 else

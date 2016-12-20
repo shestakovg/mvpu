@@ -106,8 +106,8 @@ public class FragmentOrderSku extends Fragment implements IOrderTotal{
             clientCardSkuJoin = " inner ";
             whereClause =  " where s.skuParentId <> ? ";
         }
-
-        clientCardSku +=clientCardSkuJoin+"  join ClientCardSku ccs on ccs.outletId= '"+ ((IOrder) getActivity()).getOrderExtra().outletId+"' and ccs.SkuId = od.skuId and s.skuid = ccs.SkuId ";
+        //and ccs.SkuId = od.skuId
+        clientCardSku +=clientCardSkuJoin+"  join ClientCardSku ccs on ccs.outletId= '"+ ((IOrder) getActivity()).getOrderExtra().outletId+"'  and s.skuid = ccs.SkuId ";
 
         skuList = new ArrayList<>();
         final OutletObject locOutlet = ((IOrder) getActivity()).getOutletObject();
