@@ -83,10 +83,12 @@ public class GPSLoggerService  extends Service {
                     Log.d(TAG, " loc.getLongitude() "+ loc.getLongitude());
                     if (LocationDatabase.getInstance()!=null)
                     {
-                        LocationDatabase.getInstance().setLatitude(loc.getLatitude());
-                        LocationDatabase.getInstance().setLongtitude(loc.getLongitude());
-                        LocationDatabase.getInstance().setSateliteTime( loc.getTime());
+//                        LocationDatabase.getInstance().setLatitude(loc.getLatitude());
+//                        LocationDatabase.getInstance().setLongtitude(loc.getLongitude());
+//                        LocationDatabase.getInstance().setSateliteTime( loc.getTime());
+                        setLocation(loc);
                         LocationDatabase.getInstance().SaveLocationData(loc.getLatitude(),loc.getLongitude(), loc.getTime() );
+
 //                        Toast.makeText(
 //                                getBaseContext(),
 //                                "Location  enough: \nLat: " + sevenSigDigits.format(loc.getLatitude())
@@ -98,10 +100,10 @@ public class GPSLoggerService  extends Service {
                 }
                 else   if (loc.hasAccuracy())// && loc.getAccuracy() <= minAccuracyMetersCheckIn)
                 {
-                    if (LocationDatabase.getInstance()!=null) {
-                        LocationDatabase.getInstance().setLatitude(loc.getLatitude());
-                        LocationDatabase.getInstance().setLongtitude(loc.getLongitude());
-                        LocationDatabase.getInstance().setSateliteTime(loc.getTime());
+//                    if (LocationDatabase.getInstance()!=null) {
+//                        LocationDatabase.getInstance().setLatitude(loc.getLatitude());
+//                        LocationDatabase.getInstance().setLongtitude(loc.getLongitude());
+//                        LocationDatabase.getInstance().setSateliteTime(loc.getTime());
 //                        Toast.makeText(
 //                            getBaseContext(),
 //                            "Location not accurate enough: \nLat: " + sevenSigDigits.format(loc.getLatitude())
@@ -109,7 +111,7 @@ public class GPSLoggerService  extends Service {
 //                                    + " \nAlt: " + (loc.hasAltitude() ? loc.getAltitude()+"m":"?")
 //                                    + " \nAcc: " + (loc.hasAccuracy() ? loc.getAccuracy()+"m":"?"),
 //                            Toast.LENGTH_SHORT).show();
-                    }
+                    //}
                 }
                 else
                 {
@@ -147,17 +149,21 @@ public class GPSLoggerService  extends Service {
         public void onProviderEnabled(String provider) {
             if (showingDebugToast) Toast.makeText(getBaseContext(), "onProviderEnabled: " + provider,
                     Toast.LENGTH_SHORT).show();
-
+            setLocation(lm.getLastKnownLocation(provider));
         }
 
         public void onStatusChanged(String provider, int status, Bundle extras) {
 
             String showStatus = null;
-//            if (status == LocationProvider.AVAILABLE)
+            if (status == LocationProvider.AVAILABLE)
+            {
+                setLocation(lm.getLastKnownLocation(provider));
+                Toast.makeText(getBaseContext(),provider+" Avaliable",Toast.LENGTH_SHORT).show();
+            }
 //                showStatus = "Available";
-//            if (status == LocationProvider.TEMPORARILY_UNAVAILABLE)
+            if (status == LocationProvider.TEMPORARILY_UNAVAILABLE)  LocationDatabase.getInstance().setLocated(false);
 //                showStatus = "Temporarily Unavailable";
-//            if (status == LocationProvider.OUT_OF_SERVICE)
+            if (status == LocationProvider.OUT_OF_SERVICE) LocationDatabase.getInstance().setLocated(false);
 //                showStatus = "Out of Service";
 //            if (status != lastStatus && showingDebugToast) {
 //                Toast.makeText(getBaseContext(),
@@ -165,6 +171,17 @@ public class GPSLoggerService  extends Service {
 //                        Toast.LENGTH_SHORT).show();
 //            }
             lastStatus = status;
+        }
+
+        private void setLocation(Location loc)
+        {
+            if (loc!=null)
+            {
+                LocationDatabase.getInstance().setLatitude(loc.getLatitude());
+                LocationDatabase.getInstance().setLongtitude(loc.getLongitude());
+                LocationDatabase.getInstance().setSateliteTime( loc.getTime());
+            }
+            else  LocationDatabase.getInstance().setLocated(false);
         }
     }
     @Override
