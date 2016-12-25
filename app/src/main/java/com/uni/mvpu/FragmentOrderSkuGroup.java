@@ -148,7 +148,7 @@ public class FragmentOrderSkuGroup extends Fragment {
         DbOpenHelper dbOpenHelper = new DbOpenHelper(parentView.getContext());
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
         String parentWhere = level.getGroupId();
-        Cursor cursor = db.rawQuery("select g.GroupId , g.GroupName , g.GroupParentId, g.OutletCount, g.Color, sf.FactOutletCount from skuGroup g" +
+        Cursor cursor = db.rawQuery("select g.GroupId , g.GroupName , g.GroupParentId, g.OutletCount, g.Color, sf.FactOutletCount, g.Amount, sf.FactAmount from skuGroup g" +
                                     "  left join salesfact sf on sf.GroupId = g.GroupId " +
                                 "where g.GroupParentId = '"+parentWhere+"' order by g.GroupName", null);
         cursor.moveToFirst();
@@ -161,6 +161,8 @@ public class FragmentOrderSkuGroup extends Fragment {
                                         cursor.getString(cursor.getColumnIndex("Color")),
                                         cursor.getInt(cursor.getColumnIndex("FactOutletCount"))
                                         );
+            ob.setPlanAmount(cursor.getFloat(cursor.getColumnIndex("Amount")));
+            ob.setFactAmount(cursor.getFloat(cursor.getColumnIndex("FactAmount")));
             groupSkuList.add(ob);
 //            Map<String, Object> map= new HashMap<String, Object>();
 //            map.put("name", ob.getGroupName());

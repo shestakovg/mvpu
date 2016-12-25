@@ -31,7 +31,33 @@ public class GPSLoggerService  extends Service {
         }
     }
 
-    private LocationManager lm;
+    public static  LocationManager getLocationManager() {
+        return publicLm;
+    }
+
+    public static  void setLocationManager(LocationManager l) {
+        publicLm = l;
+    }
+
+    private static LocationManager publicLm;
+
+    public static void updateLastLocation()
+    {
+        LocationManager locationManager = GPSLoggerService.getLocationManager();
+        if (locationManager!=null)
+        {
+            Location loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (loc!=null)
+            {
+                LocationDatabase.getInstance().setLatitude(loc.getLatitude());
+                LocationDatabase.getInstance().setLongtitude(loc.getLongitude());
+                LocationDatabase.getInstance().setSateliteTime( loc.getTime());
+            }
+            else  LocationDatabase.getInstance().setLocated(false);
+        }
+    }
+
+    private  LocationManager lm;
     private LocationListener locationListener;
 
     private int lastStatus = 0;
@@ -51,6 +77,7 @@ public class GPSLoggerService  extends Service {
 
         // ---use the LocationManager class to obtain GPS locations---
         lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        GPSLoggerService.setLocationManager(lm);
 
         locationListener = new MyLocationListener();
 
@@ -64,6 +91,7 @@ public class GPSLoggerService  extends Service {
                 locationListener);
 
     }
+
 
 
     private void shutdownLoggerService() {
@@ -158,7 +186,7 @@ public class GPSLoggerService  extends Service {
             if (status == LocationProvider.AVAILABLE)
             {
                 setLocation(lm.getLastKnownLocation(provider));
-                Toast.makeText(getBaseContext(),provider+" Avaliable",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getBaseContext(),provider+" Avaliable",Toast.LENGTH_SHORT).show();
             }
 //                showStatus = "Available";
             if (status == LocationProvider.TEMPORARILY_UNAVAILABLE)  LocationDatabase.getInstance().setLocated(false);
@@ -173,7 +201,7 @@ public class GPSLoggerService  extends Service {
             lastStatus = status;
         }
 
-        private void setLocation(Location loc)
+        private  void setLocation(Location loc)
         {
             if (loc!=null)
             {

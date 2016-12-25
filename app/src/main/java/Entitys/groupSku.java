@@ -62,6 +62,25 @@ public class groupSku {
 
     private Integer FactOutletCount;
 
+    private float planAmount = 0;
+    private float factAmount = 0;
+
+    public float getPlanAmount() {
+        return planAmount;
+    }
+
+    public void setPlanAmount(float planAmount) {
+        this.planAmount = planAmount;
+    }
+
+    public float getFactAmount() {
+        return factAmount;
+    }
+
+    public void setFactAmount(float factAmount) {
+        this.factAmount = factAmount;
+    }
+
     public groupSku(String groupId, String parentId, String groupName, Integer OutletCount, String Color, Integer FactOutletCount) {
         this.groupId = groupId;
         this.parentId = parentId;

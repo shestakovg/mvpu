@@ -207,6 +207,7 @@ public class ActivityRoute extends TouchActivity {
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
                                     dialog.cancel();
+                                    GPSLoggerService.updateLastLocation();
                                     LocationDatabase.getInstance().SaveOutletCheckIn(selectedOutlet.outletId.toString(), checkInDate);
                                     showOrders(AppSettings.ORDER_TYPE_ORDER);
                                 }

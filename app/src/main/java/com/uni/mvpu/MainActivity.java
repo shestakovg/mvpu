@@ -89,7 +89,7 @@ public class MainActivity extends TouchActivity implements IManagementGPSLogger 
         turnGPSOn();
         if (LocationDatabase.locDb == null)
             LocationDatabase.locDb = new LocationDatabase(this);
-        appManager.getOurInstance().appSetupInstance.setGpsServiceIntent(new Intent(MainActivity.this,                GPSLoggerService.class));
+        appManager.getOurInstance().appSetupInstance.setGpsServiceIntent(new Intent(MainActivity.this, GPSLoggerService.class));
         startService(appManager.getOurInstance().appSetupInstance.getGpsServiceIntent());
 
     }

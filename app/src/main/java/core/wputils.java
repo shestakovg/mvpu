@@ -6,9 +6,12 @@ import android.text.format.DateFormat;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Currency;
 import java.util.Date;
 import java.util.Formatter;
 import java.util.Locale;
@@ -122,5 +125,14 @@ public final class wputils {
             return null;
         }
         return new Date(cursor.getLong(index));
+    }
+
+    public static String formatFloatWithSeparator(float value)
+    {
+//        NumberFormat format = NumberFormat.getCurrencyInstance(Locale.GERMANY);
+//        format.setCurrency(Currency.getInstance("uk_"));
+//        return format.format(value);
+        DecimalFormat decimalFormat = new DecimalFormat("#.");
+        return decimalFormat.format(value);
     }
 }

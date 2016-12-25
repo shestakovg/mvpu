@@ -15,6 +15,7 @@ import java.util.List;
 
 import Entitys.groupSku;
 import Entitys.orderSku;
+import core.wputils;
 
 /**
  * Created by shest on 10/8/2016.
@@ -61,6 +62,10 @@ public class orderSkuGroupAdapter extends BaseAdapter {
         }
         groupSku group = getItem(position);
         ((TextView) view.findViewById(R.id.tvSkuGroupName)).setText(group.getGroupName());
+        if (group.getPlanAmount()>0)
+            ((TextView) view.findViewById(R.id.tvPlanFact)).setText( context.getText(R.string.StringPlan)+": "+ wputils.formatFloatWithSeparator(group.getPlanAmount()/1000)+" тыс   "
+                    + context.getText(R.string.StringFact)+": "+ wputils.formatFloatWithSeparator(group.getFactAmount()/1000)+" тыс" );
+        else
         ((TextView) view.findViewById(R.id.tvPlanFact)).setText((group.getOutletCount() > 0 ? context.getText(R.string.StringPlan)+": "+group.getOutletCount().toString()+"   "
                 + context.getText(R.string.StringFact)+": "+group.getFactOutletCount().toString() : ""));
         view.setBackgroundColor(Color.parseColor(group.getColor()));
