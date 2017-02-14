@@ -33,7 +33,7 @@ public class DbCreateScript {
     private static String CREATE_SKUGROUP_IDX1 = "CREATE INDEX idx_skuGroup1 ON skuGroup (GroupId)";
     private static String CREATE_SKUGROUP_IDX2 = "CREATE INDEX idx_skuGroup2 ON skuGroup (GroupParentId)";
 
-    private static String CREATE_SKU = "create table sku(SkuId text, SkuName text, SkuParentId text, QtyPack double, Article text, OnlyFact integer,CheckCountInBox integer, onlyMWH integer, Color text, OutStockColor text)";
+    private static String CREATE_SKU = "create table sku(SkuId text, SkuName text, SkuParentId text, QtyPack double, Article text, OnlyFact integer,CheckCountInBox integer, onlyMWH integer, Color text, OutStockColor text, MinOrderQty integer default 3)";
     private static String CREATE_SKU_IDX1 = "CREATE INDEX idx_sku ON sku (SkuId)";
     private static String CREATE_SKU_IDX2 = "CREATE INDEX idx_sku2 ON sku (SkuParentId)";
 
@@ -52,7 +52,7 @@ public class DbCreateScript {
     private static String CREATE_PAY = "create table pays (_id integer primary key autoincrement, payDate  DATETIME DEFAULT CURRENT_TIMESTAMP, transactionId text, customerid text, paySum double,  _send integer DEFAULT 0)";
     private static String CREATE_PAY_IDX1 = "CREATE INDEX idx_pays ON pays (payDate,transactionId )";
 
-    private static String CREATE_GPS_LOG = "create table gpsLog (  _id integer  primary key, routeDayId integer, longtitude real, latitude real, logDate DATETIME DEFAULT CURRENT_TIMESTAMP, sateliteTime real, _send integer DEFAULT 0 )";
+    private static String CREATE_GPS_LOG = "create table gpsLog (  _id integer  primary key, routeDayId integer, longtitude real, latitude real, logDate DATETIME DEFAULT CURRENT_TIMESTAMP, sateliteTime real,  _send integer DEFAULT 0 )";
     private static String CREATE_GPS_LOG_IDX1 = "CREATE INDEX idx1_gpsLog ON gpsLog (_send)";
 
     private static String CREATE_OUTLET_CHECKIN = "create table outletCheckIn (  _id integer  primary key, outletId text, longtitude real, latitude real, logDate DATETIME DEFAULT CURRENT_TIMESTAMP, sateliteTime real, _send integer DEFAULT 0 )";

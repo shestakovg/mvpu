@@ -36,6 +36,7 @@ import Entitys.OutletObject;
 import Entitys.orderSku;
 import core.AppSettings;
 import core.checkRowSum;
+import core.checkRowSumEx;
 import core.priceTypeManager;
 import db.DbOpenHelper;
 import interfaces.IOrderTotal;
@@ -243,7 +244,13 @@ public class orderSkuAdapter extends BaseAdapter  {
 
     private void onClickEditSkuRow(View v)
     {
+
         final orderSku sku = getSku((int) v.getTag());
+        if ((sku.stockG + sku.stockR)==0)
+        {
+            Toast.makeText(context, sku.skuName+" "+ context.getText(R.string.empty_stock), Toast.LENGTH_SHORT ).show();
+            return;
+        }
         //Toast.makeText(context, sku.skuName, Toast.LENGTH_SHORT ).show();
         final Dialog dlgEditQty =  new Dialog(context);
         dlgEditQty.setTitle(sku.skuName);
@@ -258,8 +265,11 @@ public class orderSkuAdapter extends BaseAdapter  {
         final EditText dlgEditRWH = (EditText) dlgEditQty.findViewById(R.id.editDialogRWH);
         final TextView txtRWHname = (TextView) dlgEditQty.findViewById(R.id.textRWHname);
 
-        checkRowSum chrs = new checkRowSum(sku.price);
+        checkRowSumEx chrs =  checkRowSumEx.GetInstance(sku.skuId, context); // new checkRowSum(sku.price);
         ((TextView) dlgEditQty.findViewById(R.id.editQtyTextMessage)).setText(chrs.getSkuPriceTitle());
+
+        final int  minOrderQty =  chrs.getMinOrderQty();
+
         dlgEditMWH.setText(sku.getQtyMWHForEditText());
         dlgEditRWH.setText(sku.getQtyRWHForEditText());
         if (sku.isOnlyMWH()) {
@@ -267,12 +277,15 @@ public class orderSkuAdapter extends BaseAdapter  {
             txtRWHname.setPaintFlags(txtRWHname.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         }
         Button btnOk =(Button) dlgEditQty.findViewById(R.id.btnEtitQtyOk);
+
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int locQtyMWH = 0; int locQtyRWH = 0;
                 boolean allowClose = true;
                 if (!dlgEditMWH.getText().toString().trim().isEmpty()) {
                     int enteredQty = Integer.parseInt(dlgEditMWH.getText().toString());
+                    locQtyMWH = enteredQty;
                     if (enteredQty % sku.getCountInBox() != 0) {
                         if (sku.checkMultiplicity) allowClose = false;
                         Toast.makeText(context, context.getText(R.string.non_multiply_mvh), Toast.LENGTH_LONG).show();
@@ -297,8 +310,10 @@ public class orderSkuAdapter extends BaseAdapter  {
                 }
 
                 if (!dlgEditRWH.getText().toString().trim().isEmpty() ) {
-                    if (allowClose) {
-                        sku.setQtyRWH(Integer.parseInt(dlgEditRWH.getText().toString()));
+                    int enteredQty = Integer.parseInt(dlgEditRWH.getText().toString());
+                    locQtyRWH = enteredQty;
+                    if (allowClose &&  (locQtyMWH+locQtyRWH) >= minOrderQty ) {
+                        sku.setQtyRWH(locQtyRWH);
                         if (sku.qtyRWH % sku.getCountInBox() != 0)
                             Toast.makeText(context, context.getText(R.string.non_multiply_rvh), Toast.LENGTH_LONG).show();
                     }
@@ -306,6 +321,11 @@ public class orderSkuAdapter extends BaseAdapter  {
                     if (sku.qtyRWH > 0) sku.setQtyRWH(0);
                 }
                 //
+                if ((locQtyMWH+locQtyRWH) !=0 && (locQtyMWH+locQtyRWH) < minOrderQty )
+                {
+                    allowClose = false;
+                    Toast.makeText(context, context.getText(R.string.order_qty_less_min_order), Toast.LENGTH_LONG).show();
+                }
                 if (allowClose) {
                     sku.saveDb(context, orderExtra.orderType);
                     currentAdapter.notifyDataSetChanged();
