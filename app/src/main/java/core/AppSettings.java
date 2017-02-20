@@ -138,6 +138,15 @@ public class AppSettings implements IOrderControlParams {
         return allowGpsLog;
     }
 
+    public String getPriceTypeWithoutRestrictions()
+    {
+        return "Вид 1";
+    }
+
+    public Boolean checkPriceTypeForRestrictions(String price)
+    {
+        return !price.equals(getPriceTypeWithoutRestrictions());
+    }
     public void setAllowGpsLog(Boolean allowGpsLog) {
         this.allowGpsLog = allowGpsLog;
     }

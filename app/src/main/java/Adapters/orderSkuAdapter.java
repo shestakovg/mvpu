@@ -35,6 +35,7 @@ import Entitys.OrderExtra;
 import Entitys.OutletObject;
 import Entitys.orderSku;
 import core.AppSettings;
+import core.appManager;
 import core.checkRowSum;
 import core.checkRowSumEx;
 import core.priceTypeManager;
@@ -234,6 +235,16 @@ public class orderSkuAdapter extends BaseAdapter  {
             cursku.priceId = priceTypeManager.getInstance().getPriceIdByPriceName(cursku.priceName, outlet.priceId.toString());
             cursku.price = priceTypeManager.getInstance().getPriceValue(cursku.skuId, cursku.priceId);
             cursku.onlyFact = getOnlyFact(cursku);
+            if (!parent.getAdapter().getItem(position).toString().equals(appManager.getOurInstance().appSetupInstance.getPriceTypeWithoutRestrictions()))
+            {
+                checkRowSumEx chrs =  checkRowSumEx.GetInstance(cursku.skuId, context);
+                if ((cursku.qtyMWH+cursku.qtyRWH) !=0 && ((cursku.qtyMWH+cursku.qtyRWH) < chrs.getMinOrderQty()))
+                {
+                    cursku.qtyRWH = 0;
+                    String message =context.getText(R.string.order_qty_less_min_order) +"\n"+context.getText(R.string.qty_will_clear);
+                    Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+                }
+            }
             cursku.calcRowSum();
             cursku.saveDb(context, orderExtra.orderType);
             currentAdapter.notifyDataSetChanged();
@@ -312,7 +323,8 @@ public class orderSkuAdapter extends BaseAdapter  {
                 if (!dlgEditRWH.getText().toString().trim().isEmpty() ) {
                     int enteredQty = Integer.parseInt(dlgEditRWH.getText().toString());
                     locQtyRWH = enteredQty;
-                    if (allowClose &&  (locQtyMWH+locQtyRWH) >= minOrderQty ) {
+                    if (!appManager.getOurInstance().appSetupInstance.checkPriceTypeForRestrictions(sku.priceName) || ((locQtyMWH+locQtyRWH) >= minOrderQty) )
+                    {
                         sku.setQtyRWH(locQtyRWH);
                         if (sku.qtyRWH % sku.getCountInBox() != 0)
                             Toast.makeText(context, context.getText(R.string.non_multiply_rvh), Toast.LENGTH_LONG).show();
@@ -321,7 +333,9 @@ public class orderSkuAdapter extends BaseAdapter  {
                     if (sku.qtyRWH > 0) sku.setQtyRWH(0);
                 }
                 //
-                if ((locQtyMWH+locQtyRWH) !=0 && (locQtyMWH+locQtyRWH) < minOrderQty )
+
+                if (appManager.getOurInstance().appSetupInstance.checkPriceTypeForRestrictions(sku.priceName)
+                        && (locQtyMWH+locQtyRWH) !=0 && ((locQtyMWH+locQtyRWH) < minOrderQty))
                 {
                     allowClose = false;
                     Toast.makeText(context, context.getText(R.string.order_qty_less_min_order), Toast.LENGTH_LONG).show();

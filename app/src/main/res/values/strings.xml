@@ -19,6 +19,7 @@
     <string name="title_activity_activity_debt">ActivityDebt</string>
     <string name="non_multiply_mvh">Количество по складу Главный не кратно ящику</string>
     <string name="non_multiply_rvh">Количество по складу Розница не кратно ящику</string>
+
     <string name="pAlert">Внимание</string>
     <string name="orderControlMessage">Контроль параметров заказа</string>
     <string name="local_service_started">GPS Service Stardet</string>
@@ -41,5 +42,6 @@
     <string name="title_activity_bew_customers">Новые клиенты</string>
 
     <string name="order_qty_less_min_order">Заказ меньше минимального</string>
+    <string name="qty_will_clear">Количество будет удалено</string>
     <string name="empty_stock">нет на остатках складов</string>
 </resources>
