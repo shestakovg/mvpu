@@ -3,6 +3,7 @@ package com.uni.mvpu;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBarActivity;
@@ -32,6 +33,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import Adapters.RouteAdapter;
+import Entitys.NoResultReason;
 import Entitys.Order;
 import Entitys.OutletObject;
 import core.AppSettings;
@@ -46,15 +49,16 @@ public class ActivityRoute extends TouchActivity {
     private Spinner spinner;
     private ListView listRoute;
     private  SimpleAdapter sa;
-    private List<OutletObject> outletsObjectList;
+    private ArrayList<OutletObject> outletsObjectList;
     //private String[] outletsId;
     private OutletObject selectedOutlet;
+    private RouteAdapter ra;
     private String routeWhere = "";
     private String[] daysString = {"Все торговые точки", "Понедельник", "Вторник", "Среда", "Четверг","Пятница","Суббота","Воскресенье"};
     private int[] daysInt = {-1,0,1,2,3,4,5,6};
 //    public ActivityRoute() {
 //    }
-
+    private Calendar orderDate;
     private final int IDD_THREE_BUTTONS = 0;
 
     @Override
@@ -62,14 +66,53 @@ public class ActivityRoute extends TouchActivity {
         super.onCreate(savedInstanceState);
         currentContext = this;
 
+        orderDate = Calendar.getInstance();
+        orderDate.setTime(new Date());
+
 //        fillWhereCondition(Calendar.getInstance().get(Calendar.DAY_OF_WEEK) -Calendar.getInstance().getFirstDayOfWeek());
         setContentView(R.layout.activity_route);
         listRoute = (ListView) findViewById(R.id.listViewRoute);
-        sa = new SimpleAdapter(this, createRouteList(), android.R.layout.simple_expandable_list_item_2,
-                new String[] {"name", "adress"},
-                new int[] {android.R.id.text1, android.R.id.text2}
-        );
-        listRoute.setAdapter(sa);
+        createRouteList();
+//        sa = new SimpleAdapter(this, createRouteList(), android.R.layout.simple_expandable_list_item_2,
+//                new String[] {"name", "adress"},
+//                new int[] {android.R.id.text1, android.R.id.text2}
+//        );
+
+
+        spinner = (Spinner) findViewById(R.id.spinnerDays);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, daysString);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setPrompt("Дни визита");
+
+        int currentSpinnerId = orderDate.get(Calendar.DAY_OF_WEEK) - 1;
+        if (currentSpinnerId == 0) currentSpinnerId=7;
+        spinner.setSelection(currentSpinnerId);
+        fillWhereCondition(currentSpinnerId);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int position, long id) {
+                // показываем позиция нажатого элемента
+                //Toast.makeText(getBaseContext(), "Position = " + position, Toast.LENGTH_SHORT).show();
+                fillWhereCondition(position);
+//                sa = new SimpleAdapter(getBaseContext(), createRouteList(), android.R.layout.simple_expandable_list_item_2,
+//                        new String[] {"name", "adress"},
+//                        new int[] {android.R.id.text1, android.R.id.text2}
+//                );
+                createRouteList();
+                ra = new RouteAdapter(currentContext, outletsObjectList );
+                listRoute.setAdapter(ra);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
+
+        ra = new RouteAdapter(this, outletsObjectList );
+        listRoute.setAdapter(ra);
         //listRoute.setItemsCanFocus(false);
         listRoute.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         listRoute.setOnItemLongClickListener(new OnItemLongClickListener() {
@@ -79,30 +122,6 @@ public class ActivityRoute extends TouchActivity {
                                                  }
                                              }
         );
-
-        spinner = (Spinner) findViewById(R.id.spinnerDays);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, daysString);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        spinner.setPrompt("Дни визита");
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view,
-                                       int position, long id) {
-                // показываем позиция нажатого элемента
-                //Toast.makeText(getBaseContext(), "Position = " + position, Toast.LENGTH_SHORT).show();
-                fillWhereCondition(position);
-                sa = new SimpleAdapter(getBaseContext(), createRouteList(), android.R.layout.simple_expandable_list_item_2,
-                        new String[] {"name", "adress"},
-                        new int[] {android.R.id.text1, android.R.id.text2}
-                );
-                listRoute.setAdapter(sa);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-            }
-        });
     }
 
     @Override
@@ -135,8 +154,13 @@ public class ActivityRoute extends TouchActivity {
         DbOpenHelper dbOpenHelper = new DbOpenHelper(this);
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select r.outletId , r.outletName , r.VisitDay  , r.VisitDayId ,r.VisitOrder , r.CustomerId , " +
-                "r.CustomerName, r.partnerId, r.partnerName, r.address, con.PriceId, COALESCE(con.PriceName,'') as PriceName, r.IsRoute from route r   " +
-                "left join contracts con on r.partnerId = con.partnerId  " + routeWhere + " order by VisitDayId,outletName ", null);
+                "r.CustomerName, r.partnerId, r.partnerName, r.address, con.PriceId, COALESCE(con.PriceName,'') as PriceName, r.IsRoute, " +
+                " COALESCE(orders.orderCount,0) orderCount, COALESCE(pay.payCount,0) payCount, coalesce(noRes.nrcount, 0) nrcount   from route r   " +
+                " left join (select count(h._id) orderCount, h.outletId  from orderHeader h where  DATETIME(h.orderDate) = ? and _send=1   group by h.outletId) orders on orders.outletId = r.outletId " +
+                " left join (select count(p._id) payCount, p.customerid  from pays p where  DATETIME(p.payDate) = ? and p.paySum >= 10 group by p.customerid) pay on pay.customerid = r.CustomerId " +
+                " left join (select count(nrs._id) nrcount, outletid from No_result_storage nrs where DATETIME(nrs.Date) = ? group by outletid) noRes on noRes.outletId = r.outletId "+
+                " left join contracts con on r.partnerId = con.partnerId  " + routeWhere + " order by VisitDayId,outletName ",
+                new String[] { wputils.getDateTime(orderDate), wputils.getDateTime(orderDate), wputils.getDateTime(orderDate)});
         cursor.moveToFirst();
         for (int i = 0; i < cursor.getCount(); i++)
         {
@@ -153,6 +177,10 @@ public class ActivityRoute extends TouchActivity {
             ob.partnerName = cursor.getString(cursor.getColumnIndex("partnerName"));
             ob.outletAddress = cursor.getString(cursor.getColumnIndex("address"));
             ob.priceName = cursor.getString(cursor.getColumnIndex("PriceName"));
+            ob.dayOfWeekStr = cursor.getString(cursor.getColumnIndex("VisitDay"));
+            ob.OrderCount = cursor.getInt(cursor.getColumnIndex("orderCount"));
+            ob.PayCount = cursor.getInt(cursor.getColumnIndex("payCount"));
+            ob.FailVisit = (cursor.getInt(cursor.getColumnIndex("nrcount")) > 0 ? true : false);
             if (!ob.priceName.isEmpty())
             {
                 ob.priceId = UUID.fromString(cursor.getString(cursor.getColumnIndex("PriceId")));
@@ -357,6 +385,9 @@ public class ActivityRoute extends TouchActivity {
                             case R.id.menuOutletInfo:
                                 showOutletInfo(selectedOutlet);
                                 return true;
+                            case R.id.menuNoResult:
+                                showNoResultActivity(selectedOutlet);
+                                return true;
                             default:
                                 return false;
                         }
@@ -377,6 +408,14 @@ public class ActivityRoute extends TouchActivity {
         }
 
         popupMenu.show();
+    }
+
+    private void showNoResultActivity(OutletObject outlet) {
+        Intent intent = new Intent(this, ActivityNoResult.class);
+        intent.putExtra("outletId",outlet.outletId.toString() );
+        intent.putExtra("outletName",outlet.outletName.toString());
+        intent.putExtra("routeDate",orderDate);
+        startActivity(intent);
     }
 
     private void showOutletInfo(OutletObject outlet)
@@ -436,4 +475,11 @@ public class ActivityRoute extends TouchActivity {
     }
 
 
+    @Override
+    protected void onResume() {
+        createRouteList();
+        ra = new RouteAdapter(this, outletsObjectList );
+        listRoute.setAdapter(ra);
+        super.onResume();
+    }
 }

@@ -49,8 +49,9 @@
         <activity
             android:name=".ActivityDebt"
             android:label="@string/title_activity_activity_debt" />
-        <activity android:name=".NewCustomersList"
-            android:label="@string/title_activity_bew_customers"/>
+        <activity
+            android:name=".NewCustomersList"
+            android:label="@string/title_activity_bew_customers" />
 
         <service
             android:name=".GPSLoggerService"
@@ -58,7 +59,8 @@
             android:exported="true"
             android:label="@string/service_name" />
 
-        <activity android:name=".ActivityEditNewCustomer"></activity>
+        <activity android:name=".ActivityEditNewCustomer" />
+        <activity android:name=".ActivityNoResult"></activity>
     </application>
 
 </manifest> <!-- android:screenOrientation="landscape" -->

@@ -59,6 +59,8 @@ public class sendOrders  extends AsyncTask<String, Integer, List<JSONObject>> {
         super.onPreExecute();
         sendLocation syncr = new sendLocation(appManager.getOurInstance().appSetupInstance.getActiveWindow());
         syncr.execute(null, null);
+        sendNoResult sendNores = new sendNoResult(appManager.getOurInstance().appSetupInstance.getActiveWindow());
+        sendNores.execute();
         pd = new ProgressDialog(context);
         pd.setTitle(this.context.getString(R.string.send_order_dialog));
         pd.setMessage(this.context.getString(R.string.send_order_dialog));

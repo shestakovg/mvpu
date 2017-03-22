@@ -14,6 +14,9 @@
         <item
             android:id="@+id/menuOutletInfo"
             android:title="Карточка клиента"/>
+        <item
+            android:id="@+id/menuNoResult"
+            android:title="Без результата"/>
 
         <!--<item-->
             <!--android:id="@+id/menu3"-->

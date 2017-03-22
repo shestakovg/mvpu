@@ -16,7 +16,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:rowCount="15"
+        android:rowCount="16"
         android:columnCount="2">
         <Button
             android:layout_width="wrap_content"
@@ -134,7 +134,120 @@
             android:textSize="25dp"
             android:textStyle="bold"
             android:typeface="sans" />
-
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Route day"
+            android:id="@+id/tvRouteDay"
+            android:layout_row="11"
+            android:layout_column="0"
+            android:textSize="18sp"
+            android:textAlignment="center"
+            android:gravity="center_vertical|center_horizontal"
+            android:textStyle="normal|bold" />
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_row="12"
+            android:layout_column="0"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="5dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Заказ/Оплата"
+                    android:textColor="#FF0AB616" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvRouteDayCompleted"
+                    android:text="-"
+                    android:textColor="#FF0AB616" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="5dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Заказ"
+                    android:paddingLeft="10dp"
+                    android:textColor="@android:color/holo_blue_dark"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:id="@+id/tvRouteDayOrder"
+                    android:paddingLeft="10dp"
+                    android:textColor="@android:color/holo_blue_dark"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="5dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Оплата"
+                    android:paddingLeft="10dp"
+                    android:textColor="#d10cb0" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:paddingLeft="10dp"
+                    android:id="@+id/tvRouteDayPay"
+                    android:textColor="#d10cb0" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="5dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Б/Р"
+                    android:paddingLeft="10dp"
+                    android:textColor="@android:color/holo_red_dark" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:id="@+id/tvRouteDayNoResult"
+                    android:paddingLeft="10dp"
+                    android:textColor="@android:color/holo_red_dark" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="5dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Непосещено"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/abc_search_url_text_pressed" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:id="@+id/tvRouteDayNoVisit"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/abc_search_url_text_pressed" />
+            </LinearLayout>
+        </LinearLayout>
     </GridLayout>
 </ScrollView>
 

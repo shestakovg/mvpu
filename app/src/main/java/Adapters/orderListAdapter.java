@@ -31,6 +31,7 @@ public class orderListAdapter extends BaseAdapter {
     ArrayList<Order> orders;
     private OrderListMode orderMode;
     private String outletId="";
+
     public orderListAdapter(Context context, ArrayList<Order> orders, String outletId) {
         this.context = context;
         this.orders = orders;

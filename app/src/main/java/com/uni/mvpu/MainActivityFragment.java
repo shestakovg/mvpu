@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,11 +13,16 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+
 import core.AppSettings;
 import core.LocationDatabase;
 import core.RouteDay;
 import core.appManager;
 import core.wputils;
+import db.DbOpenHelper;
 import sync.sendLocation;
 import sync.syncRoute;
 
@@ -124,8 +131,14 @@ public class MainActivityFragment extends Fragment {
         appManager.getOurInstance().appSetupInstance.version = BuildConfig.VERSION_NAME;
                 //parentView.getContext().getPackageManager().getPackageInfo(parentView.getContext().getPackageName(), 0).versionName;
                 ((TextView) parentView.findViewById(R.id.textViewVersion)).setText(versionName);
-
+        renderRoute();
         return parentView;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        renderRoute();
     }
 
     @Override
@@ -134,8 +147,60 @@ public class MainActivityFragment extends Fragment {
         ((TextView) parentView.findViewById(R.id.textViewRoute)).setText(appManager.getOurInstance().appSetupInstance.getRouteName()+" - "+
                                                                 appManager.getOurInstance().appSetupInstance.getRouteTypeDescription()
         );
+        renderRoute();
     }
 
+    private void renderRoute()
+    {
+        int noVisitCount = 0;
+        int noResultCount = 0;
+        int payCount = 0;
+        int orderCount = 0;
+        int completedCount = 0;
+        Calendar currentDate = Calendar.getInstance();
+        currentDate.setTime(new Date());
+        HashMap<String, Integer> map=new HashMap<String, Integer>();
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(parentView.getContext());
+        SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
+        int dayOfWeek = currentDate.get(Calendar.DAY_OF_WEEK) -2;
+        if (dayOfWeek == -1) dayOfWeek=6;
+        Cursor cursor = db.rawQuery("select r.outletId , r.CustomerId,  " +
+                        " COALESCE(orders.orderCount,0) orderCount, COALESCE(pay.payCount,0) payCount, coalesce(noRes.nrcount, 0) nrcount   from route r   " +
+                        " left join (select count(h._id) orderCount, h.outletId  from orderHeader h where  DATETIME(h.orderDate) = ? and _send=1   group by h.outletId) orders on orders.outletId = r.outletId " +
+                        " left join (select count(p._id) payCount, p.customerid  from pays p where  DATETIME(p.payDate) = ? and p.paySum >= 10 group by p.customerid) pay on pay.customerid = r.CustomerId " +
+                        " left join (select count(nrs._id) nrcount, outletid from No_result_storage nrs where DATETIME(nrs.Date) = ? group by outletid) noRes on noRes.outletId = r.outletId "+
+                        " where r.VisitDayId = "+ dayOfWeek,
+                new String[] { wputils.getDateTime(currentDate), wputils.getDateTime(currentDate), wputils.getDateTime(currentDate)});
+        cursor.moveToFirst();
+        for (int i = 0; i < cursor.getCount(); i++)
+        {
+            if (cursor.getInt(cursor.getColumnIndex("orderCount")) > 0  && cursor.getInt(cursor.getColumnIndex("payCount")) >0) {
+                completedCount++;}
+            else
+            if (cursor.getInt(cursor.getColumnIndex("orderCount")) > 0) {
+                orderCount++;
+            }
+            else
+            if (cursor.getInt(cursor.getColumnIndex("payCount")) > 0) {
+                payCount++;
+            }
+            else
+            if (cursor.getInt(cursor.getColumnIndex("nrcount")) > 0) {
+                noResultCount++;
+            }
+            else {
+                noVisitCount++;
+            }
+            cursor.moveToNext();
+        }
+        db.close();
+        ((TextView) parentView.findViewById(R.id.tvRouteDayNoVisit)).setText(Integer.toString(noVisitCount));
+        ((TextView) parentView.findViewById(R.id.tvRouteDayNoResult)).setText(Integer.toString(noResultCount));
+        ((TextView) parentView.findViewById(R.id.tvRouteDayPay)).setText(Integer.toString(payCount));
+        ((TextView) parentView.findViewById(R.id.tvRouteDayOrder)).setText(Integer.toString(orderCount));
+        ((TextView) parentView.findViewById(R.id.tvRouteDayCompleted)).setText(Integer.toString(completedCount));
+        ((TextView) parentView.findViewById(R.id.tvRouteDay)).setText("Маршрут за "+ wputils.getDateTimeString(currentDate));
+    }
     private void btnSetupClick(View v)
     {
         Intent intent = new Intent(getActivity(), SetupActivity.class);

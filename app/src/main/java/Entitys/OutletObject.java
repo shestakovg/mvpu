@@ -67,5 +67,9 @@ public class OutletObject {
         db.close();
         return ob;
     }
+
+    public int OrderCount = 0;
+    public int PayCount = 0;
+    public boolean FailVisit = false;
 }
 
