@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -200,6 +201,16 @@ public class MainActivityFragment extends Fragment {
         ((TextView) parentView.findViewById(R.id.tvRouteDayOrder)).setText(Integer.toString(orderCount));
         ((TextView) parentView.findViewById(R.id.tvRouteDayCompleted)).setText(Integer.toString(completedCount));
         ((TextView) parentView.findViewById(R.id.tvRouteDay)).setText("Маршрут за "+ wputils.getDateTimeString(currentDate));
+        float totalCount = noVisitCount + noResultCount+ payCount + orderCount + completedCount;
+        //totalCount = 10;
+        float Efficiency = 0;
+        if (totalCount != 0)
+             Efficiency = (completedCount + orderCount + payCount) / totalCount *100;
+        ((TextView) parentView.findViewById(R.id.tvRouteDayPayEfficiency)).setText("Эффективность: "+ wputils.formatFloat(Efficiency)+" %");
+        if (Efficiency >= 60)
+            ((TextView) parentView.findViewById(R.id.tvRouteDayPayEfficiency)).setTextColor(Color.GREEN);
+        else
+            ((TextView) parentView.findViewById(R.id.tvRouteDayPayEfficiency)).setTextColor(Color.RED);
     }
     private void btnSetupClick(View v)
     {

@@ -145,10 +145,21 @@
             android:textAlignment="center"
             android:gravity="center_vertical|center_horizontal"
             android:textStyle="normal|bold" />
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Efficiency"
+            android:layout_row="12"
+            android:layout_column="0"
+            android:paddingLeft="10dp"
+            android:textAlignment="center"
+            android:gravity="center_vertical|center_horizontal"
+            android:id="@+id/tvRouteDayPayEfficiency"
+            android:textColor="#d10cb0" />
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_row="12"
+            android:layout_row="13"
             android:layout_column="0"
             android:orientation="horizontal"
             android:gravity="center_horizontal">
@@ -201,6 +212,7 @@
                     android:text="Оплата"
                     android:paddingLeft="10dp"
                     android:textColor="#d10cb0" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -208,6 +220,7 @@
                     android:paddingLeft="10dp"
                     android:id="@+id/tvRouteDayPay"
                     android:textColor="#d10cb0" />
+
             </LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -248,6 +261,7 @@
                     android:textColor="@color/abc_search_url_text_pressed" />
             </LinearLayout>
         </LinearLayout>
+
     </GridLayout>
 </ScrollView>
 

@@ -201,7 +201,11 @@ public class orderSkuAdapter extends BaseAdapter  {
 
             }
         });*/
-            return view;
+        if (cursku.IsHoreca)
+            view.setBackgroundColor(Color.YELLOW);
+        else
+            view.setBackgroundColor(Color.WHITE);
+        return view;
     }
 
     private boolean getOnlyFact(orderSku sku)

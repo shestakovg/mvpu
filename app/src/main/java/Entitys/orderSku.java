@@ -166,4 +166,14 @@ public class orderSku {
 
     public String Color;
     public String OutStockColor;
+
+    public boolean isHoreca() {
+        return IsHoreca;
+    }
+
+    public void setHoreca(boolean horeca) {
+        IsHoreca = horeca;
+    }
+
+    public boolean IsHoreca;
 }

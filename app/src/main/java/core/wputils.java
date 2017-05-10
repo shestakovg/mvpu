@@ -135,4 +135,15 @@ public final class wputils {
         DecimalFormat decimalFormat = new DecimalFormat("#.");
         return decimalFormat.format(value);
     }
+
+    public static String formatFloat(float value)
+    {
+//        NumberFormat format = NumberFormat.getCurrencyInstance(Locale.GERMANY);
+//        format.setCurrency(Currency.getInstance("uk_"));
+//        return format.format(value);
+       // NumberFormat formatter = new DecimalFormat("#0.00");
+        //DecimalFormat decimalFormat = new DecimalFormat("##.##");
+        //return formatter.format(value);
+        return  String.format(Locale.CANADA, "%.2f", value);
+    }
 }
