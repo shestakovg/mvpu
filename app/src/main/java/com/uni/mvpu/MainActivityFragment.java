@@ -201,7 +201,7 @@ public class MainActivityFragment extends Fragment {
         ((TextView) parentView.findViewById(R.id.tvRouteDayOrder)).setText(Integer.toString(orderCount));
         ((TextView) parentView.findViewById(R.id.tvRouteDayCompleted)).setText(Integer.toString(completedCount));
         ((TextView) parentView.findViewById(R.id.tvRouteDay)).setText("Маршрут за "+ wputils.getDateTimeString(currentDate));
-        float totalCount = noVisitCount + noResultCount+ payCount + orderCount + completedCount;
+        float totalCount =  noResultCount+ payCount + orderCount + completedCount;
         //totalCount = 10;
         float Efficiency = 0;
         if (totalCount != 0)
