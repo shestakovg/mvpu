@@ -54,6 +54,27 @@ public class orderControlParams {
         db.close();
     }
 
+    private boolean existsSpecialPrices = false;
+    //75a9d60f-cd75-11e4-826a-240a64c9314e Вид 1
+
+    private void fillSpecialPriceFlag(OrderExtra orderExtra, Context context)
+    {
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
+        //and PriceId = ?
+        String query="select  count(*) from  orderDetail   " +
+                    " where  orderUUID= ?  and PriceId = ? ";
+
+        Cursor cursor = db.rawQuery(query, new String[] {orderExtra.orderUUID, "75a9d60f-cd75-11e4-826a-240a64c9314e"});
+        cursor.moveToFirst();
+        for (int i = 0; i < cursor.getCount(); i++) {
+            this.existsSpecialPrices = cursor.getInt(0) > 0;
+            //String s = cursor.getString(0);
+            cursor.moveToNext();
+        }
+        db.close();
+    }
+
     private void checkOnlyFactSku(OrderExtra orderExtra, Context context)
     {
         if (order.payType !=0)
@@ -83,8 +104,12 @@ public class orderControlParams {
         //if (this.orderRows ==0 && this.orderSum == 0) return true;
         loadSumByOutlet(orderExtra, currentOutlet, context);
         checkOnlyFactSku(orderExtra,context);
+        fillSpecialPriceFlag(orderExtra,  context);
         if (//this.orderRows < params.getMinOrderRowsQty() &&
-                this.orderSum < this.params.getMinOrderSumByCategory(currentOutlet))
+                (this.orderSum < this.params.getMinOrderSumByCategory(currentOutlet))
+                &
+                        (!existsSpecialPrices)
+           )
         {
             this.financeControl = false;
             return false;
