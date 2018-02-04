@@ -21,7 +21,7 @@ public class orderControlParams {
     private IOrderControlParams params;
     private OrderExtra order;
     private OutletObject _outlet;
-
+    private OrderSumControl orderSumControl = new OrderSumControl();
     public orderControlParams(int orderRows, double orderSum, IOrderControlParams params) {
         this.orderRows = orderRows;
         this.orderSum = orderSum;
@@ -38,19 +38,24 @@ public class orderControlParams {
     {
         DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
-        String query="select sum(coalesce(d.qty1,0) * coalesce(p.pric,0) + coalesce(d.qty2,0) * coalesce(p.pric,0)) as orderSumma," +
-                " count(d._id) rowCount from orderHeader h " +
+        String query="select sum(coalesce(d.qty1,0) * coalesce(p.pric,0) + coalesce(d.qty2,0) * coalesce(p.pric,0)) as orderSumma,  p.priceId as priceId " +
+                "  from orderHeader h " +
+                //" count(d._id) rowCount from orderHeader h " +
                 " inner join orderDetail d on d.headerid= h._id" +
-                " left join price p on d.skuId = p.skuId" +
-                " where DATETIME(h.orderDate) = ? and  h.outletId = ? and p.priceId= ? and (coalesce(d.qty1,0)>0 or coalesce(d.qty2,0)>0)";
-        Cursor cursor = db.rawQuery(query, new String[] {wputils.getDateTime(orderExtra.orderDateCalendar), orderExtra.outletId,
-                currentOutlet.priceId.toString()});
+                " left join price p on d.skuId = p.skuId and p.priceId = d.PriceId " +
+                " where DATETIME(h.orderDate) = ? and  h.outletId = ?  and (coalesce(d.qty1,0)>0 or coalesce(d.qty2,0)>0) "+
+                " group by p.priceId";
+        Cursor cursor = db.rawQuery(query, new String[] {wputils.getDateTime(orderExtra.orderDateCalendar), orderExtra.outletId});
+                //currentOutlet.priceId.toString()});
         cursor.moveToFirst();
+        orderSumControl.clear();
         for (int i = 0; i < cursor.getCount(); i++) {
-            this.orderSum = cursor.getDouble(0);
-            this.orderRows = cursor.getInt(1);
+//            this.orderSum = cursor.getDouble(0);
+//            this.orderRows = cursor.getInt(1);
+            orderSumControl.AddRow(cursor.getDouble(0), cursor.getString(1));
             cursor.moveToNext();
         }
+        this.orderSum = orderSumControl.getOrderAmount();
         db.close();
     }
 
@@ -105,35 +110,37 @@ public class orderControlParams {
         loadSumByOutlet(orderExtra, currentOutlet, context);
         checkOnlyFactSku(orderExtra,context);
         fillSpecialPriceFlag(orderExtra,  context);
-        if (//this.orderRows < params.getMinOrderRowsQty() &&
-                (this.orderSum < this.params.getMinOrderSumByCategory(currentOutlet))
-                &
-                        (!existsSpecialPrices)
-           )
-        {
-            this.financeControl = false;
-            return false;
-        }
+//        if (//this.orderRows < params.getMinOrderRowsQty() &&
+//                (this.orderSum < this.params.getMinOrderSumByCategory(currentOutlet))
+//                &
+//                        (!existsSpecialPrices)
+//           )
+//        {
+//            this.financeControl = false;
+//            return false;
+//        }
 //        if (!orderExtra.deliveryDateInitialized)
 //            return false;
        // checkOnlyFactSku(context);
         if (!this.onlyFactSku) return false;
-        return true;
+
+        return orderSumControl.isAllowed();
     }
 
     public String getControlMessage(OutletObject currentOutlet)
     {
-        String result = "";
+        String result = orderSumControl.getMessage();
 //        if (this.orderRows < params.getMinOrderRowsQty() && !this.financeControl)
 //        {
 //            result+="В заказе должно быть минимум "+Integer.toString(this.params.getMinOrderRowsQty())+" строк. В заказе: "+Integer.toString(this.orderRows) +" стр\n";
 //        }
-        if (this.orderSum < this.params.getMinOrderSum() && !this.financeControl)
-        {
-            result+="Сумма заказа должна быть не меньше "+String.format("%.2f", this.params.getMinOrderSumByCategory(currentOutlet))+" грн. Сумма заказа: "+String.format("%.2f", this.orderSum)+"\n";
-        }
+//        if (this.orderSum < this.params.getMinOrderSum() && !this.financeControl)
+//        {
+//            result+="Сумма заказа должна быть не меньше "+String.format("%.2f", this.params.getMinOrderSumByCategory(currentOutlet))+" грн. Сумма заказа: "+String.format("%.2f", this.orderSum)+"\n";
+//        }
+
         if (!this.onlyFactSku)
-            result+="В заказе есть позиции, которые можно отгружать только по факту!";
+            result+="\nВ заказе есть позиции, которые можно отгружать только по факту!";
         return result;
     }
 
