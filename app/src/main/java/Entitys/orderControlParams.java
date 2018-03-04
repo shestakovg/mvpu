@@ -103,6 +103,29 @@ public class orderControlParams {
         }
         db.close();
     }
+
+    private boolean checkDontUseAmountValidation(OrderExtra orderExtra, Context context) {
+        if (order.payType != 0) {
+            boolean res = true;
+            DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
+            SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
+            String query="select count(*) from orderDetail d " +
+                    " inner join sku s on s.SkuId = d.skuid " +
+                    " inner join skuGroup g on s.SkuParentId = g.GroupId " +
+                    "where d.orderUUID = ? and g.DontUseAmountValidation <> 1 and (coalesce(d.qty1,0)+coalesce(d.qty2,0))<>0";
+            Cursor cursor = db.rawQuery(query,new String[] {orderExtra.orderUUID});
+            cursor.moveToFirst();
+            for (int i = 0; i < cursor.getCount(); i++) {
+                if (cursor.getInt(0)>0) res = false;
+                cursor.moveToNext();
+            }
+            db.close();
+            return res;
+        }
+
+        return false;
+    }
+
     public Boolean allowOrderToSave(OrderExtra orderExtra,OutletObject currentOutlet, Context context)
     {
        this._outlet = currentOutlet;
@@ -123,7 +146,7 @@ public class orderControlParams {
 //            return false;
        // checkOnlyFactSku(context);
         if (!this.onlyFactSku) return false;
-
+        if (checkDontUseAmountValidation(orderExtra,context)) return true;
         return orderSumControl.isAllowed();
     }
 

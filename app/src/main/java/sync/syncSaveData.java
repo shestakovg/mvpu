@@ -127,6 +127,7 @@ public class syncSaveData {
                 values.put("Amount", jsonObject.getDouble("Amount"));
                 values.put("OutletCount", jsonObject.getInt("OutletCount"));
                 values.put("Color", jsonObject.getString("Color"));
+                values.put("DontUseAmountValidation", jsonObject.getInt("DontUseAmountValidation"));
                 db.insert("skuGroup", null, values);
             } catch (Exception e) {
 

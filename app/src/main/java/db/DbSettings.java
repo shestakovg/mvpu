@@ -8,7 +8,7 @@ public class DbSettings {
         return DB_VERSION;
     }
 
-    private   int DB_VERSION = 65;
+    private   int DB_VERSION = 66;
 
     private static DbSettings ourInstance = new DbSettings();
 

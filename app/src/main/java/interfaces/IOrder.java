@@ -10,7 +10,7 @@ import Entitys.OutletObject;
  */
 public interface IOrder {
     OrderExtra getOrderExtra();
-    void refreshSku(String skuGroup) throws ParseException;
+    void refreshSku(String skuGroup, boolean onlyStock) throws ParseException;
     OutletObject getOutletObject();
     void showOrderParams();
 }

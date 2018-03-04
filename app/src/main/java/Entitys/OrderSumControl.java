@@ -17,7 +17,8 @@ public class OrderSumControl {
     private final double OPT = 1000;
     private final double Type5 = 800;
     private final double Type3 = 600;
-    private final double Type1 = 500;
+    private final double Type1 = 1;
+    private final double Mixed1_3 = 600;
     private final double Mixed = 800;
     private ArrayList<OrderSumControlRow> rows = new ArrayList<OrderSumControlRow>();
 
@@ -56,6 +57,16 @@ public class OrderSumControl {
             if  (rows.get(0).getPriceId().equals("75a9d611-cd75-11e4-826a-240a64c9314e")) minAmount = Type3;
             if  (rows.get(0).getPriceId().equals("75a9d60f-cd75-11e4-826a-240a64c9314e")) minAmount = Type1;
         }
+        else
+        if(rows.size() == 2) {
+            if  (
+                    (rows.get(0).getPriceId().equals("75a9d60f-cd75-11e4-826a-240a64c9314e") && rows.get(1).getPriceId().equals("75a9d611-cd75-11e4-826a-240a64c9314e"))
+                    ||
+                    (rows.get(0).getPriceId().equals("75a9d611-cd75-11e4-826a-240a64c9314e") && rows.get(1).getPriceId().equals("75a9d60f-cd75-11e4-826a-240a64c9314e"))
+                    )
+                minAmount = Mixed1_3;
+        }
+
         if (amount >= minAmount) {
             message = "Отгрузка разрешена";
             allowed = true;

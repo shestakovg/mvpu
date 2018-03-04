@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -38,7 +40,7 @@ public class FragmentOrderSkuGroup extends Fragment {
     private Button btnUpGroup;
     private TextView textCurrentGroup;
     private ListView lvGroup;
-
+    private CheckBox onlyStock;
     private ArrayList<groupSku> skuGroupStack;
     //private SimpleAdapter saGroupSku;
     private orderSkuGroupAdapter groupAdapter;
@@ -62,6 +64,21 @@ public class FragmentOrderSkuGroup extends Fragment {
 //        textCurrentGroup.setText("");
         btnUpGroup.setText("");
         lvGroup = (ListView)  parentView.findViewById(R.id.listViewSku);
+
+        onlyStock = (CheckBox)  parentView.findViewById(R.id.checkboxShowEmptyStock);
+        onlyStock.setChecked(true);
+        onlyStock.setOnCheckedChangeListener(
+                new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        try {
+                            fillListViewGroupSku();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
 
         skuGroupStack = new ArrayList<>();
         //listRoute.setItemsCanFocus(false);
@@ -131,7 +148,7 @@ public class FragmentOrderSkuGroup extends Fragment {
 //        }
 
         IOrder actOrder = (IOrder) getActivity();
-        actOrder.refreshSku( skuGroupStack.get(skuGroupStack.size() - 1).getGroupId());
+        actOrder.refreshSku( skuGroupStack.get(skuGroupStack.size() - 1).getGroupId(), onlyStock.isChecked());
     }
 
     private void groupUp() throws ParseException {

@@ -8,6 +8,20 @@
         <TableRow android:orientation="vertical"
             android:showDividers="middle|beginning|end"
             android:layout_width="fill_parent">
+            <LinearLayout
+                android:orientation="horizontal" android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                >
+            <CheckBox
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Только остатки"
+                android:id="@+id/checkboxShowEmptyStock"/>
+            </LinearLayout>
+        </TableRow>
+        <TableRow android:orientation="vertical"
+            android:showDividers="middle|beginning|end"
+            android:layout_width="fill_parent">
 
             <LinearLayout
                 android:orientation="horizontal" android:layout_width="fill_parent"
