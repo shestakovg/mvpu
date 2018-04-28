@@ -234,11 +234,11 @@ public class ActivityOrder extends TouchActivity implements IOrder  {
     }
 
 
-    public void refreshSku(String skuGroup, boolean onlyStock) throws ParseException {
+    public void refreshSku(String skuGroup, boolean onlyStock, boolean onlyHoreca) throws ParseException {
         if (orderExtra.orderType == AppSettings.ORDER_TYPE_ORDER)
         {
             if (fragSku!=null && fragSku.isInLayout()) {
-                fragSku.fillSku( skuGroup, false, onlyStock );
+                fragSku.fillSku( skuGroup, false, onlyStock, onlyHoreca );
             }
         }
         else

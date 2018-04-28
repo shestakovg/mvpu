@@ -41,6 +41,7 @@ public class FragmentOrderSkuGroup extends Fragment {
     private TextView textCurrentGroup;
     private ListView lvGroup;
     private CheckBox onlyStock;
+    private CheckBox onlyHoreca;
     private ArrayList<groupSku> skuGroupStack;
     //private SimpleAdapter saGroupSku;
     private orderSkuGroupAdapter groupAdapter;
@@ -80,6 +81,20 @@ public class FragmentOrderSkuGroup extends Fragment {
                 }
         );
 
+        onlyHoreca = (CheckBox)  parentView.findViewById(R.id.checkboxShowOnlyHoreca);
+        onlyHoreca.setChecked(false);
+        onlyHoreca.setOnCheckedChangeListener(
+                new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        try {
+                            fillListViewGroupSku();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
         skuGroupStack = new ArrayList<>();
         //listRoute.setItemsCanFocus(false);
         lvGroup.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -148,7 +163,7 @@ public class FragmentOrderSkuGroup extends Fragment {
 //        }
 
         IOrder actOrder = (IOrder) getActivity();
-        actOrder.refreshSku( skuGroupStack.get(skuGroupStack.size() - 1).getGroupId(), onlyStock.isChecked());
+        actOrder.refreshSku( skuGroupStack.get(skuGroupStack.size() - 1).getGroupId(), onlyStock.isChecked(), onlyHoreca.isChecked());
     }
 
     private void groupUp() throws ParseException {

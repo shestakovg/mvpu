@@ -45,7 +45,7 @@ public class FragmentOrderSku extends Fragment implements IOrderTotal{
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        fillSku("", false, false);
+                        fillSku("", false, false, false);
                     }
                 }
         );
@@ -53,7 +53,7 @@ public class FragmentOrderSku extends Fragment implements IOrderTotal{
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        fillSku("", true, false);
+                        fillSku("", true, false, false);
                     }
                 }
         );
@@ -66,16 +66,16 @@ public class FragmentOrderSku extends Fragment implements IOrderTotal{
                 }
         );
         if (appManager.getOurInstance().appSetupInstance.getRouteType()==1)
-            fillSku("", true, false);
+            fillSku("", true, false, false);
         else
-            fillSku("", true, false);
+            fillSku("", true, false, false);
         return parentView;
     }
 
-    public void fillSku( String skuGroup, Boolean showClientCard, boolean onlyStock)
+    public void fillSku( String skuGroup, Boolean showClientCard, boolean onlyStock, boolean onlyHoreca)
     {
         String orderByClause = " s.SkuName ";
-        String whereClause = " where s.skuParentId = ? "+ (onlyStock ? " and  (st.StockG + st.StockR) > 0 " : "");
+        String whereClause = " where s.skuParentId = ? "+ (onlyStock ? " and  (st.StockG + st.StockR) > 0 " : "") + (onlyHoreca? " and s.IsHoreca = 1 " : "");
         String joinKind = " left ";
         String[] params= new String[] {Integer.toString(((IOrder) getActivity()).getOrderExtra()._id),
                 skuGroup};

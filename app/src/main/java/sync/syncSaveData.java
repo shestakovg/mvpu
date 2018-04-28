@@ -227,6 +227,7 @@ public class syncSaveData {
 
             }
         }
+
         db.execSQL("insert into PriceNames " +
                 "select distinct PriceId , PriceName from contracts con where not exists (select * from PriceNames pn where pn.PriceId = con.PriceId)");
         db.close();

@@ -37,6 +37,7 @@ public class priceTypeManager {
         this.priceList.add(new priceTypeObject("75a9d60f-cd75-11e4-826a-240a64c9314e", "Вид 1"));
         this.priceList.add(new priceTypeObject("75a9d611-cd75-11e4-826a-240a64c9314e", "Вид 3"));
         this.priceList.add(new priceTypeObject("75a9d613-cd75-11e4-826a-240a64c9314e", "Вид 5"));
+        //this.priceList.add(new priceTypeObject("e3c64316-daa6-11e4-826d-240a64c9314e", "Крупный опт ФАКТ"));
     }
 
     public int getIdexByPriceName(String priceName)
