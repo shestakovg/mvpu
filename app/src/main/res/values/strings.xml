@@ -42,6 +42,7 @@
     <string name="title_activity_bew_customers">Новые клиенты</string>
 
     <string name="order_qty_less_min_order">Заказ меньше минимального</string>
+    <string name="order_qty_more_max_order">Заказ больше минимального</string>
     <string name="qty_will_clear">Количество будет удалено</string>
     <string name="empty_stock">нет на остатках складов</string>
 </resources>

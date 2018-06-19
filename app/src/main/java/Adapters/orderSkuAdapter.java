@@ -248,6 +248,13 @@ public class orderSkuAdapter extends BaseAdapter  {
                     String message =context.getText(R.string.order_qty_less_min_order) +"\n"+context.getText(R.string.qty_will_clear);
                     Toast.makeText(context, message, Toast.LENGTH_LONG).show();
                 }
+
+                if ((cursku.qtyMWH+cursku.qtyRWH) !=0 && ((cursku.qtyMWH+cursku.qtyRWH) > chrs.getMaxOrderQty()))
+                {
+                    cursku.qtyRWH = 0;
+                    String message =context.getText(R.string.order_qty_more_max_order) +"\n"+context.getText(R.string.qty_will_clear);
+                    Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+                }
             }
             cursku.calcRowSum();
             cursku.saveDb(context, orderExtra.orderType);
@@ -272,7 +279,7 @@ public class orderSkuAdapter extends BaseAdapter  {
         dlgEditQty.setContentView(R.layout.edit_orderqty);
         dlgEditQty.setCancelable(true);
         //((TextView) dlgEditQty.findViewById(R.id.tvEtitQtyDescription)).setText(sku.skuName);
-        String stockStr =context.getText(R.string.StringStock)+": "+context.getText(R.string.StringMainWH) +String.format("%d", (long)  sku.stockG)+"    "+context.getText(R.string.StringRWH)+String.format("%d", (long)  sku.stockR)
+        String stockStr =context.getText(R.string.StringStock)+": "+context.getText(R.string.StringMainWH) +"  "+String.format("%d", (long)  sku.stockG)+"    "+context.getText(R.string.StringRWH)+String.format("%d", (long)  sku.stockR)
                 + "     "+ context.getText(R.string.StringInBox)+" "+String.format("%d", (int)  sku.getCountInBox());
         ((TextView) dlgEditQty.findViewById(R.id.tvEtitQtyStock)).setText(stockStr);
 
@@ -284,6 +291,7 @@ public class orderSkuAdapter extends BaseAdapter  {
         ((TextView) dlgEditQty.findViewById(R.id.editQtyTextMessage)).setText(chrs.getSkuPriceTitle());
 
         final int  minOrderQty =  chrs.getMinOrderQty();
+        final int  maxOrderQty =  chrs.getMaxOrderQty();
 
         dlgEditMWH.setText(sku.getQtyMWHForEditText());
         dlgEditRWH.setText(sku.getQtyRWHForEditText());
@@ -344,6 +352,13 @@ public class orderSkuAdapter extends BaseAdapter  {
                     allowClose = false;
                     Toast.makeText(context, context.getText(R.string.order_qty_less_min_order), Toast.LENGTH_LONG).show();
                 }
+
+                if ((locQtyMWH+locQtyRWH) !=0 && ((locQtyMWH+locQtyRWH) > maxOrderQty))
+                {
+                    allowClose = false;
+                    Toast.makeText(context, context.getText(R.string.order_qty_more_max_order), Toast.LENGTH_LONG).show();
+                }
+
                 if (allowClose) {
                     sku.saveDb(context, orderExtra.orderType);
                     currentAdapter.notifyDataSetChanged();

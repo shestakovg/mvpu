@@ -17,6 +17,11 @@ public class checkRowSumEx{
     private Context context;
     private int minOrderQty = 100;
 
+    public int getMaxOrderQty() {
+        return maxOrderQty;
+    }
+
+    private int maxOrderQty = 1000000;
     public int getMinOrderQty() {
         return minOrderQty;
     }
@@ -30,7 +35,7 @@ public class checkRowSumEx{
     public String getSkuPriceTitle()
     {
         int minOrder = getMinOrderQty();
-        String result = "Минимальный заказ - "+minOrder+" шт";
+        String result = "Минимальный заказ - "+minOrder+" шт"+" Максимальный - "+(maxOrderQty == 1000000 ? "Неограничен" : maxOrderQty +" шт");
         if (minOrder<0) result = "";
         return result;
     }
@@ -39,10 +44,12 @@ public class checkRowSumEx{
     {
         DbOpenHelper dbOpenHelper = new DbOpenHelper(this.context);
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select MinOrderQty from sku where SkuId = ?", new String[] {this.skuId});
+        Cursor cursor = db.rawQuery("select MinOrderQty, MaxOrderQty from sku where SkuId = ?", new String[] {this.skuId});
         cursor.moveToFirst();
-        if (cursor.getCount()>0)
+        if (cursor.getCount()>0) {
             this.minOrderQty = cursor.getInt(0);
+            this.maxOrderQty = cursor.getInt(1);
+        }
         db.close();
     }
 
