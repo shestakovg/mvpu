@@ -2,6 +2,7 @@ package sync;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.widget.Toast;
@@ -11,6 +12,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import Entitys.Task;
 import Entitys.priceType;
 import core.appManager;
 import db.DbOpenHelper;
@@ -417,6 +419,40 @@ public class syncSaveData {
         Toast.makeText(context, "Обновление дней визита завершено", Toast.LENGTH_SHORT).show();
     }
 
+    public static void saveTasks(List<JSONObject> jsonObjects, Context context) throws JSONException {
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        for (JSONObject jsonObject: jsonObjects) {
+            Task task = new Task();
+            task.setReference(jsonObject.getString("reference"));
+            task.setNumber(jsonObject.getString("number"));
+            task.setDescription(jsonObject.getString("Description"));
+            task.setOutletId(jsonObject.getString("outletId"));
+            if (!updateTask(db, task)) {
+                ContentValues values = new ContentValues();
+                values.put("reference", task.getReference());
+                values.put("number", task.getNumber());
+                values.put("Description", task.getDescription());
+                values.put("outletId", task.getOutletId());
+                db.insert("tasks", null, values);
+            }
+        }
+        db.close();
+        Toast.makeText(context, "Обновление задач завершено", Toast.LENGTH_SHORT).show();
+    }
 
+    private static boolean updateTask(SQLiteDatabase db, Task task) {
+        boolean update = false;
+        Cursor cursor = db.rawQuery("select _id, Description, status, _send from tasks where reference = ?", new String[] {task.getReference()} );
+        cursor.moveToFirst();
+        for (int i=0; i < cursor.getCount(); i++ ) {
+            update = true;
+            if (cursor.getInt(cursor.getColumnIndex("status")) == 0) {
+                db.execSQL("update tasks set Description = ? where _id = ?", new String[] {task.getDescription(), Integer.toString(cursor.getInt(cursor.getColumnIndex("_id")))});
+            }
+        }
+        cursor.close();
+        return update;
+    }
 }
 

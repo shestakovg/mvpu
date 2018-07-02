@@ -87,6 +87,11 @@ public class DbCreateScript {
     public static String CREATE_DELIVERY_AREA = "create table DeliveryArea(idRef text, Description text)";
     public static String CREATE_NO_RESULT_REASONS = "create table no_result_reasons(_id integer, description text)";
     public static String CREATE_NO_RESULT_STORAGE = "create table No_result_storage(_id integer primary key autoincrement, Date DATETIME DEFAULT CURRENT_TIMESTAMP, outletid text, reasonId int,  _send integer DEFAULT 0)";
+
+    public static String CREATE_TASKS = "create table tasks(_id integer primary key autoincrement, reference text, outletId text, number text, Description text, ResultDescription text, status integer DEFAULT 0, _send integer DEFAULT 0)";
+    public static String CREATE_TASKS_IDX1 = "CREATE INDEX idx1_TASKS ON tasks(outletId)";
+    public static String CREATE_TASKS_IDX2 = "CREATE INDEX idx2_TASKS ON tasks(status, _send)";
+
     public static  ArrayList<String> getCreateDataBaseScripts()
     {
         ArrayList<String> list = new ArrayList<String>();
@@ -137,13 +142,16 @@ public class DbCreateScript {
         list.add(CREATE_DELIVERY_AREA);
         list.add(CREATE_NO_RESULT_REASONS);
         list.add(CREATE_NO_RESULT_STORAGE);
+        list.add(CREATE_TASKS);
+        list.add(CREATE_TASKS_IDX1);
+        list.add(CREATE_TASKS_IDX2);
         list.add("insert into no_result_reasons values (1,'Отсутствие ЛПР')");
         list.add("insert into no_result_reasons values (2,'Дебеторка')");
         list.add("insert into no_result_reasons values (3,'Недобор')");
         return list;
     }
 
- //Drop table
+ //Drop tables
     private static String DROP_BASEPARAMS = "DROP TABLE IF EXISTS baseParams";
     private static String DROP_ROUTE = "DROP TABLE ROUTE";
     private static String DROP_ORDER_HEADER = "DROP TABLE orderHeader";
@@ -170,6 +178,7 @@ public class DbCreateScript {
     private static String DROP_DELIVERY_AREA="drop table DeliveryArea";
     private static String DROP_NO_RESULT_REASONS="drop table no_result_reasons";
     private static String DROP_NO_NO_RESULT_STORAGE="drop table no_result_reasons";
+    private static String DROP_TASKS="drop table tasks";
 
     public static ArrayList<String>  getDropTableScripts()
     {
@@ -200,6 +209,7 @@ public class DbCreateScript {
         list.add(DROP_DELIVERY_AREA);
         list.add(DROP_NO_RESULT_REASONS);
         list.add(DROP_NO_NO_RESULT_STORAGE);
+        list.add(DROP_TASKS);
         return list;
     }
 }
