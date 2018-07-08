@@ -60,7 +60,11 @@
             android:label="@string/service_name" />
 
         <activity android:name=".ActivityEditNewCustomer" />
-        <activity android:name=".ActivityNoResult"></activity>
+        <activity android:name=".ActivityNoResult" />
+        <activity
+            android:name=".ActivityTask"
+            android:label="@string/title_activity_task"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest> <!-- android:screenOrientation="landscape" -->

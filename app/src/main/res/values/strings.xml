@@ -45,4 +45,5 @@
     <string name="order_qty_more_max_order">Заказ больше минимального</string>
     <string name="qty_will_clear">Количество будет удалено</string>
     <string name="empty_stock">нет на остатках складов</string>
+    <string name="title_activity_task">ActivityTask</string>
 </resources>

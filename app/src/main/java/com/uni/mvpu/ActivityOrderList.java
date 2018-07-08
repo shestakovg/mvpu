@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -28,6 +29,7 @@ import java.util.UUID;
 import Adapters.orderListAdapter;
 import Entitys.Order;
 import Entitys.OutletObject;
+import Helpers.taskHelper;
 import core.AppSettings;
 import core.OrderListMode;
 import core.TouchActivity;
@@ -98,6 +100,21 @@ public class ActivityOrderList extends TouchActivity implements IUpdateOrderList
                 onClickAddNewOrder(v);
             }
         });
+
+
+        taskHelper thelper = new taskHelper(this, false);
+        boolean taskExists = thelper.UnresolvedTaskExists(outletid);
+        try {
+            thelper.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (taskExists) {
+            Intent myIntent = new Intent(this, ActivityTask.class);
+            myIntent.putExtra("OUTLETID", outletid);
+            this.startActivity(myIntent);
+        }
     }
 
     @Override

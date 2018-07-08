@@ -8,6 +8,7 @@ public class Task {
     private String ResultDescription;
     private String Number;
     private int Status;
+    public  int send = 0;
 
     public int getId() {
         return id;
@@ -64,4 +65,6 @@ public class Task {
     public void setStatus(int status) {
         Status = status;
     }
+
+    public boolean isResolved() {return Status > 0;}
 }

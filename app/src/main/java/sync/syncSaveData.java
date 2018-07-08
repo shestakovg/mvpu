@@ -434,7 +434,7 @@ public class syncSaveData {
                 values.put("number", task.getNumber());
                 values.put("Description", task.getDescription());
                 values.put("outletId", task.getOutletId());
-                db.insert("tasks", null, values);
+                long rec = db.insert("tasks", null, values);
             }
         }
         db.close();
