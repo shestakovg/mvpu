@@ -3,17 +3,21 @@ package Adapters;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.uni.mvpu.R;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
+import Dialogs.DlgEditTask;
 import Entitys.OutletObject;
 import Entitys.Task;
 import Helpers.taskHelper;
@@ -68,6 +72,29 @@ public class taskAdapter extends BaseAdapter {
             textViewDescription.setTypeface(textViewDescription.getTypeface(), Typeface.ITALIC);
         }
 
+        ImageView editImage = (ImageView) view.findViewById(R.id.lvImage);
+        editImage.setTag(position);
+        editImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editTask(v);
+            }
+        });
+        view.setTag(position);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editTask(v);
+            }
+        });
         return view;
+    }
+
+    private void editTask(View v) {
+        int postion =  (Integer) v.getTag();
+        Task task = tasks.get(postion);
+        //Toast.makeText(this.context, task.getDescription(), Toast.LENGTH_SHORT).show();
+        DlgEditTask dlg = new DlgEditTask(this.context, task);
+        dlg.show();
     }
 }

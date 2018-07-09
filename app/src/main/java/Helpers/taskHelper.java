@@ -39,7 +39,8 @@ public class taskHelper extends baseHelper {
     }
 
     public void saveTask(Task task) {
-
+       db.execSQL("update  tasks set status = ?, ResultDescription = ?  " +
+               " where _id = ?", new String[]{ Integer.toString(task.getStatus()), task.getResultDescription(), Integer.toString(task.getId()) });
     }
 
     public boolean TaskExists(String outletId) {

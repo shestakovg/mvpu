@@ -6,7 +6,7 @@
     android:orientation="horizontal">
 
     <ImageView
-        android:id="@+id/ivImage"
+        android:id="@+id/lvImage"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_margin="4dp"
@@ -22,6 +22,7 @@
         <TextView
             android:id="@+id/taskDescription"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:gravity="center_vertical|start" />
     </LinearLayout>
 </LinearLayout>
