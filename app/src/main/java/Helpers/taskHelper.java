@@ -19,7 +19,8 @@ public class taskHelper extends baseHelper {
 
     public ArrayList<Task> getOutletTask(String outletId) {
         ArrayList<Task> list = new ArrayList<>();
-        Cursor cursor = db.rawQuery("select _id, reference, outletId, number, Description, ResultDescription, status, _send from tasks where outletId = ?", new String[]{outletId});
+        Cursor cursor = db.rawQuery("select _id, reference, outletId, number, Description, ResultDescription, status, _send " +
+                " from tasks where outletId = ? order by number desc", new String[]{outletId});
         cursor.moveToFirst();
         for (int i = 0; i < cursor.getCount(); i++) {
             Task task = new Task();

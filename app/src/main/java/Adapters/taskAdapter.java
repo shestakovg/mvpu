@@ -62,6 +62,8 @@ public class taskAdapter extends BaseAdapter {
             view = lInflater.inflate(R.layout.lv_item_task, parent, false);
         }
         Task task = tasks.get(position);
+        ((TextView) view.findViewById(R.id.taskNumber)).setText("¹ "+task.getNumber());
+        ((TextView) view.findViewById(R.id.taskResult)).setText(task.getResultDescription());
         TextView textViewDescription = (TextView) view.findViewById(R.id.taskDescription);
         textViewDescription.setText(task.getDescription());
         if (!task.isResolved()) {
@@ -71,6 +73,8 @@ public class taskAdapter extends BaseAdapter {
             textViewDescription.setTextColor(Color.LTGRAY);
             textViewDescription.setTypeface(textViewDescription.getTypeface(), Typeface.ITALIC);
         }
+
+
 
         ImageView editImage = (ImageView) view.findViewById(R.id.lvImage);
         editImage.setTag(position);

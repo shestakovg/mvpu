@@ -17,12 +17,29 @@
         android:id="@+id/linearLayout1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:layout_marginLeft="10dp">
 
         <TextView
+            android:id="@+id/taskNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="4dp"
+            android:gravity="center_vertical|start" />
+        <TextView
             android:id="@+id/taskDescription"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="4dp"
+            android:gravity="center_vertical|start" />
+        <TextView
+            android:id="@+id/taskResult"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="4dp"
             android:gravity="center_vertical|start" />
     </LinearLayout>
 </LinearLayout>
