@@ -36,6 +36,7 @@ import db.DbOpenHelper;
 import interfaces.IManagementGPSLogger;
 import sync.sendOrders;
 import sync.sendPays;
+import sync.sendTask;
 
 /**
  * Created by g.shestakov on 26.05.2015.
@@ -275,6 +276,7 @@ public class appManager {
         so.execute();
         sendPays pays = new sendPays(context);
         pays.execute();
+        new sendTask(context).execute();
     }
 
     public double getOverdueSum(Context context,String customerId, Calendar date)

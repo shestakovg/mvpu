@@ -39,6 +39,32 @@ public class taskHelper extends baseHelper {
         return list;
     }
 
+    public ArrayList<Task> getTaskToSend() {
+        ArrayList<Task> list = new ArrayList<>();
+        Cursor cursor = db.rawQuery("select _id, reference, outletId, number, Description, ResultDescription, status, _send " +
+                " from tasks where _send =0 and status > 0", null);
+        cursor.moveToFirst();
+        for (int i = 0; i < cursor.getCount(); i++) {
+            Task task = new Task();
+            task.setId(cursor.getInt(cursor.getColumnIndex("_id")));
+            task.setReference(cursor.getString(cursor.getColumnIndex("reference")));
+            task.setOutletId(cursor.getString(cursor.getColumnIndex("outletId")));
+            task.setNumber(cursor.getString(cursor.getColumnIndex("number")));
+            task.setDescription(cursor.getString(cursor.getColumnIndex("Description")));
+            task.setResultDescription(cursor.getString(cursor.getColumnIndex("ResultDescription")));
+            task.setStatus(cursor.getInt(cursor.getColumnIndex("status")));
+            task.send = cursor.getInt(cursor.getColumnIndex("_send"));
+            list.add(task);
+            cursor.moveToNext();
+        }
+        cursor.close();
+        return list;
+    }
+
+    public void markAsSend(int id) {
+        db.execSQL("update tasks set _send = 1 where _id = ?", new Integer[] {id});
+    }
+
     public void saveTask(Task task) {
        db.execSQL("update  tasks set status = ?, ResultDescription = ?  " +
                " where _id = ?", new String[]{ Integer.toString(task.getStatus()), task.getResultDescription(), Integer.toString(task.getId()) });

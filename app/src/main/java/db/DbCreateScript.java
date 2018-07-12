@@ -88,7 +88,7 @@ public class DbCreateScript {
     public static String CREATE_NO_RESULT_REASONS = "create table no_result_reasons(_id integer, description text)";
     public static String CREATE_NO_RESULT_STORAGE = "create table No_result_storage(_id integer primary key autoincrement, Date DATETIME DEFAULT CURRENT_TIMESTAMP, outletid text, reasonId int,  _send integer DEFAULT 0)";
 
-    public static String CREATE_TASKS = "create table tasks(_id integer primary key autoincrement, reference text, outletId text, number text, Description text, ResultDescription text, status integer DEFAULT 0, _send integer DEFAULT 0)";
+    public static String CREATE_TASKS = "create table tasks(_id integer primary key autoincrement, taskDate DATETIME DEFAULT CURRENT_TIMESTAMP, reference text, outletId text, number text, Description text, ResultDescription text, status integer DEFAULT 0, _send integer DEFAULT 0)";
     public static String CREATE_TASKS_IDX1 = "CREATE INDEX idx1_TASKS ON tasks(outletId)";
     public static String CREATE_TASKS_IDX2 = "CREATE INDEX idx2_TASKS ON tasks(status, _send)";
 
