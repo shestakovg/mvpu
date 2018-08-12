@@ -63,8 +63,7 @@
         <activity android:name=".ActivityNoResult" />
         <activity
             android:name=".ActivityTask"
-            android:label="@string/title_activity_task"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:label="@string/title_activity_task"></activity>
     </application>
 
 </manifest> <!-- android:screenOrientation="landscape" -->

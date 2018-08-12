@@ -16,6 +16,7 @@ public class ActivityTask extends TouchActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.setTitle("Задачи");
         setContentView(R.layout.activity_task);
         currentOutlet = OutletObject.getInstance(UUID.fromString(getIntent().getStringExtra("OUTLETID")), this);
         lvMain = (ListView) findViewById(R.id.lvTaskList);

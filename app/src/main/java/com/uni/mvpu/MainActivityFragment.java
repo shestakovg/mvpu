@@ -194,6 +194,7 @@ public class MainActivityFragment extends Fragment {
             }
             cursor.moveToNext();
         }
+        double orderSum = getOrderSum(db, currentDate);
         db.close();
         ((TextView) parentView.findViewById(R.id.tvRouteDayNoVisit)).setText(Integer.toString(noVisitCount));
         ((TextView) parentView.findViewById(R.id.tvRouteDayNoResult)).setText(Integer.toString(noResultCount));
@@ -201,6 +202,7 @@ public class MainActivityFragment extends Fragment {
         ((TextView) parentView.findViewById(R.id.tvRouteDayOrder)).setText(Integer.toString(orderCount));
         ((TextView) parentView.findViewById(R.id.tvRouteDayCompleted)).setText(Integer.toString(completedCount));
         ((TextView) parentView.findViewById(R.id.tvRouteDay)).setText("Маршрут за "+ wputils.getDateTimeString(currentDate));
+        ((TextView) parentView.findViewById(R.id.tvTotalAmount)).setText(String.format("%.2f",orderSum));
         float totalCount =  noResultCount+ payCount + orderCount + completedCount;
         //totalCount = 10;
         float Efficiency = 0;
@@ -212,6 +214,32 @@ public class MainActivityFragment extends Fragment {
         else
             ((TextView) parentView.findViewById(R.id.tvRouteDayPayEfficiency)).setTextColor(Color.RED);
     }
+
+    private double getOrderSum(SQLiteDatabase db , Calendar currentDate )
+    {
+        double result = 0;
+        String query="select sum(coalesce(d.qty1,0) * coalesce(p.pric,0) + coalesce(d.qty2,0) * coalesce(p.pric,0)) as orderSumma from orderHeader h " +
+                " inner join orderDetail d on d.headerid = h._id " +
+                " inner join (select outletId outletId,max(partnerId) partnerId from  route group by outletId) r on r.outletId = h.outletId "+
+                //" inner join (select outletId outletId,partnerId partnerId from  route) r on r.outletId = h.outletId "+
+                " left  join contracts con on  con.PartnerId = r.partnerId "+
+                //" inner join price p on p.priceId = coalesce(con.PriceId,'"+ AppSettings.PARAM_PRICEID_DEFAULT+"') and d.skuId = p.skuId" +
+                " inner join price p on p.priceId = d.PriceId and d.skuId = p.skuId" +
+                " where DATETIME(h.orderDate) = ? and h._send=1";
+        try {
+            Cursor cursor = db.rawQuery(query, new String[]{wputils.getDateTime(currentDate)});
+            cursor.moveToFirst();
+            for (int i = 0; i < cursor.getCount(); i++) {
+                result = cursor.getDouble(0);
+                cursor.moveToNext();
+            }
+        }
+        catch (Exception e) {
+            result= 0;
+        }
+        return  result;
+    }
+
     private void btnSetupClick(View v)
     {
         Intent intent = new Intent(getActivity(), SetupActivity.class);

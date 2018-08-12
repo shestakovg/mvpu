@@ -422,7 +422,7 @@ public class syncSaveData {
     public static void saveTasks(List<JSONObject> jsonObjects, Context context) throws JSONException {
         DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
-        db.execSQL("delete from tasks where (julianday('now') - julianday(taskDate)) > 14");
+        db.execSQL("delete from tasks where (julianday('now') - julianday(taskDate)) > 14 and status <> 0");
         for (JSONObject jsonObject: jsonObjects) {
             Task task = new Task();
             task.setReference(jsonObject.getString("reference"));

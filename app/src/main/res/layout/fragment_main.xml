@@ -260,6 +260,25 @@
                     android:paddingLeft="10dp"
                     android:textColor="@color/abc_search_url_text_pressed" />
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="5dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cумма"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/abc_search_url_text_pressed" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:id="@+id/tvTotalAmount"
+                    android:paddingLeft="10dp"
+                    android:textColor="@color/abc_search_url_text_pressed" />
+            </LinearLayout>
         </LinearLayout>
 
     </GridLayout>
