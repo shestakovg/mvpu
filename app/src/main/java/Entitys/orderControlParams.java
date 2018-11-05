@@ -133,18 +133,12 @@ public class orderControlParams {
         loadSumByOutlet(orderExtra, currentOutlet, context);
         checkOnlyFactSku(orderExtra,context);
         fillSpecialPriceFlag(orderExtra,  context);
-//        if (//this.orderRows < params.getMinOrderRowsQty() &&
-//                (this.orderSum < this.params.getMinOrderSumByCategory(currentOutlet))
-//                &
-//                        (!existsSpecialPrices)
-//           )
-//        {
-//            this.financeControl = false;
-//            return false;
-//        }
-//        if (!orderExtra.deliveryDateInitialized)
-//            return false;
-       // checkOnlyFactSku(context);
+
+        //don't check men sum when payTYpe is fact
+        if (order.payType == 1) {
+            return true;
+        }
+
         if (!this.onlyFactSku) return false;
         if (checkDontUseAmountValidation(orderExtra,context)) return true;
         return orderSumControl.isAllowed();
