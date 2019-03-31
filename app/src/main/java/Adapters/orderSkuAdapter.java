@@ -6,13 +6,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.provider.Telephony;
-import android.support.v7.internal.widget.AdapterViewCompat;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +20,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,7 +34,6 @@ import Entitys.OutletObject;
 import Entitys.orderSku;
 import core.AppSettings;
 import core.appManager;
-import core.checkRowSum;
 import core.checkRowSumEx;
 import core.priceTypeManager;
 import db.DbOpenHelper;
@@ -112,7 +109,8 @@ public class orderSkuAdapter extends BaseAdapter  {
                 textSkuName.setTextColor(Color.parseColor(cursku.Color));
         }
 
-        ((TextView) view.findViewById(R.id.textViewPrice)).setText(String.format("%.2f",   cursku.price));
+        TextView priceView  =  ((TextView) view.findViewById(R.id.textViewPrice));
+        priceView.setText(String.format("%.2f",   cursku.price));
         ((TextView) view.findViewById(R.id.textViewSum)).setText(String.format("%.2f",   cursku.rowSum));
 
         ((TextView) view.findViewById(R.id.textViewMWH)).setText(String.format("%d", (long) cursku.stockG));
@@ -172,41 +170,23 @@ public class orderSkuAdapter extends BaseAdapter  {
 
             }
         });
-        //spinnerPriceType.setText(cursku.priceName);
-
-//        edMWH.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//                if (hasFocus)
-//                {
-//                    orderSku sku = getSku((int) v.getTag());
-//                    Toast.makeText(context, ((EditText) v).getText(), Toast.LENGTH_SHORT ).show();
-//
-//                }
-//            }
-//        });
-        /*edMWH.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });*/
         if (cursku.IsHoreca)
             view.setBackgroundColor(Color.YELLOW);
         else
             view.setBackgroundColor(Color.WHITE);
+
+        if (cursku.getOldPrice() != cursku.getNewPrice()) {
+            view.setBackgroundResource(R.drawable.image_border);
+            priceView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showPriceChanges(position);
+                }
+            });
+        }
         return view;
     }
+
 
     private boolean getOnlyFact(orderSku sku)
     {
@@ -406,4 +386,25 @@ public class orderSkuAdapter extends BaseAdapter  {
         AlertDialog alert11 = builder1.create();
         alert11.show();
     }
+
+    private void showPriceChanges(int position) {
+        final orderSku sku = getSku(position);
+        AlertDialog.Builder builder1 = new AlertDialog.Builder(context);
+        builder1.setMessage(context.getText(R.string.NewPriceText)+" "
+                +String.format("%.2f",   sku.getNewPrice())+"\n"+
+                context.getText(R.string.OldPriceText)+" "+String.format("%.2f",   sku.getOldPrice())+"\n"+
+                context.getText(R.string.PriceChangesText)+" "+String.format("%.2f", sku.getNewPrice() - sku.getOldPrice())+"\n"+
+                context.getText(R.string.PriceChangesPercentText)+" "+String.format("%.2f", (sku.getNewPrice() - sku.getOldPrice())/sku.getOldPrice() * 100)
+        );
+        builder1.setCancelable(true);
+        builder1.setPositiveButton("OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert11 = builder1.create();
+        alert11.show();
+    }
+
 }
