@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_row="0"
+        android:layout_rowWeight="1"
+        android:layout_column="0"
+        android:showDividers="end"
+        android:baselineAligned="true"
+        android:background="@android:color/black">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Создать автозаказ"
+            android:id="@+id/btnGenerateOrder"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Список"
+            android:id="@+id/btnAllList"/>
+
+        <TextView
+            android:id="@+id/txtStockTemlateMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Список"
+            android:textColor="@android:color/background_light"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_row="1"
+        android:layout_rowWeight="1"
+        android:layout_column="0">
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/listPrevOrder"
+            android:dividerHeight="1dp"
+            android:divider="@android:color/holo_blue_light" />
+    </LinearLayout>
+
+</LinearLayout>

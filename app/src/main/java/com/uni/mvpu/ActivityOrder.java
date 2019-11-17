@@ -53,6 +53,7 @@ public class ActivityOrder extends TouchActivity implements IOrder  {
     private FragmentOrderSkuGroup fragGroup;
     private FragmentOrderSku  fragSku;
     private FragmenStorecheckSku  fragStorecheck;
+    private FragmentStockTemplate  fragmentStockTemplate;
     private OutletObject currentOutlet;
     private Context context;
 
@@ -90,9 +91,13 @@ public class ActivityOrder extends TouchActivity implements IOrder  {
         if (orderExtra.orderType == AppSettings.ORDER_TYPE_ORDER) {
             setContentView(R.layout.activity_order);
         }
-        else
+        else if (orderExtra.orderType == AppSettings.ORDER_TYPE_STORECHECK)
         {
             setContentView(R.layout.activity_order_wide);
+        }
+        else if (orderExtra.orderType == AppSettings.ORDER_TYPE_STOCK_TEMPLATE)
+        {
+            setContentView(R.layout.activity_order_stock_template);
         }
 //        FragmentManager fragmentManager = getFragmentManager();
 //        FragmentTransaction ft = fragmentManager.beginTransaction();
@@ -110,6 +115,9 @@ public class ActivityOrder extends TouchActivity implements IOrder  {
         else
         if (orderExtra.orderType == AppSettings.ORDER_TYPE_STORECHECK) {
             setTitle(getOutletObject().outletName + "   Сторчек: " + orderExtra.orderNumber);
+        }
+        else if (orderExtra.orderType == AppSettings.ORDER_TYPE_STOCK_TEMPLATE) {
+            setTitle(getOutletObject().outletName + "   Автозаказ: " + orderExtra.orderNumber);
         }
         fragGroup = (FragmentOrderSkuGroup) getFragmentManager().findFragmentById(R.id.fragmentGroup);
         try {
@@ -133,6 +141,11 @@ public class ActivityOrder extends TouchActivity implements IOrder  {
         if (orderExtra.orderType==AppSettings.ORDER_TYPE_STORECHECK)
         {
             fragStorecheck = (FragmenStorecheckSku) getFragmentManager().findFragmentById(R.id.fragmentStorecheck);
+        }
+
+        if (orderExtra.orderType==AppSettings.ORDER_TYPE_STOCK_TEMPLATE)
+        {
+            fragmentStockTemplate = (FragmentStockTemplate) getFragmentManager().findFragmentById(R.id.fragmentStockTemplateSku);
         }
 
     }
@@ -241,11 +254,18 @@ public class ActivityOrder extends TouchActivity implements IOrder  {
                 fragSku.fillSku( skuGroup, false, onlyStock, onlyHoreca );
             }
         }
-        else
+        else if (orderExtra.orderType == AppSettings.ORDER_TYPE_STORECHECK)
         {
             if (fragStorecheck!=null && fragStorecheck.isInLayout())
             {
                 fragStorecheck.fillSku(skuGroup);
+            }
+        }
+        else if (orderExtra.orderType == AppSettings.ORDER_TYPE_STOCK_TEMPLATE)
+        {
+            if (fragmentStockTemplate!=null && fragmentStockTemplate.isInLayout())
+            {
+                fragmentStockTemplate.fillSku(skuGroup);
             }
         }
     }
@@ -313,3 +333,4 @@ public class ActivityOrder extends TouchActivity implements IOrder  {
             dlgOrderParams.show();
         }
     }
+

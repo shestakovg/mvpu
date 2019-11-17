@@ -44,6 +44,7 @@ public class ActivityOrderList extends TouchActivity implements IUpdateOrderList
     private String outletid;
     private TextView tvOrderDate;
     private Button btnAddOrder;
+    private Button btnAddStocktemplate;
     private ListView  lvMain;
     int DIALOG_DATE = 1;
     private int orderType = AppSettings.ORDER_TYPE_ORDER;
@@ -90,6 +91,7 @@ public class ActivityOrderList extends TouchActivity implements IUpdateOrderList
         // ??????????? ??????
         lvMain = (ListView) findViewById(R.id.lvOrderList);
         btnAddOrder = (Button) findViewById(R.id.btnAddNewOrder);
+        btnAddStocktemplate = (Button) findViewById(R.id.btnAddStocktemplateOrder);
         if (orderMode == OrderListMode.orderByDay)
         {
             btnAddOrder.setVisibility(View.INVISIBLE);
@@ -100,7 +102,12 @@ public class ActivityOrderList extends TouchActivity implements IUpdateOrderList
                 onClickAddNewOrder(v);
             }
         });
-
+        btnAddStocktemplate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickAddStocktemplateOrder(v);
+            }
+        });
 
         taskHelper thelper = new taskHelper(this, false);
         boolean taskExists = thelper.UnresolvedTaskExists(outletid);
@@ -297,6 +304,32 @@ public class ActivityOrderList extends TouchActivity implements IUpdateOrderList
     {
         appManager.getOurInstance().addNewOrder(this, outletid, maxOrderNumber+1, orderDate, orderType);
         fillOrders();
+    }
+
+    private void onClickAddStocktemplateOrder(View v)
+    {
+        String orderUUID = appManager.getOurInstance().addNewOrder(this, outletid, maxOrderNumber+100, orderDate, AppSettings.ORDER_TYPE_STOCK_TEMPLATE);
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(this);
+        SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
+
+
+        Cursor cursor = db.rawQuery("select  h._id,  h.orderUUID,DATETIME(h.orderDate) as orderDate,  h.outletId,  h.orderNumber , h.notes , " +
+                        " h.responseText, h._1CDocNumber1,  h._1CDocNumber2, h._send from orderHeader h " +
+                        " inner join (select distinct outletId from  route) r on r.outletId = h.outletId" +
+                        " where   h.orderUUID = ?",
+                new String[] { orderUUID });
+        cursor.moveToFirst();
+
+        Order order = new Order( cursor.getInt(cursor.getColumnIndex("_id"))
+                , cursor.getInt(cursor.getColumnIndex("orderNumber"))
+                , cursor.getString(cursor.getColumnIndex("orderUUID")),
+                new Date(orderDate.get(Calendar.YEAR)-1900,
+                        orderDate.get(Calendar.MONTH), orderDate.get(Calendar.DAY_OF_MONTH)),
+                0);
+        order.outletId = cursor.getString(cursor.getColumnIndex("outletId"));
+        order.orderType = AppSettings.ORDER_TYPE_STOCK_TEMPLATE;
+        db.close();
+        this.startActivity(appManager.getOurInstance().getOrderActivityIntent(order, this,outletid));
     }
 
     private void updateOrderList()

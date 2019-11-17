@@ -116,7 +116,10 @@ public class orderSkuAdapter extends BaseAdapter  {
         ((TextView) view.findViewById(R.id.textViewMWH)).setText(String.format("%d", (long) cursku.stockG));
         ((TextView) view.findViewById(R.id.textViewRWH)).setText(String.format("%d", (long) cursku.stockR));
         ((TextView) view.findViewById(R.id.textPrevOrderDate)).setText(cursku.PreviousOrderDate);
-        ((TextView) view.findViewById(R.id.textPrevQty)).setText(String.format("%d", (long) cursku.PreviousOrderQty));
+        //((TextView) view.findViewById(R.id.textPrevQty)).setText(String.format("%d", (long) cursku.PreviousOrderQty));
+        ((TextView) view.findViewById(R.id.textPrevQty)).setText(Integer.toString(cursku.PreviousOrderQty));
+//        ((TextView) view.findViewById(R.id.textPrevQty)).setText("100");
+        ((TextView) view.findViewById(R.id.textPrevQty)).setTextColor(Color.BLACK);
         ((TextView) view.findViewById(R.id.textViewOrderSkuGroupName)).setText(cursku.GroupName);
         if (cursku.PreviousOrderDate.isEmpty())
             ((TextView) view.findViewById(R.id.textPrevOrderCaption)).setTextColor(Color.parseColor("#bdbdbd"));
@@ -184,6 +187,14 @@ public class orderSkuAdapter extends BaseAdapter  {
                 }
             });
         }
+        TextView availInStore =  (TextView) view.findViewById(R.id.textAvailableInStore);
+        availInStore.setText(cursku.AvailiableInStore ? R.string.title_available_in_store : R.string.title_not_available_in_store);
+        if (!cursku.AvailiableInStore) {
+            availInStore.setTextColor(Color.RED);
+        } else {
+            availInStore.setTextColor(Color.BLACK);
+        }
+
         return view;
     }
 

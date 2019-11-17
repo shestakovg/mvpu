@@ -166,21 +166,29 @@
                     android:textColor="@color/material_blue_grey_800"
                     android:id="@+id/textPrevOrderDate"
                     android:text="Prev date"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="     "/>
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="     "/>-->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/material_blue_grey_800"
+                    android:layout_marginLeft="7dp"
                     android:text="Количество:   "/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/material_blue_grey_800"
                     android:id="@+id/textPrevQty"
-                    android:text="Prev date"/>
+                    android:text=""/>
+
+                <TextView
+                    android:id="@+id/textAvailableInStore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="7dp"
+                    android:text="Есть в торг.точке"
+                    android:textColor="@color/material_blue_grey_800" />
             </LinearLayout>
 </LinearLayout>
 

@@ -102,7 +102,7 @@ public class sendOrders  extends AsyncTask<String, Integer, List<JSONObject>> {
             request.setHeader("Content-type", "application/json");
             Cursor cursor = db.rawQuery("select  h._id,  h.orderUUID,DATETIME(h.orderDate) as orderDate,DATETIME(h.deliveryDate) as deliveryDate," +
                     "  h.outletId,  h.orderNumber ,coalesce( h.notes,' ') notes," +
-                                "  coalesce(h.payType,0) payType ,coalesce(h.autoLoad,0) autoLoad, h.orderType from orderHeader h where  h._send=0", null);
+                                "  coalesce(h.payType,0) payType ,coalesce(h.autoLoad,0) autoLoad, h.orderType from orderHeader h where  h._send=0 and h.orderType <> 2", null);
             cursor.moveToFirst();
 
             for (int i=0;i<cursor.getCount();i++)

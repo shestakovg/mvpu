@@ -189,7 +189,7 @@ public class appManager {
         return result;
     }
 
-    public void addNewOrder(Context context, String outletid, int orderNumber, Calendar orderDate, int orderType)
+    public String addNewOrder(Context context, String outletid, int orderNumber, Calendar orderDate, int orderType)
     {
         DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
@@ -219,10 +219,15 @@ public class appManager {
         {
             fillStorecheck(context, outletid, orderUUID, headerid);
         }
+        else if (orderType == AppSettings.ORDER_TYPE_STOCK_TEMPLATE)
+        {
+
+        }
         else
         {
             fillDefaultOrder(context, outletid, orderUUID, headerid);
         }
+        return orderUUID;
     }
 
     public void fillStorecheck(Context context, String outletid, String orderUUID, long headerid)
@@ -264,6 +269,7 @@ public class appManager {
             values.put("priceId", outletObject.priceId.toString());
             values.put("qty1", 0);
             values.put("qty2", 0);
+            values.put("availableInStore", 1);
             values.put("_send", 0);
             db.insert("orderDetail", null, values);
             cursor.moveToNext();

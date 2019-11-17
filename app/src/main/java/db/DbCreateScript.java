@@ -22,7 +22,7 @@ public class DbCreateScript {
                 " orderDate DATETIME DEFAULT CURRENT_TIMESTAMP,deliveryDate DATETIME DEFAULT CURRENT_TIMESTAMP, orderNumber integer DEFAULT 0, notes text, responseText text, _1CDocNumber1 text,  _1CDocNumber2 text, payType integer DEFAULT 0, autoLoad integer DEFAULT 0, orderType integer default 0, _send integer DEFAULT 0,deliveryDateInitialized integer DEFAULT 0)";
     private static String CREATE_ORDER_HEADER_IDX = "CREATE INDEX idx_orderHeader_UUID ON orderHeader (orderUUID)";
 
-    private static String CREATE_ORDER_DETAIL = "create table orderDetail(_id integer primary key autoincrement, headerId integer DEFAULT 0, orderUUID text, skuId text, qty1 integer, qty2 integer, PriceId text,finalDate DATETIME,  _send integer DEFAULT 0)";
+    private static String CREATE_ORDER_DETAIL = "create table orderDetail(_id integer primary key autoincrement, headerId integer DEFAULT 0, orderUUID text, skuId text, qty1 integer, qty2 integer, PriceId text,finalDate DATETIME, availableInStore int DEFAULT 0, _send integer DEFAULT 0)";
     private static String CREATE_CREATE_ORDER_DETAIL_IDX = "CREATE UNIQUE INDEX idx_orderDetail_UUID ON orderDetail (orderUUID, skuId)";
     private static String CREATE_CREATE_ORDER_DETAIL2_IDX = "CREATE UNIQUE INDEX idx_orderDetail_ID ON orderDetail (headerId, skuId)";
 
@@ -92,6 +92,9 @@ public class DbCreateScript {
     public static String CREATE_TASKS_IDX1 = "CREATE INDEX idx1_TASKS ON tasks(outletId)";
     public static String CREATE_TASKS_IDX2 = "CREATE INDEX idx2_TASKS ON tasks(status, _send)";
 
+    public static String CREATE_PRICE_СHANGES = "create table priceChanges (_id integer primary key autoincrement, Date text, OldPrice real, NewPrice real, priceId text, skuId text)";
+    public static String CREATE_ORDER_STOCK_TEMPLATE = "create table orderStockTemplateHeader(_id integer primary key autoincrement, headerId text, orderHeaderId text, Date DATETIME DEFAULT CURRENT_TIMESTAMP,outletId text, number int, _send integer DEFAULT 0)";
+    public static String CREATE_ORDER_STOCK_TEMPLATE_LINES  = "create table orderStockTemplateLines(_id integer primary key autoincrement, headerId text, skuId text, exist int, _send integer DEFAULT 0)";
     public static  ArrayList<String> getCreateDataBaseScripts()
     {
         ArrayList<String> list = new ArrayList<String>();
@@ -148,6 +151,9 @@ public class DbCreateScript {
         list.add("insert into no_result_reasons values (1,'Отсутствие ЛПР')");
         list.add("insert into no_result_reasons values (2,'Дебеторка')");
         list.add("insert into no_result_reasons values (3,'Недобор')");
+        list.add(CREATE_PRICE_СHANGES);
+        list.add(CREATE_ORDER_STOCK_TEMPLATE);
+        list.add(CREATE_ORDER_STOCK_TEMPLATE_LINES);
         return list;
     }
 
@@ -179,6 +185,9 @@ public class DbCreateScript {
     private static String DROP_NO_RESULT_REASONS="drop table no_result_reasons";
     private static String DROP_NO_NO_RESULT_STORAGE="drop table no_result_reasons";
     private static String DROP_TASKS="drop table tasks";
+    private static String DROP_PRICE_CHANGES="drop table priceChanges";
+    private static String DROP_ORDER_STOCK_TEMPLATE = "drop table orderStockTemplateHeader";
+    private static String DROP_ORDER_STOCK_TEMPLATE_LINES  = "drop table orderStockTemplateLines";
 
     public static ArrayList<String>  getDropTableScripts()
     {
@@ -210,6 +219,9 @@ public class DbCreateScript {
         list.add(DROP_NO_RESULT_REASONS);
         list.add(DROP_NO_NO_RESULT_STORAGE);
         list.add(DROP_TASKS);
+        list.add(DROP_PRICE_CHANGES);
+        list.add(DROP_ORDER_STOCK_TEMPLATE);
+        list.add(DROP_ORDER_STOCK_TEMPLATE_LINES);
         return list;
     }
 }

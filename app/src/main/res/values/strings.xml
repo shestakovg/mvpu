@@ -36,6 +36,10 @@
     <string name="StringInBox">В ящ.</string>
     <string name="StringFact">Факт</string>
     <string name="StringPlan">План</string>
+    <string name="NewPriceText">Новая цена:</string>
+    <string name="OldPriceText">Старая цена:</string>
+    <string name="PriceChangesText">Изменение цены:</string>
+    <string name="PriceChangesPercentText">Изменение цены %:</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_map">Map</string>
@@ -46,4 +50,6 @@
     <string name="qty_will_clear">Количество будет удалено</string>
     <string name="empty_stock">нет на остатках складов</string>
     <string name="title_activity_task">ActivityTask</string>
+    <string name="title_available_in_store">Есть в торг. точке</string>
+    <string name="title_not_available_in_store">Нет в торг.точке</string>
 </resources>

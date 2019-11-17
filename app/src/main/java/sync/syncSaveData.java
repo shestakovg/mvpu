@@ -455,5 +455,28 @@ public class syncSaveData {
         cursor.close();
         return update;
     }
+
+    public static void savePriceChanges(List<JSONObject> jsonObjects, Context context)
+    {
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        db.execSQL("delete from priceChanges");
+
+        for (JSONObject jsonObject: jsonObjects) {
+            try {
+                ContentValues values = new ContentValues();
+                values.put("Date", jsonObject.getString("Date"));
+                values.put("PriceId", jsonObject.getString("PriceId"));
+                values.put("SkuId", jsonObject.getString("SkuId"));
+                values.put("OldPrice", jsonObject.getDouble("OldPrice"));
+                values.put("NewPrice", jsonObject.getDouble("NewPrice"));
+                db.insert("priceChanges", null, values);
+            } catch (Exception e) {
+
+            }
+        }
+        db.close();
+        Toast.makeText(context, "Обновление изменений цен завершено", Toast.LENGTH_LONG).show();
+    }
 }
 

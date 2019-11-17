@@ -116,7 +116,9 @@ public class FragmentOrderSku extends Fragment implements IOrderTotal{
         String sqlStatement = "select  s.SkuId, s.SkuName, st.StockG, st.StockR,COALESCE(pOrder.Pric, COALESCE( p.Pric,0)) pric, COALESCE(od.qty1, 0) as QtyMWH, " +
                 "  COALESCE(od.qty2, 0) as QtyRWH, case when od.skuId is null then 0 else 1 end existPosition, od._id as detailId , s.QtyPack," +
                 " coalesce(od.PriceId,'"+locOutlet.priceId.toString()+"') PriceId,  "+" pn.PriceName, s.CheckCountInBox, case when sf.skuId is null then 0 else 1 end OnlyFact, COALESCE(ods.qty1,0) outletStock, s.onlyMWH, grp.GroupName,  " +
-                " coalesce(ccs.LastDate,'') as PreviousOrderDate,coalesce(ccs.Qty ,0) as PreviousOrderQty, s.Color, s.OutStockColor, s.IsHoreca from sku as s" +
+                " coalesce(ccs.LastDate,'') as PreviousOrderDate,coalesce(ccs.Qty ,0) as PreviousOrderQty, s.Color, s.OutStockColor, s.IsHoreca, coalesce(pc.OldPrice, 0) as OldPrice, coalesce(pc.NewPrice, 0) as NewPrice, " +
+                " od.availableInStore" +
+                " from sku as s " +
                 "            left join  stock st on s.skuId = st.skuId  " +
                 "            left join price p on s.skuId = p.skuId and p.PriceId = '" +locOutlet.priceId.toString()+"' "+
                 joinKind + " join orderDetail od on od.skuId= s.skuId and od.headerId = ?  "+
@@ -126,8 +128,8 @@ public class FragmentOrderSku extends Fragment implements IOrderTotal{
                 " left join PriceNames pn on pn.PriceId = coalesce(od.PriceId,'"+locOutlet.priceId.toString()+"') "+
                 " left join skuFact sf on sf.skuId =s.skuId and sf.priceId = coalesce(od.PriceId,'"+locOutlet.priceId.toString()+"') "+
                 " left join orderHeader oh on oh._id=od.headerId "+
+                " left join priceChanges pc on (pc.skuId = s.SkuId and pc.PriceId = pn.PriceId)" +
                 " left join (select max(_id) _id , orderDate, outletId from  orderHeader  where orderType = 1 " +
-
                 " group by orderDate, outletId) ohs on "+
                 " ohs.orderDate = oh.orderDate and ohs.outletId = oh.outletId "+
                 " left join orderDetail ods on ods.headerId = ohs._id and ods.skuId = s.skuId   "+
@@ -172,6 +174,9 @@ public class FragmentOrderSku extends Fragment implements IOrderTotal{
             sku.Color =cursor.getString(cursor.getColumnIndex("Color"));
             sku.OutStockColor =cursor.getString(cursor.getColumnIndex("OutStockColor"));
             sku.setHoreca((cursor.getInt(cursor.getColumnIndex("IsHoreca")) == 1 ? true : false));
+            sku.setOldPrice(cursor.getDouble(cursor.getColumnIndex("OldPrice")));
+            sku.setNewPrice(cursor.getDouble(cursor.getColumnIndex("NewPrice")));
+            sku.AvailiableInStore =  (cursor.getInt(cursor.getColumnIndex("availableInStore")) == 1 ? true : false);
             skuList.add(sku);
             cursor.moveToNext();
         }

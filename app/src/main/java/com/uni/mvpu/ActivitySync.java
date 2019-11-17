@@ -26,6 +26,7 @@ import sync.syncOutletCategory;
 import sync.syncOutletInfo;
 import sync.syncPlanFact;
 import sync.syncPrice;
+import sync.syncPriceChanges;
 import sync.syncRoute;
 import sync.syncRouteDays;
 import sync.syncSku;
@@ -165,6 +166,8 @@ public class ActivitySync extends TouchActivity {
                         //appManager.getOurInstance().setCurrentContext(this);
                         syncRoute syncr = new syncRoute(this, pd);
                         syncr.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(),"dictionary/getrouteset/"+appManager.getOurInstance().appSetupInstance.getRouteId()});
+                        syncPriceChanges syncPc =  new syncPriceChanges(this, pd);
+                        syncPc.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(),"dictionary/getpricechanges"});
                         break; //Add other menu items
                     case IDLI_DOCS:
                         //appManager.getOurInstance().setCurrentContext(this);

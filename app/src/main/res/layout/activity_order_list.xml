@@ -20,7 +20,12 @@
                     android:id="@+id/btnAddNewOrder"
                     android:text="Добавить"
                      />
-
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnAddStocktemplateOrder"
+                    android:text="Автозаказ"
+                    />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

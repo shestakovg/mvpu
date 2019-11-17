@@ -38,6 +38,24 @@ public class orderSku {
     public String GroupName = "";
     public int PreviousOrderQty = 0;
     public String PreviousOrderDate = "";
+    public double OldPrice = 0;
+    public double NewPrice = 0;
+    public Boolean AvailiableInStore = true;
+    public double getOldPrice() {
+        return OldPrice;
+    }
+
+    public void setOldPrice(double oldPrice) {
+        OldPrice = oldPrice;
+    }
+
+    public double getNewPrice() {
+        return NewPrice;
+    }
+
+    public void setNewPrice(double newPrice) {
+        NewPrice = newPrice;
+    }
 
     public void setFinalDate(Calendar finalDate) {
         this.finalDate = finalDate;
@@ -115,7 +133,9 @@ public class orderSku {
                 (finalDateExists ?
                     ",finalDate=(DATETIME('%Y-%m-%d',"+ finalDate.get(Calendar.YEAR)+","+finalDate.get(Calendar.MONTH)+", 1))"
                 :"")+
+                ", availableInStore = "+(AvailiableInStore ? 1 : 0)+
                 " where _id = "+_id);
+        //updateHeaderSend(AppSettings.ORDER_TYPE_ORDER, db);
         if (dbNotExist) db.close();
     }
     public void deleteFromDB(SQLiteDatabase db)
@@ -124,7 +144,9 @@ public class orderSku {
     }
     public void saveDb(Context context, int orderType )
     {
-        if (qtyMWH<=0 && qtyRWH<=0) return;
+        if (orderType != AppSettings.ORDER_TYPE_STOCK_TEMPLATE) {
+            if (qtyMWH <= 0 && qtyRWH <= 0) return;
+        }
 
         DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
@@ -143,21 +165,27 @@ public class orderSku {
             values.put("priceId", priceId);
             values.put("qty1", qtyMWH);
             values.put("qty2", qtyRWH);
+            values.put("availableInStore", AvailiableInStore ? 1 : 0);
             if (finalDateExists)
                 values.put("finalDate", wputils.getDateTime(finalDate));
             values.put("_send", 0);
             this._id = db.insert("orderDetail", null, values);
         }
-        if (orderType==AppSettings.ORDER_TYPE_ORDER)
-            db.execSQL("update orderHeader " +
-                        " set _send = 2 where _id = "+headerId);
-        else
-            db.execSQL("update orderHeader " +
-                    " set _send = 0 where _id = "+headerId);
-
+        updateHeaderSend(orderType, db);
         exist = true;
         db.close();
     }
+
+    private void updateHeaderSend(int orderType, SQLiteDatabase db) {
+        if (orderType==AppSettings.ORDER_TYPE_ORDER)
+            db.execSQL("update orderHeader " +
+                    " set _send = 2 where _id = "+headerId);
+        else if (orderType==AppSettings.ORDER_TYPE_STORECHECK)
+            db.execSQL("update orderHeader " +
+                    " set _send = 0 where _id = "+headerId);
+
+    }
+
 
     public void deleteDb(Context context)
     {
