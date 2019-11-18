@@ -189,9 +189,10 @@ public class FragmentStockTemplate extends Fragment implements IOrderTotal {
         DbOpenHelper dbOpenHelper = new DbOpenHelper(parentView.getContext());
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
         String sqlStatement=
-                "select s.SkuId, s.SkuName, coalesce(ccs.LastDate,'') as PreviousOrderDate,coalesce(ccs.Qty ,0) as PreviousOrderQty, COALESCE(od.availableInStore,1) availableInStore," +
+                "select s.SkuId, s.SkuName,coalesce(st.StockG, 0) StockG,coalesce(st.StockR, 0) StockR, coalesce(ccs.LastDate,'') as PreviousOrderDate,coalesce(ccs.Qty ,0) as PreviousOrderQty, COALESCE(od.availableInStore,1) availableInStore," +
                         " od._id as detailId, case when od.skuId is null then 0 else 1 end existPosition "+
                         "  from sku as s"+
+                        "  left join  stock st on s.skuId = st.skuId  " +
                         " inner join ClientCardSku ccs on ccs.outletId= '"+ ((IOrder) getActivity()).getOrderExtra().outletId+"'  and s.skuid = ccs.SkuId "+
                         " left join orderDetail od on od.skuId= s.skuId  and od.headerId =   "+
                         Integer.toString(((IOrder) getActivity()).getOrderExtra()._id)+
@@ -208,6 +209,8 @@ public class FragmentStockTemplate extends Fragment implements IOrderTotal {
             sku.skuId = cursor.getString(cursor.getColumnIndex("SkuId"));
             sku.orderUUID = headerId;
             sku.headerId = _id;
+            sku.stockG = cursor.getDouble(cursor.getColumnIndex("StockG"));
+            sku.stockR = cursor.getDouble(cursor.getColumnIndex("StockR"));
             sku.PreviousOrderQty =  cursor.getInt(cursor.getColumnIndex("PreviousOrderQty"));
             sku.PreviousOrderDate = cursor.getString(cursor.getColumnIndex("PreviousOrderDate"));
             sku.AvailiableInStore = cursor.getInt(cursor.getColumnIndex("availableInStore")) == 1;
@@ -229,14 +232,20 @@ public class FragmentStockTemplate extends Fragment implements IOrderTotal {
     }
 
     private void generateOrder() {
+        Boolean atLeastOneLineExist = false;
         for (orderSku sku : skuList) {
             Double  orderQTY= sku.PreviousOrderQty * 1.5;
-            sku.setQtyMWH(orderQTY.intValue());
-            sku.saveDb(getActivity(), AppSettings.ORDER_TYPE_ORDER);
+            if (sku.stockG >= orderQTY) {
+                sku.setQtyMWH(orderQTY.intValue());
+                sku.saveDb(getActivity(), AppSettings.ORDER_TYPE_ORDER);
+                atLeastOneLineExist = true;
+            }
         }
-        DbOpenHelper dbOpenHelper = new DbOpenHelper(parentView.getContext());
-        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
-        db.execSQL("update orderHeader set orderType = "+AppSettings.ORDER_TYPE_ORDER+" where orderUUID = ?", new String[] {((IOrder) getActivity()).getOrderExtra().orderUUID});
-        db.close();
+        if (atLeastOneLineExist) {
+            DbOpenHelper dbOpenHelper = new DbOpenHelper(parentView.getContext());
+            SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+            db.execSQL("update orderHeader set orderType = " + AppSettings.ORDER_TYPE_ORDER + " where orderUUID = ?", new String[]{((IOrder) getActivity()).getOrderExtra().orderUUID});
+            db.close();
+        }
     }
 }
