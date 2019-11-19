@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import Adapters.orderSkuAdapter;
 import Adapters.stockTemplateAdapter;
@@ -54,6 +55,12 @@ public class FragmentStockTemplate extends Fragment implements IOrderTotal {
     private String headerId;
     private OnFragmentInteractionListener mListener;
     private TextView tvMessage;
+
+    private Boolean orderHasBeenGenerated = false;
+
+    public Boolean getOrderHasBeenGenerated() {
+        return orderHasBeenGenerated;
+    }
 
     public FragmentStockTemplate() {
         // Required empty public constructor
@@ -123,12 +130,20 @@ public class FragmentStockTemplate extends Fragment implements IOrderTotal {
         btnAllList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                fillSku("");
+                try {
+                    fillSku("");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
             }
         });
         headerId = ((IOrder) getActivity()).getOrderExtra().orderUUID;
         tvMessage = (TextView)   parentView.findViewById(R.id.txtStockTemlateMessage);
-        fillSku("");
+        try {
+            fillSku("");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return parentView;
     }
 
@@ -170,7 +185,7 @@ public class FragmentStockTemplate extends Fragment implements IOrderTotal {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-    public void fillSku( String skuGroup) {
+    public void fillSku( String skuGroup) throws ParseException {
         String orderByClause = "s.SkuName";
         String whereClause = "where s.skuParentId = ?";
         String joinKind = "left";
@@ -201,22 +216,29 @@ public class FragmentStockTemplate extends Fragment implements IOrderTotal {
         Cursor cursor = db.rawQuery(sqlStatement, params);
         cursor.moveToFirst();
         int _id = ((IOrder) getActivity()).getOrderExtra()._id;
-        for (int i=0;i<cursor.getCount();i++) {
+        for (int i=0; i<cursor.getCount(); i++) {
             boolean exist = false;
-            if (cursor.getInt(cursor.getColumnIndex("existPosition"))==1) exist = true;
-
-            orderSku sku =  new orderSku(cursor.getString(cursor.getColumnIndex("SkuName")), exist);
-            sku.skuId = cursor.getString(cursor.getColumnIndex("SkuId"));
-            sku.orderUUID = headerId;
-            sku.headerId = _id;
-            sku.stockG = cursor.getDouble(cursor.getColumnIndex("StockG"));
-            sku.stockR = cursor.getDouble(cursor.getColumnIndex("StockR"));
-            sku.PreviousOrderQty =  cursor.getInt(cursor.getColumnIndex("PreviousOrderQty"));
-            sku.PreviousOrderDate = cursor.getString(cursor.getColumnIndex("PreviousOrderDate"));
-            sku.AvailiableInStore = cursor.getInt(cursor.getColumnIndex("availableInStore")) == 1;
-            sku.priceId = locOutlet.priceId.toString();
-            sku._id = cursor.getLong(cursor.getColumnIndex("detailId"));
-            skuList.add(sku);
+            String lastDate = cursor.getString(cursor.getColumnIndex("PreviousOrderDate"));
+            Calendar calendarLastDate = wputils.getDateFromString(lastDate);
+            Calendar currentDate = wputils.getCurrentDate();
+            //only last 3 month
+            if ( wputils.getTimeDifferenceInMonth(calendarLastDate, currentDate)<= 3 ) {
+                if (cursor.getInt(cursor.getColumnIndex("existPosition")) == 1) exist = true;
+                orderSku sku = new orderSku(cursor.getString(cursor.getColumnIndex("SkuName")), exist);
+                sku.skuId = cursor.getString(cursor.getColumnIndex("SkuId"));
+                sku.orderUUID = headerId;
+                sku.headerId = _id;
+                sku.stockG = cursor.getDouble(cursor.getColumnIndex("StockG"));
+                sku.stockR = cursor.getDouble(cursor.getColumnIndex("StockR"));
+                sku.PreviousOrderQty = cursor.getInt(cursor.getColumnIndex("PreviousOrderQty"));
+                sku.PreviousOrderDate = cursor.getString(cursor.getColumnIndex("PreviousOrderDate"));
+                sku.AvailiableInStore = cursor.getInt(cursor.getColumnIndex("availableInStore")) == 1;
+                sku.priceId = locOutlet.priceId.toString();
+                sku._id = cursor.getLong(cursor.getColumnIndex("detailId"));
+                if ( (sku.stockG + sku.stockR) > 0) {
+                    skuList.add(sku);
+                }
+            }
             cursor.moveToNext();
         }
 
@@ -232,9 +254,13 @@ public class FragmentStockTemplate extends Fragment implements IOrderTotal {
     }
 
     private void generateOrder() {
+        if (this.orderHasBeenGenerated) {
+            Toast.makeText(getActivity(), "Автозаказ уже сформирован",Toast.LENGTH_SHORT).show();
+            return;
+        }
         Boolean atLeastOneLineExist = false;
         for (orderSku sku : skuList) {
-            Double  orderQTY= sku.PreviousOrderQty * 1.5;
+            Double  orderQTY= sku.PreviousOrderQty * 1.0;
             if (sku.stockG >= orderQTY) {
                 sku.setQtyMWH(orderQTY.intValue());
                 sku.saveDb(getActivity(), AppSettings.ORDER_TYPE_ORDER);
@@ -247,5 +273,6 @@ public class FragmentStockTemplate extends Fragment implements IOrderTotal {
             db.execSQL("update orderHeader set orderType = " + AppSettings.ORDER_TYPE_ORDER + " where orderUUID = ?", new String[]{((IOrder) getActivity()).getOrderExtra().orderUUID});
             db.close();
         }
+        this.orderHasBeenGenerated = true;
     }
 }

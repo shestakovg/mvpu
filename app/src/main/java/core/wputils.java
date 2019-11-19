@@ -120,6 +120,18 @@ public final class wputils {
         return currentDate;
     }
 
+    public static Calendar getDateFromString(String dateInString) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+        Date date = formatter.parse(dateInString);
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        return  cal;
+    }
+
+    public static int getTimeDifferenceInMonth(Calendar startCalendar, Calendar endCalendar) {
+        return endCalendar.get(Calendar.MONTH) - startCalendar.get(Calendar.MONTH);
+    }
+
     public static Date LoadDate(Cursor cursor, int index) {
         if (cursor.isNull(index)) {
             return null;

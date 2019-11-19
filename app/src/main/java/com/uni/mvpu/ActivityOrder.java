@@ -206,6 +206,27 @@ public class ActivityOrder extends TouchActivity implements IOrder  {
                   Toast.makeText(this,"Дата доставки не указана!\nУкажите дату доставки!",Toast.LENGTH_SHORT).show();
               }
             }
+        } else if (fragmentStockTemplate!= null && fragmentStockTemplate.isInLayout()) {
+            if (!fragmentStockTemplate.getOrderHasBeenGenerated()) {
+                AlertDialog.Builder ad = new AlertDialog.Builder(context);
+                ad.setTitle("Автозаказ");
+                ad.setMessage("Автозаказ не сформирован\n"
+                            + "Закрыть форму автозаказа?");
+                ad.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int arg1) {
+                        finish();
+                    }
+                });
+                ad.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int arg1) {
+
+                    }
+                });
+                ad.show();
+            } else {
+                super.onBackPressed();
+            }
+
         }
         else
             super.onBackPressed();
