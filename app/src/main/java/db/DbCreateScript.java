@@ -72,7 +72,7 @@ public class DbCreateScript {
     private static String CREATE_OUTLETINFO ="create table OutletInfo(OutletId text, Category text,Manager1 text,Manager2 text,Phone1 text,Phone2 text,DeliveryDay text,ManagerTime text,ReciveTime text,ContactPerson text)";
     private static String CREATE_OUTLETINFO_IDX1 = "CREATE INDEX idx1_OutletInfo ON routesDay (OutletId)";
 
-    private static String CREATE_CLIENT_CARD_SKU ="create table ClientCardSku(OutletId text, SkuId text, LastDate text, Qty integer)";
+    private static String CREATE_CLIENT_CARD_SKU ="create table ClientCardSku(OutletId text, SkuId text, Warehouse integer, LastDate text, Qty integer)";
     private static String CREATE_CLIENT_CARD_SKU_IDX1 = "CREATE INDEX idx1_CLIENT_CARD_SKU ON ClientCardSku(OutletId)";
 
     private static  String CREATE_SALESFACT = "create table salesfact(GroupId text, FactAmount real, FactOutletCount integer)";

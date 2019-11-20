@@ -61,11 +61,12 @@ public class syncSaveData {
                 ContentValues values = new ContentValues();
                 values.put("OutletId", jsonObject.getString("OutletId"));
                 values.put("SkuId", jsonObject.getString("SkuId"));
+                values.put("Warehouse", jsonObject.getInt("Warehouse"));
                 values.put("LastDate", jsonObject.getString("LastDate"));
                 values.put("Qty", jsonObject.getInt("Qty"));
                 db.insert("ClientCardSku", null, values);
             } catch (Exception e) {
-
+                Toast.makeText(context, "ClientCardSku "+e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         }
         db.close();

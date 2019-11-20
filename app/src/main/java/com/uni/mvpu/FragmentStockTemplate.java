@@ -204,8 +204,8 @@ public class FragmentStockTemplate extends Fragment implements IOrderTotal {
         DbOpenHelper dbOpenHelper = new DbOpenHelper(parentView.getContext());
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
         String sqlStatement=
-                "select s.SkuId, s.SkuName,coalesce(st.StockG, 0) StockG,coalesce(st.StockR, 0) StockR, coalesce(ccs.LastDate,'') as PreviousOrderDate,coalesce(ccs.Qty ,0) as PreviousOrderQty, COALESCE(od.availableInStore,1) availableInStore," +
-                        " od._id as detailId, case when od.skuId is null then 0 else 1 end existPosition "+
+                "select s.SkuId, s.SkuName,coalesce(st.StockG, 0) StockG,coalesce(st.StockR, 0) StockR, coalesce(ccs.LastDate,'') as PreviousOrderDate,coalesce(ccs.Qty ,0) as PreviousOrderQty, COALESCE(od.availableInStore,1) availableInStore, " +
+                        " ccs.Warehouse, od._id as detailId, case when od.skuId is null then 0 else 1 end existPosition "+
                         "  from sku as s"+
                         "  left join  stock st on s.skuId = st.skuId  " +
                         " inner join ClientCardSku ccs on ccs.outletId= '"+ ((IOrder) getActivity()).getOrderExtra().outletId+"'  and s.skuid = ccs.SkuId "+
@@ -233,6 +233,7 @@ public class FragmentStockTemplate extends Fragment implements IOrderTotal {
                 sku.PreviousOrderQty = cursor.getInt(cursor.getColumnIndex("PreviousOrderQty"));
                 sku.PreviousOrderDate = cursor.getString(cursor.getColumnIndex("PreviousOrderDate"));
                 sku.AvailiableInStore = cursor.getInt(cursor.getColumnIndex("availableInStore")) == 1;
+                sku.PreviousWarehouse = cursor.getInt(cursor.getColumnIndex("Warehouse"));
                 sku.priceId = locOutlet.priceId.toString();
                 sku._id = cursor.getLong(cursor.getColumnIndex("detailId"));
                 if ( (sku.stockG + sku.stockR) > 0) {
@@ -261,8 +262,12 @@ public class FragmentStockTemplate extends Fragment implements IOrderTotal {
         Boolean atLeastOneLineExist = false;
         for (orderSku sku : skuList) {
             Double  orderQTY= sku.PreviousOrderQty * 1.0;
-            if (sku.stockG >= orderQTY) {
-                sku.setQtyMWH(orderQTY.intValue());
+            if ((sku.stockG + sku.stockR) >= orderQTY) {
+                if (sku.PreviousWarehouse != 2) {
+                    sku.setQtyMWH(orderQTY.intValue());
+                } else {
+                    sku.setQtyRWH(orderQTY.intValue());
+                }
                 sku.saveDb(getActivity(), AppSettings.ORDER_TYPE_ORDER);
                 atLeastOneLineExist = true;
             }

@@ -38,6 +38,7 @@ public class orderSku {
     public String GroupName = "";
     public int PreviousOrderQty = 0;
     public String PreviousOrderDate = "";
+    public int PreviousWarehouse = 0;
     public double OldPrice = 0;
     public double NewPrice = 0;
     public Boolean AvailiableInStore = true;
