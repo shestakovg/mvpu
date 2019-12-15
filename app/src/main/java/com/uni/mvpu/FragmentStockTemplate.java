@@ -262,7 +262,7 @@ public class FragmentStockTemplate extends Fragment implements IOrderTotal {
         Boolean atLeastOneLineExist = false;
         for (orderSku sku : skuList) {
             Double  orderQTY= sku.PreviousOrderQty * 1.0;
-            if ((sku.stockG + sku.stockR) >= orderQTY) {
+            if (!sku.AvailiableInStore && (sku.stockG + sku.stockR) >= orderQTY) {
                 if (sku.PreviousWarehouse != 2) {
                     sku.setQtyMWH(orderQTY.intValue());
                 } else {

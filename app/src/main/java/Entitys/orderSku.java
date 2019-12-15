@@ -151,7 +151,7 @@ public class orderSku {
 
         DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
-        if (exist && !finalDateExists)
+        if (exist && (!finalDateExists || orderType == AppSettings.ORDER_TYPE_STOCK_TEMPLATE))
         {
             updatePosition(context, db);
         }

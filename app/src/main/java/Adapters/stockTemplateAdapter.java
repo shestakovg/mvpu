@@ -122,8 +122,8 @@ public class stockTemplateAdapter  extends BaseAdapter {
 //        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
 //        db.execSQL("delete from orderDetail where skuId = ? and orderUUID = ?", new String[] {sku.skuId, orderExtra.orderUUID });
 //        db.close();
-        Double  orderQTY= sku.PreviousOrderQty * 1.5;
-        sku.setQtyMWH(orderQTY.intValue());
+//        Double  orderQTY= sku.PreviousOrderQty * 1.0;
+//        sku.setQtyMWH(orderQTY.intValue());
         sku.saveDb(context, AppSettings.ORDER_TYPE_STOCK_TEMPLATE);
     }
 
