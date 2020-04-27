@@ -21,43 +21,44 @@
             android:showDividers="end"
             android:baselineAligned="true"
             android:background="@android:color/black">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="   Строк:   "
-                android:layout_gravity="center"
-                android:gravity="center_vertical|center_horizontal"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
+                android:text="Строк:"
                 android:textColor="@android:color/background_light" />
+
             <TextView
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
                 android:id="@+id/tvOrderRowCount"
-                android:text="Строк: "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="4dp"
+                android:text="Строк:"
+                android:textColor="@android:color/background_light"
                 android:textSize="16dp"
-                android:textStyle="bold"
-                android:layout_gravity="center"
-                android:gravity="center_vertical|center_horizontal"
-                android:textColor="@android:color/background_light"/>
+                android:textStyle="bold" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Сумма:   "
-                android:layout_gravity="center"
-                android:gravity="center_vertical|center_horizontal"
-                android:textColor="@android:color/background_light"/>
+                android:layout_marginRight="4dp"
+                android:text="Сумма:"
+                android:textColor="@android:color/background_light" />
+
             <TextView
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
                 android:id="@+id/tvOrderSum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="4dp"
                 android:text="Строк: "
+                android:textColor="@android:color/background_light"
                 android:textSize="16dp"
-                android:textStyle="bold"
-                android:layout_gravity="center"
-                android:gravity="center_vertical|center_horizontal"
-                android:textColor="@android:color/background_light"/>
+                android:textStyle="bold" />
             <Button
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:text="Заказ"
                 android:textSize="16dp"
                 android:id="@+id/btnOrderDisplayAllRows"/>
@@ -69,20 +70,22 @@
                 android:id="@+id/btnOrderParamsDialog"/>
             <Button
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:text="Карт"
                 android:textSize="16dp"
                 android:id="@+id/btnOrderClintCardSku"/>
+
             <TextView
+                android:id="@+id/tvDeliveyDateSku"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/tvDeliveyDateSku"
-                android:textSize="16dp"
-                android:textStyle="bold"
                 android:layout_gravity="center"
+                android:layout_marginLeft="4dp"
                 android:gravity="center_vertical|center_horizontal"
+                android:text="Дост:"
                 android:textColor="@android:color/background_light"
-                android:text="Дост: 22.06.2015"/>
+                android:textSize="12dp"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout

@@ -168,9 +168,10 @@ public class ActivityRoute extends TouchActivity {
             map.put("name", cursor.getString(cursor.getColumnIndex("outletName")));
             map.put("adress", cursor.getString(cursor.getColumnIndex("address")) + "  Δενό: " + cursor.getString(cursor.getColumnIndex("VisitDay")));
             items.add(map);
-            OutletObject ob = new OutletObject();
+            UUID outletUuid = UUID.fromString(cursor.getString(cursor.getColumnIndex("outletId")));
+            OutletObject ob = OutletObject.getInstance(outletUuid, this);
             ob.customerId = UUID.fromString(cursor.getString(cursor.getColumnIndex("CustomerId")));
-            ob.outletId = UUID.fromString(cursor.getString(cursor.getColumnIndex("outletId")));
+            ob.outletId = outletUuid;
             ob.partnerId = UUID.fromString(cursor.getString(cursor.getColumnIndex("partnerId")));
             ob.customerName = cursor.getString(cursor.getColumnIndex("CustomerName"));
             ob.outletName = cursor.getString(cursor.getColumnIndex("outletName"));

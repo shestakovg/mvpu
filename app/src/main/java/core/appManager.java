@@ -136,6 +136,7 @@ public class appManager {
         //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("outletid", outletObject.outletId.toString());
         intent.putExtra("orderType", orderType);
+        intent.putExtra("outletCategoty", outletObject.Category);
         context.startActivity(intent);
     }
 
@@ -269,7 +270,7 @@ public class appManager {
             values.put("priceId", outletObject.priceId.toString());
             values.put("qty1", 0);
             values.put("qty2", 0);
-            values.put("availableInStore", 1);
+            values.put("availableInStore", 0);
             values.put("_send", 0);
             db.insert("orderDetail", null, values);
             cursor.moveToNext();

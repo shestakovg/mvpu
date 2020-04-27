@@ -21,6 +21,7 @@ public class orderSku {
     //************
     public String skuId;
     public String skuName;
+    public String skuDescription;
     public int headerId;
     public String orderUUID;
     public long _id;
@@ -41,7 +42,7 @@ public class orderSku {
     public int PreviousWarehouse = 0;
     public double OldPrice = 0;
     public double NewPrice = 0;
-    public Boolean AvailiableInStore = true;
+    public Boolean AvailiableInStore = false;
     public double getOldPrice() {
         return OldPrice;
     }

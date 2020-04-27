@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -42,10 +43,13 @@ import interfaces.IUpdateOrderList;
 public class ActivityOrderList extends TouchActivity implements IUpdateOrderList   {
     private int maxOrderNumber = 0;
     private String outletid;
+    private String outletCategoty;
     private TextView tvOrderDate;
     private Button btnAddOrder;
     private Button btnAddStocktemplate;
     private ListView  lvMain;
+    private ArrayList<String> onlyAutoOrderAllowed = new ArrayList<String>(Arrays.asList("Минимаркет", "Мнинимаркет (сеть до 10 ТТ)", "Супермаркет (более 10 ТТ)"));
+
     int DIALOG_DATE = 1;
     private int orderType = AppSettings.ORDER_TYPE_ORDER;
 //    int myYear = new Date().getYear();
@@ -64,6 +68,7 @@ public class ActivityOrderList extends TouchActivity implements IUpdateOrderList
         setContentView(R.layout.activity_order_list);
 
         outletid = getIntent().getStringExtra("outletid");
+        outletCategoty = getIntent().getStringExtra("outletCategoty");
         orderType = getIntent().getIntExtra("orderType", AppSettings.ORDER_TYPE_ORDER);
         if (outletid.isEmpty()) {
             orderMode = OrderListMode.orderByDay;
@@ -96,6 +101,11 @@ public class ActivityOrderList extends TouchActivity implements IUpdateOrderList
         {
             btnAddOrder.setVisibility(View.INVISIBLE);
         }
+
+        if (onlyAutoOrderAllowed.contains(outletCategoty)) {
+            btnAddOrder.setVisibility(View.INVISIBLE);
+        }
+
         btnAddOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

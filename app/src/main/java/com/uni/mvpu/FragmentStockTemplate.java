@@ -204,7 +204,7 @@ public class FragmentStockTemplate extends Fragment implements IOrderTotal {
         DbOpenHelper dbOpenHelper = new DbOpenHelper(parentView.getContext());
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
         String sqlStatement=
-                "select s.SkuId, s.SkuName,coalesce(st.StockG, 0) StockG,coalesce(st.StockR, 0) StockR, coalesce(ccs.LastDate,'') as PreviousOrderDate,coalesce(ccs.Qty ,0) as PreviousOrderQty, COALESCE(od.availableInStore,1) availableInStore, " +
+                "select s.SkuId, s.SkuName,coalesce(st.StockG, 0) StockG,coalesce(st.StockR, 0) StockR, coalesce(ccs.LastDate,'') as PreviousOrderDate,coalesce(ccs.Qty ,0) as PreviousOrderQty, COALESCE(od.availableInStore,0) availableInStore, " +
                         " ccs.Warehouse, od._id as detailId, case when od.skuId is null then 0 else 1 end existPosition "+
                         "  from sku as s"+
                         "  left join  stock st on s.skuId = st.skuId  " +

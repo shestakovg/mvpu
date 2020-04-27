@@ -120,7 +120,7 @@ public class orderSkuAdapter extends BaseAdapter  {
         ((TextView) view.findViewById(R.id.textPrevQty)).setText(Integer.toString(cursku.PreviousOrderQty));
 //        ((TextView) view.findViewById(R.id.textPrevQty)).setText("100");
         ((TextView) view.findViewById(R.id.textPrevQty)).setTextColor(Color.BLACK);
-        ((TextView) view.findViewById(R.id.textViewOrderSkuGroupName)).setText(cursku.GroupName);
+//        ((TextView) view.findViewById(R.id.textViewOrderSkuGroupName)).setText(cursku.GroupName);
         if (cursku.PreviousOrderDate.isEmpty())
             ((TextView) view.findViewById(R.id.textPrevOrderCaption)).setTextColor(Color.parseColor("#bdbdbd"));
         Button btnEdit = (Button) view.findViewById(R.id.btnEditSkuRow);
@@ -277,6 +277,7 @@ public class orderSkuAdapter extends BaseAdapter  {
         final EditText dlgEditMWH = (EditText) dlgEditQty.findViewById(R.id.editDialogMWH);
         final EditText dlgEditRWH = (EditText) dlgEditQty.findViewById(R.id.editDialogRWH);
         final TextView txtRWHname = (TextView) dlgEditQty.findViewById(R.id.textRWHname);
+        final TextView skuDescription = (TextView) dlgEditQty.findViewById(R.id.skuDescription);
 
         checkRowSumEx chrs =  checkRowSumEx.GetInstance(sku.skuId, context); // new checkRowSum(sku.price);
         ((TextView) dlgEditQty.findViewById(R.id.editQtyTextMessage)).setText(chrs.getSkuPriceTitle());
@@ -286,6 +287,7 @@ public class orderSkuAdapter extends BaseAdapter  {
 
         dlgEditMWH.setText(sku.getQtyMWHForEditText());
         dlgEditRWH.setText(sku.getQtyRWHForEditText());
+        skuDescription.setText(sku.skuDescription);
         if (sku.isOnlyMWH()) {
             dlgEditRWH.setEnabled(false);
             txtRWHname.setPaintFlags(txtRWHname.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);

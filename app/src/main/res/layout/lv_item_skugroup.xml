@@ -3,14 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <TextView
+        android:id="@+id/tvSkuGroupName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tvSkuGroupName"
         android:text="SKU GROUP"
-        android:textStyle="normal"
         android:textColor="@color/abc_input_method_navigation_guard"
-        android:textSize="20sp" />
+        android:textSize="16sp"
+        android:textStyle="normal" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

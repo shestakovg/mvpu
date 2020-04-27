@@ -50,6 +50,6 @@
     <string name="qty_will_clear">Количество будет удалено</string>
     <string name="empty_stock">нет на остатках складов</string>
     <string name="title_activity_task">ActivityTask</string>
-    <string name="title_available_in_store">Есть в торг. точке</string>
-    <string name="title_not_available_in_store">Нет в торг.точке</string>
+    <string name="title_available_in_store">Есть в точке</string>
+    <string name="title_not_available_in_store">Нет в точке</string>
 </resources>

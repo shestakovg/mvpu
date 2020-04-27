@@ -117,7 +117,7 @@ public class FragmentOrderSku extends Fragment implements IOrderTotal{
                 "  COALESCE(od.qty2, 0) as QtyRWH, case when od.skuId is null then 0 else 1 end existPosition, od._id as detailId , s.QtyPack," +
                 " coalesce(od.PriceId,'"+locOutlet.priceId.toString()+"') PriceId,  "+" pn.PriceName, s.CheckCountInBox, case when sf.skuId is null then 0 else 1 end OnlyFact, COALESCE(ods.qty1,0) outletStock, s.onlyMWH, grp.GroupName,  " +
                 " coalesce(ccs.LastDate,'') as PreviousOrderDate,coalesce(ccs.Qty ,0) as PreviousOrderQty, s.Color, s.OutStockColor, s.IsHoreca, coalesce(pc.OldPrice, 0) as OldPrice, coalesce(pc.NewPrice, 0) as NewPrice, " +
-                " od.availableInStore" +
+                " od.availableInStore, s.Description as skuDescription" +
                 " from sku as s " +
                 "            left join  stock st on s.skuId = st.skuId  " +
                 "            left join price p on s.skuId = p.skuId and p.PriceId = '" +locOutlet.priceId.toString()+"' "+
@@ -177,6 +177,7 @@ public class FragmentOrderSku extends Fragment implements IOrderTotal{
             sku.setOldPrice(cursor.getDouble(cursor.getColumnIndex("OldPrice")));
             sku.setNewPrice(cursor.getDouble(cursor.getColumnIndex("NewPrice")));
             sku.AvailiableInStore =  (cursor.getInt(cursor.getColumnIndex("availableInStore")) == 1 ? true : false);
+            sku.skuDescription = cursor.getString(cursor.getColumnIndex("skuDescription"));
             skuList.add(sku);
             cursor.moveToNext();
         }
