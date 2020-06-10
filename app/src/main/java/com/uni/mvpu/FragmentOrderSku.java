@@ -104,7 +104,8 @@ public class FragmentOrderSku extends Fragment implements IOrderTotal{
         {
             orderByClause = " grp.GroupName, s.SkuName ";
             clientCardSkuJoin = " inner ";
-            whereClause =  " where s.skuParentId <> ? ";
+            Boolean _fromAutoOrder = ((IOrder) getActivity()).getOrderExtra().fromAutoOrder;
+            whereClause =  " where s.skuParentId <> ? " + ( _fromAutoOrder ? " and  od.availableInStore=0 " : "");
         }
         //and ccs.SkuId = od.skuId
         clientCardSku +=clientCardSkuJoin+"  join ClientCardSku ccs on ccs.outletId= '"+ ((IOrder) getActivity()).getOrderExtra().outletId+"'  and s.skuid = ccs.SkuId ";

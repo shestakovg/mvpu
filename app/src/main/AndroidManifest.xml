@@ -48,7 +48,8 @@
             android:label="@string/title_activity_activityget_version" />
         <activity
             android:name=".ActivityDebt"
-            android:label="@string/title_activity_activity_debt" />
+            android:label="@string/title_activity_activity_debt"
+            android:screenOrientation="landscape"/>
         <activity
             android:name=".NewCustomersList"
             android:label="@string/title_activity_bew_customers" />

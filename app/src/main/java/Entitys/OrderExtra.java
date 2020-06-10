@@ -34,7 +34,7 @@ public class OrderExtra extends Order {
         DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select  h.orderUUID, h.outletId, h.orderNumber, h.notes, h._1CDocNumber1, h._1CDocNumber2, " +
-                " h.responseText, h.payType , h.autoLoad ,(strftime('%s', h.deliveryDate) * 1000)  deliveryDate, (strftime('%s', h.orderDate) * 1000)  orderDate, orderType,deliveryDateInitialized   " +
+                " h.responseText, h.payType , h.autoLoad ,(strftime('%s', h.deliveryDate) * 1000)  deliveryDate, (strftime('%s', h.orderDate) * 1000)  orderDate, orderType,deliveryDateInitialized, h.fromAutoOrder   " +
             " from orderHeader h where h._id = ?", new String[]{Integer.toString(this._id)});
         cursor.moveToFirst();
         for (int i=0; i<cursor.getCount(); i++)
@@ -52,6 +52,7 @@ public class OrderExtra extends Order {
             this.orderDateCalendar = wputils.getCalendarFromDate(new Date(cursor.getLong((cursor.getColumnIndex("orderDate")))));
             this.orderType = cursor.getInt(cursor.getColumnIndex("orderType"));
             this.deliveryDateInitialized = (cursor.getInt(cursor.getColumnIndex("deliveryDateInitialized"))== 1);
+            this.fromAutoOrder = (cursor.getInt(cursor.getColumnIndex("fromAutoOrder")) > 0 ? true : false);
             cursor.moveToNext();
         }
         db.close();

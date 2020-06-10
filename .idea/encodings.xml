@@ -10,6 +10,7 @@
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/uni/mvpu/FragmentStockTemplate.java" charset="windows-1251" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/uni/mvpu/MainActivity.java" charset="windows-1251" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/com/uni/mvpu/MainActivityFragment.java" charset="windows-1251" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/core/appManager.java" charset="windows-1251" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/core/wputils.java" charset="windows-1251" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/sync/downloadNewVwersion.java" charset="windows-1251" />
     <file url="file://$PROJECT_DIR$/app/src/main/java/sync/syncSaveData.java" charset="windows-1251" />

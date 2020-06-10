@@ -110,7 +110,21 @@ public class orderSkuAdapter extends BaseAdapter  {
         }
 
         TextView priceView  =  ((TextView) view.findViewById(R.id.textViewPrice));
+        TextView priceViewDescription  =  ((TextView) view.findViewById(R.id.textViewPriceDescription));
         priceView.setText(String.format("%.2f",   cursku.price));
+        priceView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DisplayAllPrices(position);
+            }
+        });
+        priceViewDescription.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DisplayAllPrices(position);
+            }
+        });
+
         ((TextView) view.findViewById(R.id.textViewSum)).setText(String.format("%.2f",   cursku.rowSum));
 
         ((TextView) view.findViewById(R.id.textViewMWH)).setText(String.format("%d", (long) cursku.stockG));
@@ -264,20 +278,29 @@ public class orderSkuAdapter extends BaseAdapter  {
             Toast.makeText(context, sku.skuName+" "+ context.getText(R.string.empty_stock), Toast.LENGTH_SHORT ).show();
             return;
         }
-        //Toast.makeText(context, sku.skuName, Toast.LENGTH_SHORT ).show();
+
+        final boolean hasSkuDEscription = sku.skuDescription.equals("") ? false :  true;
         final Dialog dlgEditQty =  new Dialog(context);
-        dlgEditQty.setTitle(sku.skuName);
-        dlgEditQty.setContentView(R.layout.edit_orderqty);
-        dlgEditQty.setCancelable(true);
-        //((TextView) dlgEditQty.findViewById(R.id.tvEtitQtyDescription)).setText(sku.skuName);
-        String stockStr =context.getText(R.string.StringStock)+": "+context.getText(R.string.StringMainWH) +"  "+String.format("%d", (long)  sku.stockG)+"    "+context.getText(R.string.StringRWH)+String.format("%d", (long)  sku.stockR)
-                + "     "+ context.getText(R.string.StringInBox)+" "+String.format("%d", (int)  sku.getCountInBox());
-        ((TextView) dlgEditQty.findViewById(R.id.tvEtitQtyStock)).setText(stockStr);
+        dlgEditQty.setContentView(R.layout.edit_orderqty_descr);
 
         final EditText dlgEditMWH = (EditText) dlgEditQty.findViewById(R.id.editDialogMWH);
         final EditText dlgEditRWH = (EditText) dlgEditQty.findViewById(R.id.editDialogRWH);
         final TextView txtRWHname = (TextView) dlgEditQty.findViewById(R.id.textRWHname);
         final TextView skuDescription = (TextView) dlgEditQty.findViewById(R.id.skuDescription);
+
+        dlgEditQty.setTitle(sku.skuName);
+
+        dlgEditQty.setCancelable(true);
+
+        final int windowWidth = (int)(context.getResources().getDisplayMetrics().widthPixels );
+       // int height = (int)(context.getResources().getDisplayMetrics().heightPixels*0.50);
+
+        //((TextView) dlgEditQty.findViewById(R.id.tvEtitQtyDescription)).setText(sku.skuName);
+        String stockStr =context.getText(R.string.StringStock)+": "+context.getText(R.string.StringMainWH) +"  "+String.format("%d", (long)  sku.stockG)+"    "+context.getText(R.string.StringRWH)+String.format("%d", (long)  sku.stockR)
+                + "     "+ context.getText(R.string.StringInBox)+" "+String.format("%d", (int)  sku.getCountInBox());
+        ((TextView) dlgEditQty.findViewById(R.id.tvEtitQtyStock)).setText(stockStr);
+
+
 
         checkRowSumEx chrs =  checkRowSumEx.GetInstance(sku.skuId, context); // new checkRowSum(sku.price);
         ((TextView) dlgEditQty.findViewById(R.id.editQtyTextMessage)).setText(chrs.getSkuPriceTitle());
@@ -288,6 +311,11 @@ public class orderSkuAdapter extends BaseAdapter  {
         dlgEditMWH.setText(sku.getQtyMWHForEditText());
         dlgEditRWH.setText(sku.getQtyRWHForEditText());
         skuDescription.setText(sku.skuDescription);
+        skuDescription.setKeyListener(null);
+        if (!hasSkuDEscription) {
+            skuDescription.setVisibility(View.INVISIBLE);
+        }
+
         if (sku.isOnlyMWH()) {
             dlgEditRWH.setEnabled(false);
             txtRWHname.setPaintFlags(txtRWHname.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
@@ -369,6 +397,22 @@ public class orderSkuAdapter extends BaseAdapter  {
             }
         });
 
+        dlgEditQty.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface d) {
+//                View view = dialog.findViewById(R.id.dialog_main_layout);
+//                int width = view.getWidth();
+//                int height = view.getHeight();
+                int height = dlgEditQty.getWindow().getDecorView().getHeight();
+                int width = dlgEditQty.getWindow().getDecorView().getWidth();
+                int dlgWidth = hasSkuDEscription ? windowWidth : width;
+                dlgEditQty.getWindow().setLayout(dlgWidth, height);
+
+                if (hasSkuDEscription) {
+                    skuDescription.setWidth((int) (dlgWidth * 0.35));
+                }
+            }
+        });
         dlgEditQty.show();
     }
 
@@ -398,6 +442,46 @@ public class orderSkuAdapter extends BaseAdapter  {
 
         AlertDialog alert11 = builder1.create();
         alert11.show();
+    }
+
+    private void DisplayAllPrices(int position)
+    {
+        final orderSku sku = getSku(position);
+        String messageText = "";
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select priceTypes.PriceName, coalesce(p.pric,0)  from price p " +
+                " inner join " +
+                "(select distinct PriceId, PriceName from contracts " +
+                " union" +
+                " select 'b07c23b6-ed8d-11e4-9bea-3640b58dd6a2', '–€ÕŒ  Œœ“Œ¬€…'" +
+                " union" +
+                " select 'e3c64316-daa6-11e4-826d-240a64c9314e', ' ÛÔÌ˚È ÓÔÚ ‘¿ “') priceTypes" +
+                " on priceTypes.PriceId = p.priceId" +
+                " where  p.skuId = ?", new String[] {sku.skuId});
+        cursor.moveToFirst();
+
+        for (int i = 0; i < cursor.getCount(); i++)
+        {
+//            result.add(new priceType(cursor.getString(0), cursor.getString(1)));
+            messageText += cursor.getString(0)+" - "+ cursor.getDouble(1)+"\n";
+            cursor.moveToNext();
+        }
+        db.close();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("÷ÂÌ˚")
+                .setMessage(messageText)
+                .setIcon(R.drawable.hrn)
+                .setCancelable(false)
+                .setNegativeButton("Œ ",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     private void showPriceChanges(int position) {

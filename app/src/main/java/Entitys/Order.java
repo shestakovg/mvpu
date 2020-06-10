@@ -37,6 +37,7 @@ public class Order implements Parcelable {
     public Boolean sended = false;
     public Boolean underSumLimit = true;
     public Boolean deliveryDateInitialized = false;
+    public Boolean fromAutoOrder = false;
 
     public int orderType = AppSettings.ORDER_TYPE_ORDER;
     public Order(int _id, int orderNumber, String orderUUID, Date orderDate, double orderSum) {

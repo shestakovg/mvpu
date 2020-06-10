@@ -275,7 +275,7 @@ public class FragmentStockTemplate extends Fragment implements IOrderTotal {
         if (atLeastOneLineExist) {
             DbOpenHelper dbOpenHelper = new DbOpenHelper(parentView.getContext());
             SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
-            db.execSQL("update orderHeader set orderType = " + AppSettings.ORDER_TYPE_ORDER + " where orderUUID = ?", new String[]{((IOrder) getActivity()).getOrderExtra().orderUUID});
+            db.execSQL("update orderHeader set orderType = " + AppSettings.ORDER_TYPE_ORDER + ", fromAutoOrder = 1 where orderUUID = ?", new String[]{((IOrder) getActivity()).getOrderExtra().orderUUID});
             db.close();
         }
         this.orderHasBeenGenerated = true;

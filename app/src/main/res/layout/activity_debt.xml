@@ -96,6 +96,12 @@
                     android:text="Нет оплаты"
                     android:id="@+id/btnEmptyPay"
                     android:onClick="onClickEmptyPay"/>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Прошу пропустить"
+                    android:id="@+id/btnPayRequest"
+                    android:onClick="onClickPayRequest"/>
             </LinearLayout>
 
         </TableRow>

@@ -22,6 +22,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
                     <TextView
                         android:id="@+id/textViewOrderSkuName"
                         android:layout_width="wrap_content"
@@ -32,7 +33,7 @@
                         android:text="Current sku"
                         android:textColor="#ff000000"
                         android:textIsSelectable="false"
-                        android:textSize="14dp"
+                        android:textSize="20dp"
                         android:textStyle="bold"
                         android:typeface="sans" />
                     <Spinner
@@ -41,6 +42,7 @@
                         android:layout_height="wrap_content"
                         android:foreground="@android:color/black"
                         android:spinnerMode="dialog"
+                        android:textSize="20dp"
                         android:text="Price type" />
 
                 </LinearLayout>
@@ -54,6 +56,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/textViewPriceDescription"
             android:text="Цена:" />
 
         <TextView

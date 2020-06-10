@@ -1,5 +1,9 @@
 package com.uni.mvpu;
 
+import android.app.AlertDialog;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.ActionBarActivity;
@@ -12,12 +16,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import Adapters.debtListAdapter;
 import Adapters.orderListAdapter;
 import Dialogs.DlgInputPay;
 import Entitys.DebtData;
 import core.AppSettings;
+import core.LocationDatabase;
 import core.ResultObject;
 import core.TouchActivity;
 import core.appManager;
@@ -104,7 +111,11 @@ public class ActivityDebt extends TouchActivity implements IInputCustomerPay {
             debts.add(debtData);
             cursor.moveToNext();
         }
+        Cursor cursorPayRequest = db.rawQuery("select count(*) from pay_requests where requestDate = ? and customerid = ?", new String[] { wputils.getDateTime(wputils.getCurrentDate()),customerid});
+        cursorPayRequest.moveToFirst();
+        Boolean payRequestExist =  cursorPayRequest.getInt(0) > 0;
         db.close();
+
         debtAdapter = new debtListAdapter(this, debts);
         lvDebt.setAdapter(debtAdapter);
 
@@ -116,6 +127,7 @@ public class ActivityDebt extends TouchActivity implements IInputCustomerPay {
         if ( DebtData.getClaimedSum(debts) > 0 ) PaymentDescription = "Заявлена оплата";
 
         if ( Math.round(DebtData.getClaimedSum(debts) - AppSettings.PARAM_EMPTY_PAYMENT ) == 0 &&  DebtData.getDebtSum(debts) > 0) PaymentDescription = "НЕТ ОПЛАТЫ";
+        if (payRequestExist) PaymentDescription+=" Cоздан запрос на отгрузку";
         ((TextView) findViewById(R.id.tvPaymentDescription)).setText(PaymentDescription);
 
     }
@@ -191,5 +203,36 @@ public class ActivityDebt extends TouchActivity implements IInputCustomerPay {
             debtAdapter.applyPay(AppSettings.PARAM_EMPTY_PAYMENT, this.customerid);
             fillDebtList();
         }
+    }
+
+    public void onClickPayRequest(View v) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final Context context = this;
+        builder.setTitle("Просьба пропустить заказа")
+                .setMessage("Создать запрос на заказ?")
+                .setIcon(R.drawable.placeholder)
+                .setCancelable(false)
+                .setPositiveButton("ОК",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                savePayRequest();
+                                Toast.makeText(context, "Создание заказа разрешено", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                .setNegativeButton("Отмена", new DialogInterface.OnClickListener() {public void onClick(DialogInterface dialog, int id) {}});
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
+    private void savePayRequest() {
+        Calendar currentDate = Calendar.getInstance();
+        currentDate.setTime(new Date());
+        SQLiteDatabase db = (new DbOpenHelper(this)).getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("requestDate", wputils.getDateTime(currentDate));
+        values.put("customerid", customerid);
+        values.put("_send",0);
+        db.insert("pay_requests", null, values);
+        db.close();
     }
 }

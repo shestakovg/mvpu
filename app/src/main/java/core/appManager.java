@@ -178,7 +178,11 @@ public class appManager {
     {
         DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select distinct PriceId, PriceName from contracts", null);
+        Cursor cursor = db.rawQuery("select distinct PriceId, PriceName from contracts " +
+                " union" +
+                " select 'b07c23b6-ed8d-11e4-9bea-3640b58dd6a2', '–€ÕŒ  Œœ“Œ¬€…'" +
+                " union" +
+                " select 'e3c64316-daa6-11e4-826d-240a64c9314e', ' ÛÔÌ˚È ÓÔÚ ‘¿ “'", null);
         cursor.moveToFirst();
         ArrayList<priceType> result = new ArrayList<>();
         for (int i = 0; i < cursor.getCount(); i++)
@@ -290,14 +294,16 @@ public class appManager {
     {
         double result=0;
         SQLiteDatabase db = new DbOpenHelper(context).getReadableDatabase();
-        Cursor cursor = db.rawQuery("select sum(d.overdueDebt - coalesce(p.paySum,0)) overSum from debts d " +
+        Cursor cursor = db.rawQuery("select sum(d.overdueDebt - coalesce(p.paySum,0)) overSum, count(pr.customerid) requests from debts d " +
                 "left join pays p on p.transactionId = d.transactionId and p.payDate = ?" +
+                "left join pay_requests pr on  d.customerid = pr.customerid and pr.requestDate = ?" +
                 "where d.customerid= ?  and  d.overdueDebt > 0",
-                new String[] { wputils.getDateTime(date), customerId});
+                new String[] { wputils.getDateTime(date),  wputils.getDateTime(date), customerId});
         if (cursor.moveToFirst()) {
             result = cursor.getDouble(0);
         }
         if (result < 0 ) result = 0;
+        if (cursor.getInt(1) > 0 ) result = 0;
         db.close();
         return result;
     }
@@ -307,15 +313,17 @@ public class appManager {
     {
         double paySum=0;
         SQLiteDatabase db = new DbOpenHelper(context).getReadableDatabase();
-        Cursor cursor = db.rawQuery("select coalesce(sum(p.paySum), 0) overSum, coalesce(sum(d.debt), 0) alldebt from debts d " +
+        Cursor cursor = db.rawQuery("select coalesce(sum(p.paySum), 0) overSum, coalesce(sum(d.debt), 0) alldebt, count(pr.customerid) requests  from debts d " +
                         "left join pays p on p.transactionId = d.transactionId and p.payDate = ?" +
+                        "left join pay_requests pr on  d.customerid = pr.customerid and pr.requestDate = ?" +
                         "where d.customerid= ? ",
-                new String[] { wputils.getDateTime(date), customerId});
+                new String[] { wputils.getDateTime(date), wputils.getDateTime(date), customerId});
         cursor.moveToFirst();
         paySum = cursor.getDouble(0);
         double alldebt =  cursor.getDouble(1);
+        int pay_requests = cursor.getInt(2);
         db.close();
-        if (paySum > 0 || alldebt == 0) return true;
+        if (paySum > 0 || alldebt == 0 || pay_requests > 0 ) return true;
         return false;
     }
 
@@ -352,14 +360,14 @@ public class appManager {
                     alert.setIcon(iconId);
         alert.setMessage(message);
 
-        alert.setPositiveButton("ƒ‡", new DialogInterface.OnClickListener() {
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 mResult = true;
                 handler.sendMessage(handler.obtainMessage());
             }
         });
         if (showNoButton) {
-            alert.setNegativeButton("ÕÂÚ", new DialogInterface.OnClickListener() {
+            alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
                     mResult = false;
                     handler.sendMessage(handler.obtainMessage());
