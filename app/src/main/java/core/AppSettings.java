@@ -141,7 +141,7 @@ public class AppSettings implements IOrderControlParams {
 
     public String getPriceTypeWithoutRestrictions()
     {
-        return "Вид 1";
+        return "Вид 14";
     }
 
     public Boolean checkPriceTypeForRestrictions(String price)
