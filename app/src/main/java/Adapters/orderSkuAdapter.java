@@ -91,6 +91,7 @@ public class orderSkuAdapter extends BaseAdapter  {
         orderSku cursku = getSku(position);
         TextView textSkuName = (TextView) view.findViewById(R.id.textViewOrderSkuName);
         textSkuName.setText(cursku.skuName);
+
         textSkuName.setTag(position);
         textSkuName.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,13 +170,19 @@ public class orderSkuAdapter extends BaseAdapter  {
         if (outletStock!=null)
             outletStock.setText(Integer.toString(cursku.outletStock));
 
-        Spinner spinnerPriceType = (Spinner) view.findViewById(R.id.spinnerPriceType);
+        final Spinner spinnerPriceType = (Spinner) view.findViewById(R.id.spinnerPriceType);
         spinnerPriceType.setTag(position);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(context,android.R.layout.simple_spinner_dropdown_item, priceTypeManager.getInstance().getPriceNameArray(outlet.priceName));
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerPriceType.setAdapter(adapter);
-        int spinnerPosition = adapter.getPosition(cursku.priceName);
+        final int spinnerPosition = adapter.getPosition(cursku.priceName);
         spinnerPriceType.setSelection(spinnerPosition);
+//        spinnerPriceType.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                spinnerPriceType.setSelection(spinnerPosition);
+//            }
+//        });
         spinnerPriceType.setOnItemSelectedListener(new OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

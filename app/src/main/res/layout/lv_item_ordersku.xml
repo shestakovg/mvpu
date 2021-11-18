@@ -27,7 +27,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:focusableInTouchMode="false"
-                        android:paddingTop="2px"
+
                         android:singleLine="true"
                         android:text="Current sku"
                         android:textColor="#ff000000"
@@ -38,9 +38,7 @@
                     <Spinner
                         android:id="@+id/spinnerPriceType"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginTop="1dp"
+                        android:layout_height="20dp"
                         android:foreground="@android:color/black"
                         android:spinnerMode="dialog"
                         android:text="Price type"
