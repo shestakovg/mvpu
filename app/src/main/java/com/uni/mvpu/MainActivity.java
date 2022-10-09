@@ -37,14 +37,14 @@ public class MainActivity extends TouchActivity implements IManagementGPSLogger 
 //        }
          if (appManager.getOurInstance().appSetupInstance.getAllowGpsLog())
          {
-             appManager.getOurInstance().gpsLoggerManager.startGPSLogger();
+             //appManager.getOurInstance().gpsLoggerManager.startGPSLogger();
          }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        stopGPSLogger();
+       // stopGPSLogger();
     }
 
 

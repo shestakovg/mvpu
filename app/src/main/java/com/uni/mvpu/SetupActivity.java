@@ -83,10 +83,10 @@ public class SetupActivity extends TouchActivity {
         m_appManager.appSetupInstance.setAllowGpsLog(chbAllowGps.isChecked());
         m_appManager.appSetupInstance.saveSetup(this);
         m_appManager.appSetupInstance.readSetup(this);
-        if ( m_appManager.appSetupInstance.getAllowGpsLog())
-            appManager.getOurInstance().gpsLoggerManager.startGPSLogger();
-        else
-            appManager.getOurInstance().gpsLoggerManager.stopGPSLogger();
+//        if ( m_appManager.appSetupInstance.getAllowGpsLog())
+//            appManager.getOurInstance().gpsLoggerManager.startGPSLogger();
+//        else
+//            appManager.getOurInstance().gpsLoggerManager.stopGPSLogger();
     }
 
     public void onClickBtnSave(View v)
