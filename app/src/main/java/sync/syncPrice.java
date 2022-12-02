@@ -34,7 +34,7 @@ public class syncPrice extends AsyncTask<String, Integer, List<JSONObject>> {
 
         List<JSONObject> lst = serviceManager.CallDataServiceMultiply(params[1]);
         publishProgress(1);
-        return    lst;
+        return lst;
     }
 
     @Override

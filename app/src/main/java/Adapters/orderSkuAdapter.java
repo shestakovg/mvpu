@@ -461,6 +461,8 @@ public class orderSkuAdapter extends BaseAdapter  {
                 " inner join " +
                 "(select distinct PriceId, PriceName from contracts " +
                 " union" +
+                " select '11169df6-6987-11e8-82c8-3640b58dd6a2', 'крупы Ф'" +
+                " union" +
                 " select 'b07c23b6-ed8d-11e4-9bea-3640b58dd6a2', 'РЫНОК ОПТОВЫЙ'" +
                 " union" +
                 " select '849d3a4e-f26e-11e5-900e-3640b58dd6a2', 'VIP Клиенты'" +
