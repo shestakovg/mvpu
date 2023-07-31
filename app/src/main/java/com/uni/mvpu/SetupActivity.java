@@ -20,6 +20,7 @@ import sync.downloadNewVwersion;
 
 public class SetupActivity extends TouchActivity {
     private EditText txtServiceLink;
+    private EditText txtServiceLink1c;
     private EditText txtRouteName;
     private EditText txtEmployeeName;
     //private CheckBox chbAllowGps;
@@ -31,6 +32,8 @@ public class SetupActivity extends TouchActivity {
         setContentView(R.layout.activity_setup);
         txtServiceLink = (EditText) findViewById(R.id.editTextServiceLink);
         txtServiceLink.setText(m_appManager.appSetupInstance.getServiceUrl());
+        txtServiceLink1c = (EditText) findViewById(R.id.editTextServiceLink1c);
+        txtServiceLink1c.setText(m_appManager.appSetupInstance.getServiceUrl1c());
         txtRouteName = (EditText) findViewById(R.id.editTextRouteName);
         txtEmployeeName  = (EditText) findViewById(R.id.editTextEmployeeName);
         //chbAllowGps = (CheckBox) findViewById(R.id.chbAllowGps);
@@ -78,6 +81,7 @@ public class SetupActivity extends TouchActivity {
         Toast.makeText(this, "SAVE", Toast.LENGTH_SHORT).show();
 
         m_appManager.appSetupInstance.setServiceUrl(txtServiceLink.getText().toString().trim());
+        m_appManager.appSetupInstance.setServiceUrl1c(txtServiceLink1c.getText().toString().trim());
         m_appManager.appSetupInstance.setRouteName(txtRouteName.getText().toString());
         m_appManager.appSetupInstance.setEmployeeName(txtEmployeeName.getText().toString());
         m_appManager.appSetupInstance.setAllowGpsLog(chbAllowGps.isChecked());

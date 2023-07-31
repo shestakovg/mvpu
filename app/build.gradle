@@ -8,8 +8,10 @@ android {
     }
     signingConfigs {
         config {
-            storeFile file('C:/Users/shestakov.g/Documents/GitHub/android/mvpu/gskey.jks')
+            storeFile file('C:/Users/gs/Downloads/gskey.jks')
             storePassword 'Zxcvb12345'
+            keyPassword 'Zxcvb12345'
+            keyAlias 'key0'
         }
     }
     compileOptions.encoding = 'windows-1251'
@@ -20,7 +22,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 22
         versionCode 1
-        versionName '1.115'
+        versionName '1.116'
     }
     buildTypes {
         release {

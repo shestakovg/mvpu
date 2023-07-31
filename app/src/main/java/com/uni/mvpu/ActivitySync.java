@@ -131,16 +131,16 @@ public class ActivitySync extends TouchActivity {
             pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             pd.show();
             syncDebtParams debtParams = new syncDebtParams(this, pd);
-            debtParams.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getdebtparams/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
+            debtParams.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl1c(), "dictionary/getdebtparams/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
 
             syncOutletCategory soc = new syncOutletCategory(this);
-            soc.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getoutletcategory"});
+            soc.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl1c(), "dictionary/getoutletcategory"});
 
             syncRouteDays srd = new syncRouteDays(this);
-            srd.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getroutedays"});
+            srd.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl1c(), "dictionary/getroutedays"});
 
             syncDeliveryArea sda = new syncDeliveryArea(this);
-            sda.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getdeliveryarea"});
+            sda.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl1c(), "dictionary/getdeliveryarea"});
 
         }
 
@@ -156,7 +156,7 @@ public class ActivitySync extends TouchActivity {
                 {
                     Toast.makeText(this, "Обновление цен по прайс листу "+priceList.get(itemIndex).getPriceName(), Toast.LENGTH_SHORT).show();
                     syncPrice syncPrice = new syncPrice(this, priceList.get(itemIndex), pd);
-                    syncPrice.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getprice/" + priceList.get(itemIndex).getPriceId()});
+                    syncPrice.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl1c(), "dictionary/getprice/" + priceList.get(itemIndex).getPriceId()});
 
 
                 }
@@ -165,22 +165,22 @@ public class ActivitySync extends TouchActivity {
                     case IDLI_ROUTE:
                         //appManager.getOurInstance().setCurrentContext(this);
                         syncRoute syncr = new syncRoute(this, pd);
-                        syncr.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(),"dictionary/getrouteset/"+appManager.getOurInstance().appSetupInstance.getRouteId()});
+                        syncr.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl1c(),"dictionary/getrouteset/"+appManager.getOurInstance().appSetupInstance.getRouteId()});
                         syncPriceChanges syncPc =  new syncPriceChanges(this, pd);
-                        syncPc.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(),"dictionary/getpricechanges"});
+                        syncPc.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl1c(),"dictionary/getpricechanges"});
                         break; //Add other menu items
                     case IDLI_DOCS:
                         //appManager.getOurInstance().setCurrentContext(this);
                         syncContracts sync = new syncContracts(this, pd);
-                        sync.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getcontract/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
+                        sync.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl1c(), "dictionary/getcontract/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
                         break;
                     case IDLI_PRODUCT:
                         syncSkuGroup syncGroup = new syncSkuGroup(this, pd);
-                        syncGroup.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getskugroup/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
+                        syncGroup.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl1c(), "dictionary/getskugroup/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
                         syncSku syncSku = new syncSku(this, pd);
-                        syncSku.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getskuext/"+ appManager.getOurInstance().appSetupInstance.getRouteId()});
+                        syncSku.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl1c(), "dictionary/getskuext/"+ appManager.getOurInstance().appSetupInstance.getRouteId()});
                         syncSkuFact skuFact = new syncSkuFact(this, pd);
-                        skuFact.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getskufact"});
+                        skuFact.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl1c(), "dictionary/getskufact"});
                         break;
 //                    case IDLI_PRICE:
 //                        //appManager.getOurInstance().setCurrentContext(this);
@@ -195,30 +195,30 @@ public class ActivitySync extends TouchActivity {
 //                        break;
                     case IDLI_STOCK:
                         syncStock syncSt= new syncStock(this, pd);
-                        syncSt.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getbalancesku/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
+                        syncSt.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl1c(), "dictionary/getbalancesku/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
                         break; //Add other menu items
                     case IDLI_DEBT:
                         syncDebt sncDept = new syncDebt(this, pd);
-                        sncDept.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getdebt/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
+                        sncDept.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl1c(), "dictionary/getdebt/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
                         break;
                     case IDLI_SPECIFICATION:
                         syncSpecification sncSpec = new syncSpecification(this, pd);
-                        sncSpec.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getspecification/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
+                        sncSpec.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl1c(), "dictionary/getspecification/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
                         break;
                     case IDLI_OUTLETINFO:
                         syncOutletInfo syncInfo = new syncOutletInfo(this, pd);
-                        syncInfo.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getoutletinfo/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
+                        syncInfo.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl1c(), "dictionary/getoutletinfo/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
 
                         syncClientCardSku syncInfoClientCard = new syncClientCardSku(this, pd);
-                        syncInfoClientCard.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getclientcardsku/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
+                        syncInfoClientCard.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl1c(), "dictionary/getclientcardsku/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
                         break;
                     case IDLI_PLANFACT:
                         syncPlanFact planFact = new syncPlanFact(this, pd);
-                        planFact.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/getsalesfact/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
+                        planFact.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl1c(), "dictionary/getsalesfact/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
                         break;
                     case IDLI_TASKS:
                         syncTask synctask = new syncTask(this, pd);
-                        synctask.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(), "dictionary/gettasks/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
+                        synctask.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl1c(), "dictionary/gettasks/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
                         break;
                 }
             }

@@ -39,12 +39,12 @@ public class syncSaveData {
                 values.put("CustomerName", jsonObject.getString("CustomerName"));
                 values.put("partnerId", jsonObject.getString("PartnerId"));
                 values.put("partnerName", jsonObject.getString("PartnerName"));
-                values.put("address", jsonObject.getString("address"));
+                values.put("address", jsonObject.getString("Address"));
                 values.put("IsRoute", jsonObject.getInt("IsRoute"));
                 values.put("CustomerClass", jsonObject.getString("CustomerClass"));
                 db.insert("route", null, values);
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
         }
         db.close();
@@ -89,7 +89,7 @@ public class syncSaveData {
                 values.put("PartnerId", jsonObject.getString("PartnerId"));
                 db.insert("contracts", null, values);
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
         }
         db.close();
@@ -109,7 +109,7 @@ public class syncSaveData {
                 values.put("FactOutletCount", jsonObject.getInt("FactOutletCount"));
                 db.insert("salesfact", null, values);
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
         }
         db.close();
@@ -133,7 +133,7 @@ public class syncSaveData {
                 values.put("DontUseAmountValidation", jsonObject.getInt("DontUseAmountValidation"));
                 db.insert("skuGroup", null, values);
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
         }
         db.close();
@@ -174,18 +174,18 @@ public class syncSaveData {
             try {
                 ContentValues values = new ContentValues();
                 values.put("SkuId", jsonObject.getString("SkuId"));
-                values.put("SkuName", jsonObject.getString("SkuName"));
+                values.put("SkuName", jsonObject.getString("SkuName").trim());
                 values.put("SkuParentId", jsonObject.getString("SkuParentId"));
-                values.put("QtyPack", jsonObject.getDouble("QtyPack"));
+                values.put("QtyPack", jsonObject.getString("QtyPack").equals("") ? 0 : jsonObject.getDouble("QtyPack"));
                 values.put("Article", jsonObject.getString("Article"));
-                values.put("OnlyFact", jsonObject.getInt("OnlyFact"));
-                values.put("CheckCountInBox", jsonObject.getInt("CheckCountInBox"));
-                values.put("onlyMWH", jsonObject.getInt("onlyMWH"));
+                values.put("OnlyFact", jsonObject.getString("OnlyFact").equals("") ? 0 : jsonObject.getInt("OnlyFact"));
+                values.put("CheckCountInBox", jsonObject.getString("CheckCountInBox").equals("") ? 0 : jsonObject.getInt("CheckCountInBox"));
+                values.put("onlyMWH", jsonObject.getString("OnlyMWH").equals("") ? 0 : jsonObject.getInt("OnlyMWH"));
                 values.put("Color", jsonObject.getString("Color"));
                 values.put("OutStockColor", jsonObject.getString("OutStockColor"));
-                values.put("MinOrderQty", jsonObject.getInt("MinOrderQty"));
-                values.put("IsHoreca", jsonObject.getInt("IsHoreca"));
-                values.put("MaxOrderQty", jsonObject.getInt("MaxOrderQty"));
+                values.put("MinOrderQty", jsonObject.getString("MinOrderQty").equals("")  ? 0 : jsonObject.getInt("MinOrderQty"));
+                values.put("IsHoreca", jsonObject.getString("isHoreca").equals("")  ? 0 :jsonObject.getInt("isHoreca"));
+                values.put("MaxOrderQty", jsonObject.getString("MaxOrderQty").equals("")  ? 0 : jsonObject.getInt("MaxOrderQty"));
                 values.put("Description", jsonObject.getString("Description"));
                 db.insert("sku", null, values);
             } catch (Exception e) {
@@ -229,7 +229,7 @@ public class syncSaveData {
                 values.put("Pric", jsonObject.getDouble("Pric"));
                 db.insert("price", null, values);
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
         }
 
@@ -252,7 +252,7 @@ public class syncSaveData {
                 values.put("StockR", jsonObject.getDouble("StockR"));
                 db.insert("stock", null, values);
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
         }
         db.close();
@@ -281,7 +281,7 @@ public class syncSaveData {
                 values.put("color", jsonObject.getString("color"));
                 db.insert("debts", null, values);
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
         }
         db.close();
@@ -371,8 +371,8 @@ public class syncSaveData {
                 db.insert("DeliveryArea", null, values);
             }
             catch (Exception e)  {
-                e.printStackTrace();}
-
+                e.printStackTrace();
+            }
         }
         db.close();
         Toast.makeText(context, "Обновление районов доставки завершено", Toast.LENGTH_SHORT).show();
@@ -392,8 +392,8 @@ public class syncSaveData {
                 db.insert("OutletCategoryes", null, values);
             }
             catch (Exception e)  {
-                e.printStackTrace();}
-
+                e.printStackTrace();
+            }
         }
         db.close();
         Toast.makeText(context, "Обновление категорий тт завершено", Toast.LENGTH_SHORT).show();
@@ -413,8 +413,8 @@ public class syncSaveData {
                 db.insert("dayOfWeek", null, values);
             }
             catch (Exception e)  {
-                e.printStackTrace();}
-
+                e.printStackTrace();
+            }
         }
         db.close();
         Toast.makeText(context, "Обновление дней визита завершено", Toast.LENGTH_SHORT).show();
@@ -426,10 +426,10 @@ public class syncSaveData {
         db.execSQL("delete from tasks where (julianday('now') - julianday(taskDate)) > 14 and status <> 0");
         for (JSONObject jsonObject: jsonObjects) {
             Task task = new Task();
-            task.setReference(jsonObject.getString("reference"));
-            task.setNumber(jsonObject.getString("number"));
-            task.setDescription(jsonObject.getString("description"));
-            task.setOutletId(jsonObject.getString("outletId"));
+            task.setReference(jsonObject.getString("Reference"));
+            task.setNumber(jsonObject.getString("Number"));
+            task.setDescription(jsonObject.getString("Description"));
+            task.setOutletId(jsonObject.getString("OutletId"));
             if (!updateTask(db, task)) {
                 ContentValues values = new ContentValues();
                 values.put("reference", task.getReference());
@@ -473,7 +473,7 @@ public class syncSaveData {
                 values.put("NewPrice", jsonObject.getDouble("NewPrice"));
                 db.insert("priceChanges", null, values);
             } catch (Exception e) {
-
+                e.printStackTrace();
             }
         }
         db.close();

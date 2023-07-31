@@ -50,11 +50,11 @@ public class ActivitySelectRoute extends TouchActivity {
         if (branchMode)
         {
 
-            new setupRoute().execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(),"dictionary/getbranch"});
+            new setupRoute().execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl1c(),"dictionary/getbranch"});
         }
         else //Если выбор маршрута
         {
-            new setupRoute().execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(),"dictionary/getroute/"+currentBranch});
+            new setupRoute().execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl1c(),"dictionary/getroute/"+currentBranch});
         }
     }
 
@@ -65,7 +65,7 @@ public class ActivitySelectRoute extends TouchActivity {
             Toast.makeText(this, branchList.get(position).description,Toast.LENGTH_SHORT).show();
             currentBranch = branchList.get(position).id;
             branchMode = false;
-            new setupRoute().execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl(),"dictionary/getroute/"+currentBranch});
+            new setupRoute().execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl1c(),"dictionary/getroute/"+currentBranch});
         }
         else
         {

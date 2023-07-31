@@ -30,6 +30,7 @@ import interfaces.IOrderControlParams;
 public class AppSettings implements IOrderControlParams {
 
     private final String PARAM_SERVICE_URL = "SERVICE_URL";
+    private final String PARAM_SERVICE_URL1C = "SERVICE_URL_1C";
     private final String PARAM_ROUTE_ID = "ROUTE_ID";
     private final String PARAM_ROUTE_NAME = "ROUTE_NAME";
     private final String PARAM_EMPLOYEE_ID = "EMPLOYEE_ID";
@@ -64,7 +65,17 @@ public class AppSettings implements IOrderControlParams {
         this.serviceUrl = serviceUrl;
     }
 
+    public String getServiceUrl1c() {
+        return serviceUrl1c;
+    }
+
+
+    public void setServiceUrl1c(String serviceUrl1c) {
+        this.serviceUrl1c = serviceUrl1c;
+    }
+
     private String serviceUrl;
+    private String serviceUrl1c;
 
     public String getRouteName() {
         return routeName;
@@ -227,8 +238,9 @@ public class AppSettings implements IOrderControlParams {
     private int routeType = -1; //Trade Agent
 
     public String version;
-    public AppSettings(String serviceUrl, String routeName, String employeeName, UUID routeId, UUID employeeID) {
+    public AppSettings(String serviceUrl, String serviceUrl1c, String routeName, String employeeName, UUID routeId, UUID employeeID) {
         this.serviceUrl = serviceUrl;
+        this.serviceUrl1c = serviceUrl1c;
         this.routeName = routeName;
         this.employeeName = employeeName;
         this.routeId = routeId;
@@ -236,7 +248,8 @@ public class AppSettings implements IOrderControlParams {
     }
 
     public AppSettings() {
-        this.serviceUrl = "http://25.106.227.22:8100";
+        this.serviceUrl = "http://194.48.209.59:8100";
+        this.serviceUrl1c = "http://194.48.209.59:8101/v82base/hs";
         this.routeName =  "Выберите маршрут";
         this.routeId = UUID.randomUUID();
         this.employeeName = "Неизвестный сотрудник";
@@ -253,6 +266,7 @@ public class AppSettings implements IOrderControlParams {
 //        db.execSQL("delete from baseParams where ParamId='"+PARAM_ROUTE_NAME+"'");
 
         saveParamSetup(db, PARAM_SERVICE_URL, getServiceUrl().trim());
+        saveParamSetup(db, PARAM_SERVICE_URL1C, getServiceUrl1c().trim());
         saveParamSetup(db, PARAM_ROUTE_ID, routeId.toString());
         saveParamSetup(db, PARAM_ROUTE_NAME, getRouteName());
         saveParamSetup(db, PARAM_EMPLOYEE_ID, employeeID.toString());
@@ -272,7 +286,7 @@ public class AppSettings implements IOrderControlParams {
         db.insert("baseParams", null, values);
     }
 
-    public void readSetup(Context context )
+    public void readSetup(Context context)
     {
         if (context == null ) context =appManager.getOurInstance().getCurrentContext();
         DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
@@ -287,6 +301,7 @@ public class AppSettings implements IOrderControlParams {
                 case PARAM_ROUTE_NAME: routeName = cursor.getString(1); break;
                 case PARAM_ROUTE_ID: routeId = UUID.fromString(cursor.getString(1)); break;
                 case PARAM_SERVICE_URL: serviceUrl = cursor.getString(1); break;
+                case PARAM_SERVICE_URL1C: serviceUrl1c = cursor.getString(1); break;
                 case PARAM_EMPLOYEE_ID: employeeID = UUID.fromString(cursor.getString(1)); break;
                 case PARAM_EMPLOYEE_NAME: employeeName = cursor.getString(1); break;
                 case PARAM_debtControl: debtControl = cursor.getString(1).equals("1"); break;
