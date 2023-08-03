@@ -57,7 +57,7 @@ public class ActivityOrder extends TouchActivity implements IOrder  {
     private OutletObject currentOutlet;
     private Context context;
 
-    private TextView tvDeliveryDate;
+    //private TextView tvDeliveryDate;
 
     DatePickerDialog.OnDateSetListener myCallBack = new DatePickerDialog.OnDateSetListener() {
         @Override
@@ -128,14 +128,14 @@ public class ActivityOrder extends TouchActivity implements IOrder  {
         if (orderExtra.orderType == AppSettings.ORDER_TYPE_ORDER) {
             fragSku = (FragmentOrderSku) getFragmentManager().findFragmentById(R.id.fragmentSku);
                 fragSku.displayTotal();
-            tvDeliveryDate = (TextView) findViewById(R.id.tvDeliveyDateSku);
-            tvDeliveryDate.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showDialog(DIALOG_DATE);
-                }
-            });
-            displayDeliveryDate();
+//            tvDeliveryDate = (TextView) findViewById(R.id.tvDeliveyDateSku);
+//            tvDeliveryDate.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    showDialog(DIALOG_DATE);
+//                }
+//            });
+//            displayDeliveryDate();
         }
 
         if (orderExtra.orderType==AppSettings.ORDER_TYPE_STORECHECK)
@@ -165,10 +165,10 @@ public class ActivityOrder extends TouchActivity implements IOrder  {
 
     private void displayDeliveryDate()
     {
-        if (orderExtra.deliveryDateInitialized)
-            tvDeliveryDate.setText(DateFormat.format("Доставка: dd.MM.yyyy", orderExtra.deliveryDate));
-        else
-            tvDeliveryDate.setText("Доставка: не указано");
+//        if (orderExtra.deliveryDateInitialized)
+//            tvDeliveryDate.setText(DateFormat.format("Доставка: dd.MM.yyyy", orderExtra.deliveryDate));
+//        else
+//            tvDeliveryDate.setText("Доставка: не указано");
     }
 
     @Override
@@ -197,14 +197,16 @@ public class ActivityOrder extends TouchActivity implements IOrder  {
             }
             else
             {
-              if (orderExtra.deliveryDateInitialized) {
-                  OrderExtra.setOrderToSend(orderExtra, context);
-                  finish();
-              }
-              else
-              {
-                  Toast.makeText(this,"Дата доставки не указана!\nУкажите дату доставки!",Toast.LENGTH_SHORT).show();
-              }
+                OrderExtra.setOrderToSend(orderExtra, context);
+                finish();
+//              if (orderExtra.deliveryDateInitialized) {
+//                  OrderExtra.setOrderToSend(orderExtra, context);
+//                  finish();
+//              }
+//              else
+//              {
+//                  Toast.makeText(this,"Дата доставки не указана!\nУкажите дату доставки!",Toast.LENGTH_SHORT).show();
+//              }
             }
         } else if (fragmentStockTemplate!= null && fragmentStockTemplate.isInLayout()) {
             if (!fragmentStockTemplate.getOrderHasBeenGenerated()) {
@@ -349,8 +351,8 @@ public class ActivityOrder extends TouchActivity implements IOrder  {
 //        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 //        spinner.setAdapter(adapter);
 //        spinner.setPrompt("??? ???????");
-        TextView deliveryDate = (TextView) dlgOrderParams.findViewById(R.id.tvDeliveryDate);
-        deliveryDate.setText(DateFormat.format("Доставка: dd.MM.yyyy", currnentOrder.deliveryDate));
+        //TextView deliveryDate = (TextView) dlgOrderParams.findViewById(R.id.tvDeliveryDate);
+        //deliveryDate.setText(DateFormat.format("Доставка: dd.MM.yyyy", currnentOrder.deliveryDate));
             dlgOrderParams.show();
         }
     }

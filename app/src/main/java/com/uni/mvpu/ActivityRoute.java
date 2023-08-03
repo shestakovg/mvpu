@@ -86,10 +86,10 @@ public class ActivityRoute extends TouchActivity {
         spinner.setPrompt("Дни визита");
 
         int currentSpinnerId = orderDate.get(Calendar.DAY_OF_WEEK) - 1;
-        if (currentSpinnerId == 0) currentSpinnerId=7;
-        spinner.setSelection(currentSpinnerId);
-        fillWhereCondition(currentSpinnerId);
-
+        //if (currentSpinnerId == 0) currentSpinnerId=7;
+        //spinner.setSelection(currentSpinnerId);
+        //fillWhereCondition(currentSpinnerId);
+        fillWhereCondition(0);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view,

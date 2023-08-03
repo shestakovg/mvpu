@@ -85,7 +85,7 @@ public class syncSaveData {
                 values.put("PriceId", jsonObject.getString("PriceId"));
                 values.put("PriceName", jsonObject.getString("PriceName"));
                 values.put("LimitSum", jsonObject.getDouble("LimitSum"));
-                values.put("Reprieve", jsonObject.getInt("Reprieve"));
+                values.put("Reprieve", jsonObject.getString("Reprieve"));
                 values.put("PartnerId", jsonObject.getString("PartnerId"));
                 db.insert("contracts", null, values);
             } catch (Exception e) {

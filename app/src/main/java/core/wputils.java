@@ -158,4 +158,9 @@ public final class wputils {
         //return formatter.format(value);
         return  String.format(Locale.CANADA, "%.2f", value);
     }
+
+    public static String  withTwoDecimalPlaces(double value) {
+        DecimalFormat df = new DecimalFormat("###,###,###.00");
+        return df.format(value);
+    }
 }

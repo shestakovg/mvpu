@@ -213,7 +213,8 @@ public class FragmentOrderSku extends Fragment implements IOrderTotal{
         if (getView()!=null) {
             TextView tvOrderSum = ((TextView) getView().findViewById(R.id.tvOrderSum));
             if (tvOrderSum != null)
-                tvOrderSum.setText(String.format("%.2f", orderSum));
+                //tvOrderSum.setText(String.format("%.2f", orderSum));
+                tvOrderSum.setText(wputils.withTwoDecimalPlaces(orderSum));
             TextView tvOrderRowCount = ((TextView) getView().findViewById(R.id.tvOrderRowCount));
             if (tvOrderRowCount != null)
                 tvOrderRowCount.setText(Integer.toString(rowCount));

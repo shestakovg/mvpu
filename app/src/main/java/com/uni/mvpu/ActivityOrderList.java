@@ -68,6 +68,10 @@ public class ActivityOrderList extends TouchActivity implements IUpdateOrderList
         setContentView(R.layout.activity_order_list);
 
         outletid = getIntent().getStringExtra("outletid");
+        if (!outletid.isEmpty()) {
+            OutletObject olObj = OutletObject.getInstance(UUID.fromString(outletid) ,  this);
+            setTitle(olObj.outletName);
+        }
         outletCategoty = getIntent().getStringExtra("outletCategoty");
         orderType = getIntent().getIntExtra("orderType", AppSettings.ORDER_TYPE_ORDER);
         if (outletid.isEmpty()) {
@@ -360,7 +364,7 @@ public class ActivityOrderList extends TouchActivity implements IUpdateOrderList
         {
             totalSum += order.orderSum;
         }
-        ((TextView) findViewById(R.id.tvListOrdersSum)).setText(String.format("%.2f",   totalSum));
+        ((TextView) findViewById(R.id.tvListOrdersSum)).setText(wputils.withTwoDecimalPlaces(totalSum));
     }
 
     @Override

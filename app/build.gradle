@@ -6,14 +6,7 @@ android {
         // but continue the build even when errors are found:
         abortOnError false
     }
-    signingConfigs {
-        config {
-            storeFile file('C:/Users/gs/Downloads/gskey.jks')
-            storePassword 'Zxcvb12345'
-            keyPassword 'Zxcvb12345'
-            keyAlias 'key0'
-        }
-    }
+
     compileOptions.encoding = 'windows-1251'
     compileSdkVersion 22
     buildToolsVersion '27.0.3'
@@ -28,7 +21,6 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.config
         }
     }
     productFlavors {

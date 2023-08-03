@@ -170,7 +170,7 @@ public class FragmentOrderSkuGroup extends Fragment {
         if (skuGroupStack.size()>1)
             skuGroupStack.remove(skuGroupStack.size()-1);
         //textCurrentGroup.setText(skuGroupStack.get(skuGroupStack.size()-1).getGroupName());
-        btnUpGroup.setText(skuGroupStack.get(skuGroupStack.size()-1).getGroupName());
+        btnUpGroup.setText(skuGroupStack.get(skuGroupStack.size()-1).getGroupName().trim());
         fillListViewGroupSku();
     }
     private /*List<Map<String, ? >>*/  List<groupSku> fillGroupList(groupSku level)
@@ -211,7 +211,7 @@ public class FragmentOrderSkuGroup extends Fragment {
     private void onItemClickGroup(AdapterView<?> parent, View view, int position, long id) throws ParseException {
         skuGroupStack.add(groupSkuList.get(position));
             //textCurrentGroup.setText(groupSkuList.get(position).getGroupName());
-            btnUpGroup.setText(groupSkuList.get(position).getGroupName());
+            btnUpGroup.setText(groupSkuList.get(position).getGroupName().trim());
             fillListViewGroupSku();
     }
 

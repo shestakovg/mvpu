@@ -128,20 +128,21 @@ public class orderControlParams {
 
     public Boolean allowOrderToSave(OrderExtra orderExtra,OutletObject currentOutlet, Context context)
     {
-       this._outlet = currentOutlet;
-        //if (this.orderRows ==0 && this.orderSum == 0) return true;
-        loadSumByOutlet(orderExtra, currentOutlet, context);
-        checkOnlyFactSku(orderExtra,context);
-        fillSpecialPriceFlag(orderExtra,  context);
-
-        //don't check men sum when payTYpe is fact
-        if (order.payType == 1) {
-            return true;
-        }
-
-        if (!this.onlyFactSku) return false;
-        if (checkDontUseAmountValidation(orderExtra,context)) return true;
-        return orderSumControl.isAllowed();
+        return true;
+//       this._outlet = currentOutlet;
+//        //if (this.orderRows ==0 && this.orderSum == 0) return true;
+//        loadSumByOutlet(orderExtra, currentOutlet, context);
+//        checkOnlyFactSku(orderExtra,context);
+//        fillSpecialPriceFlag(orderExtra,  context);
+//
+//        //don't check men sum when payTYpe is fact
+//        if (order.payType == 1) {
+//            return true;
+//        }
+//
+//        if (!this.onlyFactSku) return false;
+//        if (checkDontUseAmountValidation(orderExtra,context)) return true;
+//        return orderSumControl.isAllowed();
     }
 
     public String getControlMessage(OutletObject currentOutlet)

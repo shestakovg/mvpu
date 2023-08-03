@@ -3,7 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Work/mvpu/app/src/main/res/drawable/round_shape_btn.xml" value="0.1885" />
+        <entry key="..\:/Work/mvpu/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Work/mvpu/app/src/main/res/layout/activity_order.xml" value="0.10989583333333333" />
+        <entry key="..\:/Work/mvpu/app/src/main/res/layout/activity_order_list.xml" value="0.12158054711246201" />
         <entry key="..\:/Work/mvpu/app/src/main/res/layout/activity_setup.xml" value="0.22916666666666666" />
+        <entry key="..\:/Work/mvpu/app/src/main/res/layout/edit_orderqty.xml" value="0.10989583333333333" />
+        <entry key="..\:/Work/mvpu/app/src/main/res/layout/edit_orderqty_descr.xml" value="0.2" />
+        <entry key="..\:/Work/mvpu/app/src/main/res/layout/edit_orderqty_uni_descr.xml" value="0.2" />
+        <entry key="..\:/Work/mvpu/app/src/main/res/layout/fragment_main.xml" value="0.1" />
+        <entry key="..\:/Work/mvpu/app/src/main/res/layout/fragment_skugroup.xml" value="0.18020833333333333" />
+        <entry key="..\:/Work/mvpu/app/src/main/res/layout/fragment_skuorder.xml" value="0.10989583333333333" />
+        <entry key="..\:/Work/mvpu/app/src/main/res/layout/lv_item_oder.xml" value="0.24003623188405798" />
         <entry key="..\:/Work/mvpu/app/src/main/res/layout/lv_item_ordersku.xml" value="0.20380434782608695" />
       </map>
     </option>

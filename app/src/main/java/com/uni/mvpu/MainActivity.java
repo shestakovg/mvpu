@@ -39,6 +39,7 @@ public class MainActivity extends TouchActivity implements IManagementGPSLogger 
          {
              //appManager.getOurInstance().gpsLoggerManager.startGPSLogger();
          }
+        setTitle("Mobile trade");
     }
 
     @Override

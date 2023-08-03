@@ -21,6 +21,7 @@ import Entitys.Order;
 import Entitys.OutletObject;
 import core.OrderListMode;
 import core.appManager;
+import core.wputils;
 
 /**
  * Created by shestakov.g on 02.06.2015.
@@ -75,9 +76,11 @@ public class orderListAdapter extends BaseAdapter {
         }
         Order order = getOrder( position);
         OutletObject olObj = OutletObject.getInstance(UUID.fromString(order.outletId) ,  context);
-                ((TextView) view.findViewById(R.id.txtViewListOrderName)).setText(order.orderDescription);
-        ((TextView) view.findViewById(R.id.txtViewListOrderSum)).setText("—ÛÏÏ‡: "+String.format("%.2f",order.orderSum));
-        ((TextView) view.findViewById(R.id.tvListOrderOutletName)).setText(olObj.outletName+"  "+olObj.outletAddress);
+        //((TextView) view.findViewById(R.id.txtViewListOrderName)).setText(order.orderDescription);
+        //((TextView) view.findViewById(R.id.txtViewListOrderName)).setText("");
+        ((TextView) view.findViewById(R.id.txtViewListOrderSum)).setText("—ÛÏÏ‡:  "+wputils.withTwoDecimalPlaces(order.orderSum));
+        //((TextView) view.findViewById(R.id.tvListOrderOutletName)).setText(olObj.outletName+"  "+olObj.outletAddress);
+        ((TextView) view.findViewById(R.id.tvListOrderOutletName)).setText(order.orderDescription);
         ImageView orderSended = (ImageView) view.findViewById(R.id.ivImage);
         //orderSended.setImageResource(R.drawable.document_16);
         if (order.underSumLimit)

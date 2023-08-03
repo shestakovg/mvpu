@@ -171,7 +171,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Заказ/Оплата"
+                    android:text="Зак/Опл"
                     android:textColor="#FF0AB616" />
                 <TextView
                     android:layout_width="wrap_content"
@@ -188,7 +188,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Заказ"
+                    android:text="Зак"
                     android:paddingLeft="10dp"
                     android:textColor="@android:color/holo_blue_dark"
                     />
@@ -209,7 +209,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Оплата"
+                    android:text="Опл"
                     android:paddingLeft="10dp"
                     android:textColor="#d10cb0" />
 
@@ -249,7 +249,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Непосещено"
+                    android:text="-"
                     android:paddingLeft="10dp"
                     android:textColor="@color/abc_search_url_text_pressed" />
                 <TextView
@@ -268,7 +268,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Cумма"
+                    android:text="Cум"
                     android:paddingLeft="10dp"
                     android:textColor="@color/abc_search_url_text_pressed" />
                 <TextView

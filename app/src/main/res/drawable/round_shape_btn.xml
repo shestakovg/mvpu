@@ -7,7 +7,7 @@
         <!--android:bottomLeftRadius="10dp"-->
         <!--android:topLeftRadius="10dp"-->
         <!--android:topRightRadius="10dp"/>-->
-    <corners android:radius="20dip"/>
+    <corners android:radius="10dip"/>
     <gradient
         android:startColor="#FF90A2FF"
         android:endColor="#FFA0AFFF"

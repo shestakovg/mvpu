@@ -7,19 +7,20 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <Button
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:id="@+id/btnEditSkuRow"
                     android:background="@android:drawable/ic_delete" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/textViewOrderOnlyFact"
-                    android:textStyle="bold"
-                    android:text="Fact"
-                    android:textColor="#ff1f1c" />
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:id="@+id/textViewOrderOnlyFact"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:text="Fact"-->
+<!--                    android:textColor="#ff1f1c" />-->
                 <LinearLayout
                     android:layout_width="fill_parent"
+                    android:id="@+id/layoutOrderSkuName"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
                     <TextView
@@ -32,18 +33,9 @@
                         android:text="Current sku"
                         android:textColor="#ff000000"
                         android:textIsSelectable="false"
-                        android:textSize="20dp"
                         android:textStyle="bold"
                         android:typeface="sans" />
-                    <Spinner
-                        android:id="@+id/spinnerPriceType"
-                        android:layout_width="wrap_content"
-                        android:layout_height="20dp"
-                        android:foreground="@android:color/black"
-                        android:spinnerMode="dialog"
-                        android:text="Price type"
 
-                        />
                 </LinearLayout>
             </LinearLayout>
 
@@ -60,19 +52,23 @@
 
         <TextView
             android:id="@+id/textViewPrice"
-            android:layout_width="55dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
             android:text="Price"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ост гл:" />
+            android:text="Остатки:" />
 
         <TextView
             android:id="@+id/textViewMWH"
-            android:layout_width="35dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:numeric="decimal"
             android:text="StockMWH:"
@@ -91,23 +87,12 @@
             android:text="111"
             android:textColor="#ff423aff"
             android:textSize="20dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
             android:textStyle="bold|italic" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Ост розн:" />
-
-        <TextView
-            android:id="@+id/textViewRWH"
-            android:layout_width="35dp"
-            android:layout_height="wrap_content"
-            android:text="StockRWH:"
-            android:textColor="@android:color/background_dark"
-            android:textStyle="bold" />
-
         <TextView
             android:id="@+id/editRWH"
+            android:visibility="invisible"
             android:layout_width="20dp"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -128,6 +113,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sum"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
             android:textColor="@android:color/background_dark"
             android:textStyle="bold" />
 
@@ -141,6 +128,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0000"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
             android:textColor="@android:color/background_dark"
             android:textStyle="bold" />
 
@@ -154,7 +143,7 @@
                     android:id="@+id/textPrevOrderCaption"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingRight="3dp"
+                    android:paddingRight="5dp"
                     android:text="Пред заказ"
                     android:textColor="@color/material_deep_teal_500"
                     android:textStyle="bold" />
@@ -162,7 +151,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingRight="@dimen/abc_text_size_display_3_material"
+                    android:paddingRight="5dp"
                     android:text="Дата:"
                     android:textColor="@color/material_blue_grey_800" />
 
@@ -170,7 +159,7 @@
                     android:id="@+id/textPrevOrderDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:paddingRight="@dimen/abc_text_size_display_3_material"
+                    android:paddingRight="@dimen/abc_text_size_display_1_material"
                     android:text="Prev date"
                     android:textColor="@color/material_blue_grey_800" />
                 <!--<TextView-->

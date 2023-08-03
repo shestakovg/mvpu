@@ -11,82 +11,81 @@
         <!--android:useDefaultMargins="true">-->
 
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_row="0"
+        android:layout_rowWeight="1"
+        android:layout_column="0"
+        android:background="@android:color/black"
+        android:baselineAligned="true"
+        android:orientation="horizontal"
+        android:showDividers="end">
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_row="0"
-            android:layout_rowWeight="1"
-            android:layout_column="0"
-            android:showDividers="end"
-            android:baselineAligned="true"
-            android:background="@android:color/black">
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:text="Строк:"
+            android:textColor="@android:color/background_light" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="3dp"
-                android:layout_marginRight="3dp"
-                android:text="Строк:"
-                android:textColor="@android:color/background_light" />
+        <TextView
+            android:id="@+id/tvOrderRowCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="4dp"
+            android:text="Строк:"
+            android:textColor="@android:color/background_light"
+            android:textSize="16dp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tvOrderRowCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="4dp"
-                android:text="Строк:"
-                android:textColor="@android:color/background_light"
-                android:textSize="16dp"
-                android:textStyle="bold" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="4dp"
+            android:text="Сумма:"
+            android:textColor="@android:color/background_light" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="4dp"
-                android:text="Сумма:"
-                android:textColor="@android:color/background_light" />
+        <TextView
+            android:id="@+id/tvOrderSum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="4dp"
+            android:text="Строк: "
+            android:textColor="@android:color/background_light"
+            android:textSize="16dp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tvOrderSum"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="4dp"
-                android:text="Строк: "
-                android:textColor="@android:color/background_light"
-                android:textSize="16dp"
-                android:textStyle="bold" />
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Заказ"
-                android:textSize="16dp"
-                android:id="@+id/btnOrderDisplayAllRows"/>
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Парам"
-                android:textSize="16dp"
-                android:id="@+id/btnOrderParamsDialog"/>
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Карт"
-                android:textSize="16dp"
-                android:id="@+id/btnOrderClintCardSku"/>
+        <Button
+            android:id="@+id/btnOrderDisplayAllRows"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
 
-            <TextView
-                android:id="@+id/tvDeliveyDateSku"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="4dp"
-                android:gravity="center_vertical|center_horizontal"
-                android:text="Дост:"
-                android:textColor="@android:color/background_light"
-                android:textSize="12dp"
-                android:textStyle="bold" />
-        </LinearLayout>
+            android:text="Заказ" />
+
+        <Button
+            android:id="@+id/btnOrderParamsDialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Парам" />
+
+        <Button
+            android:id="@+id/btnOrderClintCardSku"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Карт" />
+
+<!--        <TextView-->
+<!--            android:id="@+id/tvDeliveyDateSku"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:layout_marginLeft="4dp"-->
+<!--            android:gravity="center_vertical|center_horizontal"-->
+<!--            android:text="Дост:"-->
+<!--            android:textColor="@android:color/background_light" />-->
+    </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"

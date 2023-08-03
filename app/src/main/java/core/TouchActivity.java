@@ -147,8 +147,8 @@ public class TouchActivity extends ActionBarActivity {
     {
         //Toast.makeText(TouchActivityInstance, "Timer", Toast.LENGTH_SHORT).show();
         if (appManager.getOurInstance().appSetupInstance.isAppLocked())  return;
-        DlgLockApp dlg = new DlgLockApp(appManager.getOurInstance().appSetupInstance.getActiveWindow());
-            dlg.show();
+//        DlgLockApp dlg = new DlgLockApp(appManager.getOurInstance().appSetupInstance.getActiveWindow());
+//            dlg.show();
     }
 
     @Override

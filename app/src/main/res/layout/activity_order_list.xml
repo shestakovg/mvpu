@@ -31,7 +31,6 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/textViewOrderDate"
                     android:text="Текущая дата"
-                    android:textSize="22sp"
                     />
                 <!--<Button-->
                     <!--android:layout_width="wrap_content"-->
@@ -51,8 +50,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Всего:  "
-                    android:textSize="20dp"
-                    android:textStyle="bold"
+                     android:textStyle="bold"
                     android:textColor="@android:color/background_light" />
 
                 <TextView
@@ -62,7 +60,7 @@
                     android:layout_marginRight="4dp"
                     android:text="0.00"
                     android:textColor="@android:color/background_light"
-                    android:textSize="20dp"
+
                     android:textStyle="bold" />
             </LinearLayout>
         </TableRow>

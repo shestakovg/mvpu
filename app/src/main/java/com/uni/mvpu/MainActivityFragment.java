@@ -169,9 +169,9 @@ public class MainActivityFragment extends Fragment {
                         " COALESCE(orders.orderCount,0) orderCount, COALESCE(pay.payCount,0) payCount, coalesce(noRes.nrcount, 0) nrcount   from route r   " +
                         " left join (select count(h._id) orderCount, h.outletId  from orderHeader h where  DATETIME(h.orderDate) = ? and _send=1   group by h.outletId) orders on orders.outletId = r.outletId " +
                         " left join (select count(p._id) payCount, p.customerid  from pays p where  DATETIME(p.payDate) = ? and p.paySum >= 10 group by p.customerid) pay on pay.customerid = r.CustomerId " +
-                        " left join (select count(nrs._id) nrcount, outletid from No_result_storage nrs where DATETIME(nrs.Date) = ? group by outletid) noRes on noRes.outletId = r.outletId "+
-                        " where r.VisitDayId = "+ dayOfWeek,
-                new String[] { wputils.getDateTime(currentDate), wputils.getDateTime(currentDate), wputils.getDateTime(currentDate)});
+                        " left join (select count(nrs._id) nrcount, outletid from No_result_storage nrs where DATETIME(nrs.Date) = ? group by outletid) noRes on noRes.outletId = r.outletId "
+                        //" where r.VisitDayId = "+ dayOfWeek,
+                ,new String[] { wputils.getDateTime(currentDate), wputils.getDateTime(currentDate), wputils.getDateTime(currentDate)});
         cursor.moveToFirst();
         for (int i = 0; i < cursor.getCount(); i++)
         {

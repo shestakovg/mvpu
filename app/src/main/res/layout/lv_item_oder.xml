@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="50dp">
+    android:layout_height="wrap_content">
     <!--<CheckBox-->
         <!--android:id="@+id/cbBoxListOrderItem"-->
         <!--android:layout_width="wrap_content"-->
@@ -34,13 +34,6 @@
             android:orientation="horizontal"
             android:weightSum="1">
             <TextView
-                android:id="@+id/txtViewListOrderName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Заказ"
-                android:layout_weight="1"
-                 />
-            <TextView
                 android:id="@+id/txtViewListOrderSum"
                 android:text="Сумма:"
                 android:layout_width="wrap_content"
@@ -61,16 +54,14 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/tvListOrderOutletName"
                 android:text="Торговая точка заказа"
-                android:textSize="18dp"
-                android:textStyle="bold"
                 android:textColor="@android:color/background_dark" />
         </LinearLayout>
     </LinearLayout>
 
     <ImageView
         android:id="@+id/ivImage"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="40dp"
+        android:layout_height="30dp"
         android:src="@drawable/read">
     </ImageView>
 </LinearLayout>
