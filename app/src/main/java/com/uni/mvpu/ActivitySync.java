@@ -59,6 +59,7 @@ public class ActivitySync extends TouchActivity {
         priceList = appManager.getOurInstance().getPriceType(this);
         ArrayList<String> arrList = new ArrayList<>();
         priceNameList = new ArrayList<>();
+
         for (String curStr: mSyncOptions){
             arrList.add(curStr);
         }
@@ -73,15 +74,13 @@ public class ActivitySync extends TouchActivity {
         {
             arrList.add(IDLI_SPECIFICATION);
         }
-        String[] syncOptions =        arrList.toArray(new String[arrList.size()] );
+        String[] syncOptions = arrList.toArray(new String[arrList.size()] );
         setContentView(R.layout.activity_sync);
         listSyncOptions = (ListView) findViewById(R.id.listViewSyncOptions);
         listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_multiple_choice, syncOptions);
         listSyncOptions.setAdapter(listAdapter);
         listSyncOptions.setItemsCanFocus(false);
         listSyncOptions.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-
-
     }
 
     @Override
@@ -157,9 +156,8 @@ public class ActivitySync extends TouchActivity {
                     Toast.makeText(this, "Обновление цен по прайс листу "+priceList.get(itemIndex).getPriceName(), Toast.LENGTH_SHORT).show();
                     syncPrice syncPrice = new syncPrice(this, priceList.get(itemIndex), pd);
                     syncPrice.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl1c(), "dictionary/getprice/" + priceList.get(itemIndex).getPriceId()});
-
-
                 }
+
                 switch (listAdapter.getItem(position).toString())
                 {
                     case IDLI_ROUTE:

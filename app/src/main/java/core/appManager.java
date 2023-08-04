@@ -178,15 +178,7 @@ public class appManager {
     {
         DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select distinct PriceId, PriceName from contracts " +
-                " union" +
-                " select 'b07c23b6-ed8d-11e4-9bea-3640b58dd6a2', 'РЫНОК ОПТОВЫЙ'" +
-                " union" +
-                " select '11169df6-6987-11e8-82c8-3640b58dd6a2', 'крупы Ф'" +
-                " union" +
-                " select 'e3c64316-daa6-11e4-826d-240a64c9314e', 'Крупный опт ФАКТ'" +
-                " union" +
-                " select '849d3a4e-f26e-11e5-900e-3640b58dd6a2', 'VIP Клиенты'", null);
+        Cursor cursor = db.rawQuery("select distinct PriceId, PriceName from contracts", null);
         cursor.moveToFirst();
         ArrayList<priceType> result = new ArrayList<>();
         for (int i = 0; i < cursor.getCount(); i++)
