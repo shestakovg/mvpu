@@ -1,5 +1,9 @@
 package sync;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
+import android.util.Base64;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -12,6 +16,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import core.appManager;
 
 /**
  * Created by shestakov.g on 12.06.2015.
@@ -36,6 +42,10 @@ public class ServiceManager4 {
             URL url = new URL(SERVICE_URI + "/"+methodNameAndVariable);
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            String auth =new String(appManager.getOurInstance().appSetupInstance.getBasLogin() + ":" + appManager.getOurInstance().appSetupInstance.getBasPassword());
+            byte[] data1 = auth.getBytes(UTF_8);
+            String base64 = Base64.encodeToString(data1, Base64.NO_WRAP);
+            conn.setRequestProperty("Authorization", "Basic "+base64);
             conn.connect();
 
             InputStream is = conn.getInputStream();

@@ -37,6 +37,7 @@ import interfaces.IManagementGPSLogger;
 import sync.sendOrders;
 import sync.sendPays;
 import sync.sendTask;
+import sync.syncStock;
 
 /**
  * Created by g.shestakov on 26.05.2015.
@@ -284,6 +285,8 @@ public class appManager {
         sendPays pays = new sendPays(context);
         pays.execute();
         new sendTask(context).execute();
+        syncStock syncSt= new syncStock(context);
+        syncSt.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl1c(), "dictionary/getbalancesku/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
     }
 
     public double getOverdueSum(Context context,String customerId, Calendar date)

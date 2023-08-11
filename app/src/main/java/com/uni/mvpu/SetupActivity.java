@@ -23,6 +23,8 @@ public class SetupActivity extends TouchActivity {
     private EditText txtServiceLink1c;
     private EditText txtRouteName;
     private EditText txtEmployeeName;
+    private EditText txtBasLogin;
+    private EditText txtBasPassword;
     //private CheckBox chbAllowGps;
     private Switch chbAllowGps;
     private appManager m_appManager = appManager.getOurInstance();
@@ -38,6 +40,8 @@ public class SetupActivity extends TouchActivity {
         txtEmployeeName  = (EditText) findViewById(R.id.editTextEmployeeName);
         //chbAllowGps = (CheckBox) findViewById(R.id.chbAllowGps);
         chbAllowGps = (Switch) findViewById(R.id.switchAllowGps);
+        txtBasLogin = (EditText) findViewById(R.id.editTextBasLogin);
+        txtBasPassword = (EditText) findViewById(R.id.editTextBasPassword);
         refreshSetup();
     }
 
@@ -52,6 +56,8 @@ public class SetupActivity extends TouchActivity {
         txtEmployeeName.setText(m_appManager.appSetupInstance.getEmployeeName());
         txtRouteName.setText(m_appManager.appSetupInstance.getRouteName());
         chbAllowGps.setChecked(m_appManager.appSetupInstance.getAllowGpsLog());
+        txtBasLogin.setText(m_appManager.appSetupInstance.getBasLogin());
+        txtBasPassword.setText(m_appManager.appSetupInstance.getBasPassword());
     }
 
     @Override
@@ -85,6 +91,8 @@ public class SetupActivity extends TouchActivity {
         m_appManager.appSetupInstance.setRouteName(txtRouteName.getText().toString());
         m_appManager.appSetupInstance.setEmployeeName(txtEmployeeName.getText().toString());
         m_appManager.appSetupInstance.setAllowGpsLog(chbAllowGps.isChecked());
+        m_appManager.appSetupInstance.setBasLogin(txtBasLogin.getText().toString().trim());
+        m_appManager.appSetupInstance.setBasPassword(txtBasPassword.getText().toString().trim());
         m_appManager.appSetupInstance.saveSetup(this);
         m_appManager.appSetupInstance.readSetup(this);
 //        if ( m_appManager.appSetupInstance.getAllowGpsLog())

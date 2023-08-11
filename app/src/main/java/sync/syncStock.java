@@ -22,6 +22,10 @@ public class syncStock extends AsyncTask<String, Integer, List<JSONObject>> {
         this.pd = pd;
     }
 
+    public syncStock(Context context) {
+        this.context = context;
+    }
+
     @Override
     protected List<JSONObject> doInBackground(String... params) {
         ServiceManager4 serviceManager = new ServiceManager4(params[0]);
@@ -46,15 +50,17 @@ public class syncStock extends AsyncTask<String, Integer, List<JSONObject>> {
         {
             syncSaveData.saveStock(jsonObjects, context);
         }
-        if (pd.getProgress() == pd.getMax())
+        if (pd!=null && pd.getProgress() == pd.getMax())
             this.pd.dismiss();
     }
 
     @Override
     protected void onProgressUpdate(Integer... values) {
         super.onProgressUpdate(values);
-        this.pd.incrementProgressBy(values[0]);
-        this.pd.incrementSecondaryProgressBy(values[0]);
-        this.pd.setMessage("Обновление остатков завершено");
+        if (pd != null) {
+            this.pd.incrementProgressBy(values[0]);
+            this.pd.incrementSecondaryProgressBy(values[0]);
+            this.pd.setMessage("Обновление остатков завершено");
+        }
     }
 }

@@ -7,7 +7,6 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.uni.mvpu.SetupActivity"
     android:focusable="true">
-
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -36,7 +35,6 @@
                     android:id="@+id/editTextRouteName"
                     android:textStyle="bold"
                     android:layout_gravity="left"
-                    android:textSize="30dp"
                      />
              <Button
                     android:layout_width="wrap_content"
@@ -54,11 +52,30 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/editTextEmployeeName"
-                android:textSize="30dp"
                 android:layout_gravity="left"
 
              />
-
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Логин BAS"/>
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editTextBasLogin"
+                android:layout_gravity="left"
+             />
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Пароль BAS"/>
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editTextBasPassword"
+                android:inputType="textPassword"
+                android:layout_gravity="left"
+                />
             <!--<CheckBox-->
                 <!--android:layout_width="wrap_content"-->
                 <!--android:layout_height="wrap_content"-->
@@ -99,13 +116,13 @@
                     android:onClick="onClickBtnSave"
                     android:focusable="true"
                     android:layout_gravity="left" />
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Установить пароль"
-                    android:id="@+id/btnSetLockPassword"
-                    android:onClick="onClickSetLockPassword"
-                    android:focusable="true" />
+<!--                <Button-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Установить пароль"-->
+<!--                    android:id="@+id/btnSetLockPassword"-->
+<!--                    android:onClick="onClickSetLockPassword"-->
+<!--                    android:focusable="true" />-->
             </LinearLayout>
             <Button
                 android:layout_width="wrap_content"
@@ -113,8 +130,6 @@
                 android:text="Обновить приложение"
                 android:id="@+id/btnDownloadVersion"
                 android:onClick="onClickDownloadVersion" />
-
-
 </LinearLayout>
 
 

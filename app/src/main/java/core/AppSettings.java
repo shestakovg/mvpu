@@ -42,6 +42,8 @@ public class AppSettings implements IOrderControlParams {
     private final String PARAM_ALLOW_GPS_LOG = "allowGpsLog";
     private final String PARAM_LOCK_PASSWORD = "LOCK_PASSWORD";
     private final String PARAM_ROUTE_TYPE = "ROUTE_TYPE";
+    private final String PARAM_BAS_LOGIN = "BAS_LOGIN";
+    private final String PARAM_BAS_PASSWORD = "BAS_PASSWORD";
 
     public  static final int ORDER_TYPE_ORDER = 0;
     public  static final int ORDER_TYPE_STORECHECK = 1;
@@ -116,6 +118,18 @@ public class AppSettings implements IOrderControlParams {
     }
 
     private UUID employeeID;
+
+    private String basLogin;
+
+    public String getBasPassword() {
+        return basPassword;
+    }
+
+    public void setBasPassword(String basPassword) {
+        this.basPassword = basPassword;
+    }
+
+    private String basPassword;
 
     public boolean isDebtControl() {
         return debtControl;
@@ -254,6 +268,8 @@ public class AppSettings implements IOrderControlParams {
         this.routeId = UUID.randomUUID();
         this.employeeName = "Неизвестный сотрудник";
         this.employeeID = UUID.randomUUID();
+        this.basLogin = "";
+        this.basPassword = "";
       //  readSetup(null);
     }
 
@@ -274,6 +290,8 @@ public class AppSettings implements IOrderControlParams {
         saveParamSetup(db, PARAM_ALLOW_GPS_LOG, (this.allowGpsLog ? "1" : "0"));
         saveParamSetup(db, PARAM_LOCK_PASSWORD, this.lockPasswod);
         saveParamSetup(db, PARAM_ROUTE_TYPE, Integer.toString(this.routeType));
+        saveParamSetup(db, PARAM_BAS_LOGIN, this.basLogin);
+        saveParamSetup(db, PARAM_BAS_PASSWORD, this.basPassword);
         db.close();
     }
 
@@ -311,6 +329,8 @@ public class AppSettings implements IOrderControlParams {
                 case PARAM_ALLOW_GPS_LOG: this.allowGpsLog = (Integer.valueOf(cursor.getString(1)) == 1 ) ; break;
                 case PARAM_LOCK_PASSWORD:this.lockPasswod = cursor.getString(1); break;
                 case PARAM_ROUTE_TYPE:this.routeType = cursor.getInt(1);break;
+                case PARAM_BAS_LOGIN: basLogin = cursor.getString(1); break;
+                case PARAM_BAS_PASSWORD: basPassword = cursor.getString(1); break;
             }
             cursor.moveToNext();
         }
@@ -332,5 +352,12 @@ public class AppSettings implements IOrderControlParams {
 
     private Intent gpsServiceIntent = null;
 
+    public String getBasLogin() {
+        return basLogin;
+    }
+
+    public void setBasLogin(String basLogin) {
+        this.basLogin = basLogin;
+    }
 }
 
