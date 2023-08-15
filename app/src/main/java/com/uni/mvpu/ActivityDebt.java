@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,6 +54,9 @@ public class ActivityDebt extends TouchActivity implements IInputCustomerPay {
         else
         {
             setTitle("Мои оплаты");
+            ((Button)findViewById(R.id.btnClaimPay)).setVisibility(View.INVISIBLE);
+            ((Button)findViewById(R.id.btnEmptyPay)).setVisibility(View.INVISIBLE);
+            ((Button)findViewById(R.id.btnPayRequest)).setVisibility(View.INVISIBLE);
             fillPayList();
         }
 

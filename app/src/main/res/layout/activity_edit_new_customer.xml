@@ -40,6 +40,7 @@
             android:layout_height="wrap_content"
             android:text="Территория"
             android:textColor="?android:attr/editTextColor"
+            android:visibility="invisible"
             android:textStyle="normal|bold" />
         <Spinner
             android:layout_width="match_parent"
@@ -48,11 +49,13 @@
             android:text="Территория"
             android:spinnerMode="dialog"
             android:foreground="@android:color/black"
+            android:visibility="invisible"
             app:spinnerMode="dropdown" />
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:visibility="invisible"
             android:baselineAligned="@bool/abc_action_bar_embed_tabs">
             <LinearLayout
                 android:layout_width="wrap_content"

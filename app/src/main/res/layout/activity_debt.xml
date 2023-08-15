@@ -84,12 +84,14 @@
                     android:text="00000.00"
                     android:textStyle="bold"
                     android:textColor="@android:color/background_dark" />
+
                 <Button
+                    android:id="@+id/btnClaimPay"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Заявить оплату"
-                    android:id="@+id/btnClaimPay"
-                    android:onClick="onClickClaimPay"/>
+                    android:onClick="onClickClaimPay"
+                    android:text="Заявить оплату" />
+
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

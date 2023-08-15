@@ -262,8 +262,8 @@ public class AppSettings implements IOrderControlParams {
     }
 
     public AppSettings() {
-        this.serviceUrl = "http://194.48.209.59:8100";
-        this.serviceUrl1c = "http://194.48.209.59:8101/v82base/hs";
+        this.serviceUrl = "http://193.169.146.15:8001";
+        this.serviceUrl1c = "http://193.169.146.15:8001/1cv8_distr/hs";
         this.routeName =  "Выберите маршрут";
         this.routeId = UUID.randomUUID();
         this.employeeName = "Неизвестный сотрудник";

@@ -329,28 +329,28 @@ public class NewCustomer  implements Serializable {
             this.validationMessage += "Не указан адрес доставки\n";
         }
 
-        if (TerritoryId.isEmpty() || TerritoryName.equals(DeliveryAreaController.DEFAULT_VALUE)) {
-            result = false;
-            this.validationMessage += "Не указана территория\n";
-        }
-
-        if (PriceTypeId.isEmpty() || PriceTypeName.equals(PriceTypeController.DEFAULT_VALUE)) {
-            result = false;
-            this.validationMessage += "Не указан тип цен\n";
-        }
-
-        if (OutletCategotyId < 0  || OutletCategotyName.equals(OutletCategoryController.DEFAULT_VALUE)) {
-            result = false;
-            this.validationMessage += "Не указана категория торговой точки\n";
-        }
-        if (DeliveryDayId < 0  || DeliveryDayName.equals(DayOfWeekController.DEFAULT_VALUE)) {
-            result = false;
-            this.validationMessage += "Не указан день доставки\n";
-        }
-        if (VisitDayId < 0  || VisitDayName.equals(DayOfWeekController.DEFAULT_VALUE)) {
-            result = false;
-            this.validationMessage += "Не указан день визита\n";
-        }
+//        if (TerritoryId.isEmpty() || TerritoryName.equals(DeliveryAreaController.DEFAULT_VALUE)) {
+//            result = false;
+//            this.validationMessage += "Не указана территория\n";
+//        }
+//
+//        if (PriceTypeId.isEmpty() || PriceTypeName.equals(PriceTypeController.DEFAULT_VALUE)) {
+//            result = false;
+//            this.validationMessage += "Не указан тип цен\n";
+//        }
+//
+//        if (OutletCategotyId < 0  || OutletCategotyName.equals(OutletCategoryController.DEFAULT_VALUE)) {
+//            result = false;
+//            this.validationMessage += "Не указана категория торговой точки\n";
+//        }
+//        if (DeliveryDayId < 0  || DeliveryDayName.equals(DayOfWeekController.DEFAULT_VALUE)) {
+//            result = false;
+//            this.validationMessage += "Не указан день доставки\n";
+//        }
+//        if (VisitDayId < 0  || VisitDayName.equals(DayOfWeekController.DEFAULT_VALUE)) {
+//            result = false;
+//            this.validationMessage += "Не указан день визита\n";
+//        }
 
         if (Manager1Name.isEmpty() && Manager2Name.isEmpty())
         {

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Unicom Trade</string>
+    <string name="app_name">Trade agent</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Настройки</string>
     <string name="action_exit">Выход</string>
