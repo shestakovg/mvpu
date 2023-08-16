@@ -38,6 +38,7 @@ public class Order implements Parcelable {
     public Boolean underSumLimit = true;
     public Boolean deliveryDateInitialized = false;
     public Boolean fromAutoOrder = false;
+    public String Comment = "";
 
     public int orderType = AppSettings.ORDER_TYPE_ORDER;
     public Order(int _id, int orderNumber, String orderUUID, Date orderDate, double orderSum) {
@@ -50,13 +51,23 @@ public class Order implements Parcelable {
         generateDescription();
     }
 
+    public Order set1COrderNumber(String docNumber) {
+        _1CDocNumber1 = docNumber;
+        return this;
+    }
+
+    public Order setComment(String comment) {
+        Comment = comment;
+        return this;
+    }
+
     public Order() {
 
     }
 
     private void generateDescription()
     {
-        this.orderDescription = "Заказ № "+this.orderNumber+" от "+ DateFormat.format("dd.MM.yyyy", this.orderDate);
+        this.orderDescription = "№ "+this.orderNumber;//+" от "+ DateFormat.format("dd.MM.yyyy", this.orderDate);
 
     }
 

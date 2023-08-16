@@ -204,7 +204,7 @@ public class ActivityOrderList extends TouchActivity implements IUpdateOrderList
 
 
         Cursor cursor = db.rawQuery("select  h._id,  h.orderUUID,DATETIME(h.orderDate) as orderDate,  h.outletId,  h.orderNumber , h.notes , " +
-                " h.responseText, h._1CDocNumber1,  h._1CDocNumber2, h._send from orderHeader h where outletId = ? and DATETIME(orderDate) = ? and coalesce(h.orderType,0)="+ Integer.toString(orderType),
+                " h.responseText, h._1CDocNumber1,  h._1CDocNumber2, h._send, h.comment, h.comment2 from orderHeader h where outletId = ? and DATETIME(orderDate) = ? and coalesce(h.orderType,0)="+ Integer.toString(orderType),
                 new String[] {outletid, wputils.getDateTime(orderDate)});
         //, wputils.getDateTime(orderDate)
         cursor.moveToFirst();
@@ -221,6 +221,9 @@ public class ActivityOrderList extends TouchActivity implements IUpdateOrderList
                     new Date(orderDate.get(Calendar.YEAR)-1900,
                             orderDate.get(Calendar.MONTH), orderDate.get(Calendar.DAY_OF_MONTH)),
                     0);
+
+            order.set1COrderNumber(cursor.isNull(cursor.getColumnIndex("_1CDocNumber1")) ? "" : cursor.getString(cursor.getColumnIndex("_1CDocNumber1")))
+                    .setComment(cursor.isNull(cursor.getColumnIndex("comment")) ? "" : cursor.getString(cursor.getColumnIndex("comment")));
 
             order.orderSum = (orderType == AppSettings.ORDER_TYPE_ORDER ? getOrderSum(db, order._id) : 0);
             order.outletId = cursor.getString(cursor.getColumnIndex("outletId"));

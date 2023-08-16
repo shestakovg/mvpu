@@ -37,6 +37,7 @@ import interfaces.IManagementGPSLogger;
 import sync.sendOrders;
 import sync.sendPays;
 import sync.sendTask;
+import sync.syncOrderStatus;
 import sync.syncStock;
 
 /**
@@ -280,6 +281,8 @@ public class appManager {
     }
     public void sendDataToServer(Context context, Activity owner)
     {
+        syncOrderStatus os = new syncOrderStatus(context);
+        os.execute(new String[]{appManager.getOurInstance().appSetupInstance.getServiceUrl1c(), "dictionary/getOrderStatus/" + appManager.getOurInstance().appSetupInstance.getRouteId()});
         sendOrders so = new  sendOrders(context, owner);
         so.execute();
         sendPays pays = new sendPays(context);

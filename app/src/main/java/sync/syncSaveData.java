@@ -11,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.Locale;
 
 import Entitys.Task;
 import Entitys.priceType;
@@ -478,6 +479,25 @@ public class syncSaveData {
         }
         db.close();
         Toast.makeText(context, "Обновление изменений цен завершено", Toast.LENGTH_LONG).show();
+    }
+
+    public static void saveOrderStatusChanges(List<JSONObject> jsonObjects, Context context) throws JSONException {
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        for (JSONObject jsonObject: jsonObjects) {
+            String updateText = "update orderHeader set _1CDocNumber1 = ?, _1CDocNumber2 = ?," +
+                    "_1CDocId1 = ?, _1CDocId2 = ?, comment = ?, comment2 = ?" +
+                    " where orderUUID = ?";
+            db.execSQL(updateText, new String[] {
+                    jsonObject.getString("_1CDocNumber1"), jsonObject.getString("_1CDocNumber2"),
+                    jsonObject.getString("_1CDocId1"), jsonObject.getString("_1CDocId2"),
+                    jsonObject.getString("comment"), jsonObject.getString("comment2"),
+                    jsonObject.getString("orderUUID").toLowerCase(Locale.ROOT)
+            });
+        }
+        db.close();
+        if (jsonObjects.size() > 0)
+            Toast.makeText(context, "Обновлен статус заказов", Toast.LENGTH_LONG).show();
     }
 }
 
