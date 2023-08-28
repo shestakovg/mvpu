@@ -329,10 +329,10 @@ public class NewCustomer  implements Serializable {
             this.validationMessage += "Не указан адрес доставки\n";
         }
 
-//        if (TerritoryId.isEmpty() || TerritoryName.equals(DeliveryAreaController.DEFAULT_VALUE)) {
-//            result = false;
-//            this.validationMessage += "Не указана территория\n";
-//        }
+        if (TerritoryId.isEmpty() || TerritoryName.equals(DeliveryAreaController.DEFAULT_VALUE)) {
+            result = false;
+            this.validationMessage += "Не указана территория\n";
+        }
 //
 //        if (PriceTypeId.isEmpty() || PriceTypeName.equals(PriceTypeController.DEFAULT_VALUE)) {
 //            result = false;

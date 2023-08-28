@@ -103,4 +103,28 @@ public class OrderExtra extends Order {
         db.execSQL("update  orderHeader set _send=2 where DATETIME(orderDate) = ? and  outletId = ? ", new String[] {wputils.getDateTime(orderExtra.orderDateCalendar), orderExtra.outletId});
         db.close();
     }
+
+    public static void setOrderToActive(int id, Context context)
+    {
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        db.execSQL("update  orderHeader set _send=0 where _id = ? ", new String[]{Integer.toString(id)});
+        db.close();
+    }
+
+    public static void setOrderToInactive(int id, Context context)
+    {
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        db.execSQL("update  orderHeader set _send=2 where _id = ? ", new String[]{Integer.toString(id)});
+        db.close();
+    }
+
+    public static void setOrderAsDeleted(int id, Context context)
+    {
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbOpenHelper.getWritableDatabase();
+        db.execSQL("update  orderHeader set _send=3 where _id = ? ", new String[]{Integer.toString(id)});
+        db.close();
+    }
 }

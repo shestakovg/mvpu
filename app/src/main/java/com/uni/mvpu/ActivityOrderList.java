@@ -196,7 +196,7 @@ public class ActivityOrderList extends TouchActivity implements IUpdateOrderList
         return  result;
     }
 
-    private void fillOrders()
+    public void fillOrders()
     {
         ArrayList<Order> orders = new ArrayList<>();
         DbOpenHelper dbOpenHelper = new DbOpenHelper(this);
@@ -230,10 +230,13 @@ public class ActivityOrderList extends TouchActivity implements IUpdateOrderList
             if (cursor.getInt(cursor.getColumnIndex("_send"))==2)
             {
                 order.underSumLimit =true;
+                order.allowToSend  = false;
             }
             else {
                 order.underSumLimit =false;
                 order.sended = cursor.getInt(cursor.getColumnIndex("_send")) == 1;
+                order.allowToSend  = cursor.getInt(cursor.getColumnIndex("_send")) == 0;
+                order.deleted  = cursor.getInt(cursor.getColumnIndex("_send")) == 3;
             }
             orders.add(order);
             cursor.moveToNext();
@@ -276,10 +279,13 @@ public class ActivityOrderList extends TouchActivity implements IUpdateOrderList
             if (cursor.getInt(cursor.getColumnIndex("_send"))==2)
             {
                 order.underSumLimit =true;
+                order.allowToSend  = false;
             }
             else {
                 order.underSumLimit =false;
                 order.sended = cursor.getInt(cursor.getColumnIndex("_send")) == 1;
+                order.allowToSend  = cursor.getInt(cursor.getColumnIndex("_send")) == 0;;
+                order.deleted  = cursor.getInt(cursor.getColumnIndex("_send")) == 3;
             }
             orders.add(order);
             cursor.moveToNext();

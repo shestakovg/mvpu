@@ -26,7 +26,6 @@ public class syncSku extends AsyncTask<String, Integer, List<JSONObject>> {
     @Override
     protected List<JSONObject> doInBackground(String... params) {
         ServiceManager4 serviceManager = new ServiceManager4(params[0]);
-        publishProgress(1);
         return serviceManager.CallDataServiceMultiply(params[1]);
     }
 
@@ -44,6 +43,7 @@ public class syncSku extends AsyncTask<String, Integer, List<JSONObject>> {
             return;
         }
         syncSaveData.saveSkuExt(jsonObjects, context);
+        publishProgress(1);
         if (pd.getProgress() == pd.getMax())
             this.pd.dismiss();
     }

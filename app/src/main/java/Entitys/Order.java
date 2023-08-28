@@ -34,6 +34,8 @@ public class Order implements Parcelable {
     public String _1CDocNumber2="";
     public String  notes="";
     public String outletId;
+    public Boolean allowToSend = false;
+    public Boolean deleted = false;
     public Boolean sended = false;
     public Boolean underSumLimit = true;
     public Boolean deliveryDateInitialized = false;

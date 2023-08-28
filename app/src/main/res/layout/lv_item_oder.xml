@@ -8,10 +8,20 @@
         <!--android:layout_height="wrap_content">-->
     <!--</CheckBox>-->
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="55dp"
         android:layout_height="wrap_content"
         android:text="..."
         android:id="@+id/btnOrderListItem"/>
+    <Button
+        android:layout_width="45dp"
+        android:layout_height="wrap_content"
+        android:text="X"
+        android:id="@+id/btnDeleteOrderListItem"/>
+    <Button
+        android:layout_width="45dp"
+        android:layout_height="wrap_content"
+        android:text=">"
+        android:id="@+id/btnMarkToSendOrderListItem"/>
     <!--<ImageButton-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="wrap_content"-->

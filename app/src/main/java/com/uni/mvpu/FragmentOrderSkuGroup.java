@@ -113,13 +113,9 @@ public class FragmentOrderSkuGroup extends Fragment {
                                                }
                                            }
                                        }
-
         );
-
         return parentView;
     }
-
-
 
     @Override
     public void onSaveInstanceState(Bundle outState) {

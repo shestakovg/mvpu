@@ -1,6 +1,12 @@
 package Adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Paint;
+import android.text.Spannable;
+import android.text.Spanned;
+import android.text.style.StrikethroughSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.uni.mvpu.ActivityOrderList;
 import com.uni.mvpu.R;
 
 import java.util.ArrayList;
@@ -18,6 +25,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import Entitys.Order;
+import Entitys.OrderExtra;
 import Entitys.OutletObject;
 import core.OrderListMode;
 import core.appManager;
@@ -78,7 +86,15 @@ public class orderListAdapter extends BaseAdapter {
         OutletObject olObj = OutletObject.getInstance(UUID.fromString(order.outletId) ,  context);
         //((TextView) view.findViewById(R.id.txtViewListOrderName)).setText(order.orderDescription);
         //((TextView) view.findViewById(R.id.txtViewListOrderName)).setText("");
-        ((TextView) view.findViewById(R.id.txtViewListOrderSum)).setText("Сумма: "+wputils.withTwoDecimalPlaces(order.orderSum));
+        TextView sumTv = ((TextView) view.findViewById(R.id.txtViewListOrderSum));
+        String sumStr = "Сумма: "+wputils.withTwoDecimalPlaces(order.orderSum);
+        sumTv.setText("Сумма: "+wputils.withTwoDecimalPlaces(order.orderSum));
+        if (order.deleted) {
+            sumTv.setPaintFlags(sumTv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        } else {
+            sumTv.setPaintFlags(sumTv.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
+        }
+
         //((TextView) view.findViewById(R.id.tvListOrderOutletName)).setText(olObj.outletName+"  "+olObj.outletAddress);
         String secondRowText = order.orderDescription + (order._1CDocNumber1.isEmpty() ? "" : ". BAS: "+order._1CDocNumber1) +". "+order.Comment;
         ((TextView) view.findViewById(R.id.tvListOrderOutletName)).setText(secondRowText);
@@ -102,6 +118,24 @@ public class orderListAdapter extends BaseAdapter {
                 btnOrderListItemClick(v);
             }
         });
+
+        Button btnDelete = (Button) view.findViewById(R.id.btnDeleteOrderListItem);
+        btnDelete.setTag(position);
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MarkOrderAsDeleted(v);
+            }
+        });
+
+        Button btnMarkToSend = (Button) view.findViewById(R.id.btnMarkToSendOrderListItem);
+        btnMarkToSend.setTag(position);
+        btnMarkToSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MarkOrderToSend(v);
+            }
+        });
         //((TextView) view.findViewById(R.id.txtViewListOrderName)).setText(order.orderDescription);
         return view;
     }
@@ -112,5 +146,74 @@ public class orderListAdapter extends BaseAdapter {
         context.startActivity(appManager.getOurInstance().getOrderActivityIntent(((Order) getItem(position)), context,((Order) getItem(position)).outletId));
 
         //Toast.makeText(context,((Order) getItem(position)).orderDescription, Toast.LENGTH_SHORT).show();
+    }
+
+    public void MarkOrderAsDeleted(View view)
+    {
+        int position = (Integer) view.getTag();
+        final Order orderPos = ((Order) getItem(position));
+        final int id = orderPos._id;
+        AlertDialog.Builder ad = new AlertDialog.Builder(context);
+        ad.setTitle("Удаление заказа");
+        if (orderPos.sended) {
+            ad.setMessage("Заказ отправлен. Удаление невозможно!");
+            ad.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int arg1) {
+
+                }
+            });
+            ad.show();
+        } else {
+            ad.setMessage("Удалить заказ?");
+            ad.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int arg1) {
+                    OrderExtra.setOrderAsDeleted(id, context);
+                    ((ActivityOrderList) context).fillOrders();
+                }
+            });
+            ad.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int arg1) {
+
+                }
+            });
+            ad.show();
+        }
+    }
+
+    public void MarkOrderToSend(View view)
+    {
+        int position = (Integer) view.getTag();
+        final Order orderPos = ((Order) getItem(position));
+        final int id = orderPos._id;
+        AlertDialog.Builder ad = new AlertDialog.Builder(context);
+        //ad.setTitle(context.getString(R.string.orderControlMessage));
+        if (orderPos.deleted) {
+            ad.setMessage("Заказ удален. Изменение невозможно!");
+            ad.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int arg1) {
+
+                }
+            });
+            ad.show();
+        } else {
+            ad.setMessage(orderPos.allowToSend ? "Не отправлять заказ?" : "Отметить заказ к отправке?");
+            ad.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int arg1) {
+                    if (orderPos.allowToSend) {
+                        OrderExtra.setOrderToInactive(id, context);
+                    } else {
+                        OrderExtra.setOrderToActive(id, context);
+                    }
+
+                    ((ActivityOrderList) context).fillOrders();
+                }
+            });
+            ad.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int arg1) {
+
+                }
+            });
+            ad.show();
+        }
     }
 }
