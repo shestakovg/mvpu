@@ -1,77 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+    android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <!--<CheckBox-->
         <!--android:id="@+id/cbBoxListOrderItem"-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="wrap_content">-->
     <!--</CheckBox>-->
-    <Button
-        android:layout_width="55dp"
-        android:layout_height="wrap_content"
-        android:text="..."
-        android:id="@+id/btnOrderListItem"/>
-    <Button
-        android:layout_width="45dp"
-        android:layout_height="wrap_content"
-        android:text="X"
-        android:id="@+id/btnDeleteOrderListItem"/>
-    <Button
-        android:layout_width="45dp"
-        android:layout_height="wrap_content"
-        android:text=">"
-        android:id="@+id/btnMarkToSendOrderListItem"/>
-    <!--<ImageButton-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/btnImgOrderListItem"-->
-        <!--android:src="@drawable/play"-->
-        <!--/>-->
     <LinearLayout
-        android:id="@+id/linearLayout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_weight="1"
-        android:orientation="vertical"
-        android:weightSum="1">
+        android:layout_marginLeft="1dp"
+        android:orientation="horizontal"
+    >
+        <Button
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:text="..."
+            android:id="@+id/btnOrderListItem"/>
+        <Button
+            android:layout_width="45dp"
+            android:layout_height="wrap_content"
+            android:text="X"
+            android:id="@+id/btnDeleteOrderListItem"/>
+        <Button
+            android:layout_width="45dp"
+            android:layout_height="wrap_content"
+            android:text=">"
+            android:id="@+id/btnMarkToSendOrderListItem"/>
+        <!--<ImageButton-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:id="@+id/btnImgOrderListItem"-->
+            <!--android:src="@drawable/play"-->
+            <!--/>-->
         <LinearLayout
-            android:id="@+id/linearLayout3"
+            android:id="@+id/linearLayout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
             android:layout_weight="1"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:weightSum="1">
-            <TextView
-                android:id="@+id/txtViewListOrderSum"
-                android:text="Сумма:"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/linearLayout3"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:textStyle="bold" />
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/linearLayout2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="1">
+                <TextView
+                    android:id="@+id/txtViewListOrderSum"
+                    android:text="Сумма:"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:textStyle="bold" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
 
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:weightSum="1">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/tvListOrderOutletName"
-                android:text="Торговая точка заказа"
-                android:textColor="@android:color/background_dark" />
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:weightSum="1">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvListOrderOutletName"
+                    android:text="Торговая точка заказа"
+                    android:textColor="@android:color/background_dark" />
+            </LinearLayout>
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/ivImage"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:src="@drawable/read">
+        </ImageView>
     </LinearLayout>
-
-    <ImageView
-        android:id="@+id/ivImage"
-        android:layout_width="40dp"
-        android:layout_height="30dp"
-        android:src="@drawable/read">
-    </ImageView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvAdditionalInfo"
+        android:text="Торговая точка заказа и еще что то"
+        android:textColor="@android:color/background_dark" />
 </LinearLayout>

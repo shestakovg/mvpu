@@ -59,7 +59,7 @@ public final class wputils {
     {
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "dd.MM.yyyy", Locale.getDefault());
-        return dateFormat.format(date );
+        return dateFormat.format(date);
     }
     public static String getDateTimeString(Calendar calendar) {
         int year = calendar.get(Calendar.YEAR);

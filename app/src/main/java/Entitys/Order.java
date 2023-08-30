@@ -41,7 +41,8 @@ public class Order implements Parcelable {
     public Boolean deliveryDateInitialized = false;
     public Boolean fromAutoOrder = false;
     public String Comment = "";
-
+    public Boolean onlyOneClient = true;
+    public String outletName = "";
     public int orderType = AppSettings.ORDER_TYPE_ORDER;
     public Order(int _id, int orderNumber, String orderUUID, Date orderDate, double orderSum) {
         //this.orderDescription = orderDescription;

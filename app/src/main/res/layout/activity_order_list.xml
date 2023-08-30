@@ -1,9 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.uni.mvpu.ActivityOrderList">
     <TableLayout
         android:layout_width="fill_parent"
@@ -15,16 +12,16 @@
                 android:gravity="left"
                 android:orientation="horizontal">
                 <Button
-                    android:layout_width="wrap_content"
+                    android:layout_width="45dp"
                     android:layout_height="wrap_content"
                     android:id="@+id/btnAddNewOrder"
-                    android:text="Добавить"
+                    android:text="+"
                      />
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/btnAddStocktemplateOrder"
-                    android:text="Автозаказ"
+                    android:text="Ав.Зак"
                     />
                 <TextView
                     android:layout_width="wrap_content"
@@ -32,6 +29,11 @@
                     android:id="@+id/textViewOrderDate"
                     android:text="Текущая дата"
                     />
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Все"
+                    android:id="@+id/checkboxAllOrders"/>
                 <!--<Button-->
                     <!--android:layout_width="wrap_content"-->
                     <!--android:layout_height="wrap_content"-->

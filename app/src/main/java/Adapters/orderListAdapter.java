@@ -87,7 +87,6 @@ public class orderListAdapter extends BaseAdapter {
         //((TextView) view.findViewById(R.id.txtViewListOrderName)).setText(order.orderDescription);
         //((TextView) view.findViewById(R.id.txtViewListOrderName)).setText("");
         TextView sumTv = ((TextView) view.findViewById(R.id.txtViewListOrderSum));
-        String sumStr = "Сумма: "+wputils.withTwoDecimalPlaces(order.orderSum);
         sumTv.setText("Сумма: "+wputils.withTwoDecimalPlaces(order.orderSum));
         if (order.deleted) {
             sumTv.setPaintFlags(sumTv.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
@@ -96,7 +95,7 @@ public class orderListAdapter extends BaseAdapter {
         }
 
         //((TextView) view.findViewById(R.id.tvListOrderOutletName)).setText(olObj.outletName+"  "+olObj.outletAddress);
-        String secondRowText = order.orderDescription + (order._1CDocNumber1.isEmpty() ? "" : ". BAS: "+order._1CDocNumber1) +". "+order.Comment;
+        String secondRowText = wputils.formatDate(order.orderDate) +" "+ order.orderDescription + (order._1CDocNumber1.isEmpty() ? "" : ". BAS: "+order._1CDocNumber1) +". "+order.Comment;
         ((TextView) view.findViewById(R.id.tvListOrderOutletName)).setText(secondRowText);
         ImageView orderSended = (ImageView) view.findViewById(R.id.ivImage);
         //orderSended.setImageResource(R.drawable.document_16);
@@ -137,6 +136,14 @@ public class orderListAdapter extends BaseAdapter {
             }
         });
         //((TextView) view.findViewById(R.id.txtViewListOrderName)).setText(order.orderDescription);
+
+        if (order.onlyOneClient) {
+            ((TextView) view.findViewById(R.id.tvAdditionalInfo)).setVisibility(View.INVISIBLE);
+            ((TextView) view.findViewById(R.id.tvAdditionalInfo)).setHeight(0);
+        } else {
+            ((TextView) view.findViewById(R.id.tvAdditionalInfo)).setVisibility(View.VISIBLE);
+            ((TextView) view.findViewById(R.id.tvAdditionalInfo)).setText(order.outletName);
+        }
         return view;
     }
 
@@ -168,7 +175,7 @@ public class orderListAdapter extends BaseAdapter {
             ad.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int arg1) {
                     OrderExtra.setOrderAsDeleted(id, context);
-                    ((ActivityOrderList) context).fillOrders();
+                    ((ActivityOrderList) context).updateOrderList();
                 }
             });
             ad.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
@@ -205,7 +212,7 @@ public class orderListAdapter extends BaseAdapter {
                         OrderExtra.setOrderToActive(id, context);
                     }
 
-                    ((ActivityOrderList) context).fillOrders();
+                    ((ActivityOrderList) context).updateOrderList();
                 }
             });
             ad.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {

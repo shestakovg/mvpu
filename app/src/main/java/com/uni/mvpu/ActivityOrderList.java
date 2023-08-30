@@ -14,12 +14,15 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -49,6 +52,7 @@ public class ActivityOrderList extends TouchActivity implements IUpdateOrderList
     private Button btnAddStocktemplate;
     private ListView  lvMain;
     private ArrayList<String> onlyAutoOrderAllowed = new ArrayList<String>(Arrays.asList("Минимаркет", "Мнинимаркет (сеть до 10 ТТ)", "Супермаркет (более 10 ТТ)"));
+    private CheckBox cbAllOrders;
 
     int DIALOG_DATE = 1;
     private int orderType = AppSettings.ORDER_TYPE_ORDER;
@@ -66,6 +70,19 @@ public class ActivityOrderList extends TouchActivity implements IUpdateOrderList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_list);
+
+        cbAllOrders = (CheckBox)  findViewById(R.id.checkboxAllOrders);
+        cbAllOrders.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateOrderList();
+                if (cbAllOrders.isChecked()) {
+                    tvOrderDate.setVisibility(View.INVISIBLE);
+                } else {
+                    tvOrderDate.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
         outletid = getIntent().getStringExtra("outletid");
         if (!outletid.isEmpty()) {
@@ -87,8 +104,8 @@ public class ActivityOrderList extends TouchActivity implements IUpdateOrderList
 
         orderDate = Calendar.getInstance();
         orderDate.setTime(new Date());
-        tvOrderDate.setText(DateFormat.format((orderType == AppSettings.ORDER_TYPE_ORDER ? getResources().getString(R.string.order_list_title) : getResources().getString(R.string.storecheck_list_title)) + " dd.MM.yyyy", orderDate));
-
+        //tvOrderDate.setText(DateFormat.format((orderType == AppSettings.ORDER_TYPE_ORDER ? "Date:" : "Date:") + " dd.MM.yyyy", orderDate));
+        tvOrderDate.setText(DateFormat.format(" dd.MM.yyyy", orderDate));
 
         tvOrderDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,9 +160,12 @@ public class ActivityOrderList extends TouchActivity implements IUpdateOrderList
         super.onPostResume();
         //Toast.makeText(this,"onPostResume", Toast.LENGTH_SHORT).show();
         updateOrderList();
+        if (cbAllOrders.isChecked()) {
+            tvOrderDate.setVisibility(View.INVISIBLE);
+        } else {
+            tvOrderDate.setVisibility(View.VISIBLE);
+        }
     }
-
-
 
 //    @Override
 //    public boolean dispatchTouchEvent(MotionEvent ev) {
@@ -202,10 +222,20 @@ public class ActivityOrderList extends TouchActivity implements IUpdateOrderList
         DbOpenHelper dbOpenHelper = new DbOpenHelper(this);
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
 
+        Calendar secondDate = (Calendar) orderDate.clone();
+        if (cbAllOrders.isChecked()) {
+            orderDate = Calendar.getInstance();
+            orderDate.setTime(new Date());
+            secondDate = (Calendar) orderDate.clone();
+            secondDate.add(Calendar.MONTH, -1);
+        }
+
+
 
         Cursor cursor = db.rawQuery("select  h._id,  h.orderUUID,DATETIME(h.orderDate) as orderDate,  h.outletId,  h.orderNumber , h.notes , " +
-                " h.responseText, h._1CDocNumber1,  h._1CDocNumber2, h._send, h.comment, h.comment2 from orderHeader h where outletId = ? and DATETIME(orderDate) = ? and coalesce(h.orderType,0)="+ Integer.toString(orderType),
-                new String[] {outletid, wputils.getDateTime(orderDate)});
+                " h.responseText, h._1CDocNumber1,  h._1CDocNumber2, h._send, h.comment, h.comment2 from orderHeader h where outletId = ? and DATETIME(orderDate) between ? and ? and coalesce(h.orderType,0)="+ Integer.toString(orderType) +
+                " order by DATETIME(h.orderDate) desc",
+                new String[] {outletid, wputils.getDateTime(secondDate), wputils.getDateTime(orderDate)});
         //, wputils.getDateTime(orderDate)
         cursor.moveToFirst();
         maxOrderNumber = cursor.getCount();
@@ -215,11 +245,17 @@ public class ActivityOrderList extends TouchActivity implements IUpdateOrderList
 //        this.orderDate = orderDate;
 //        this.orderSum = orderSum;
         for (int i = 0; i < cursor.getCount(); i++) {
+            Date dbOrderDate = new Date();
+            SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                dbOrderDate = iso8601Format.parse(cursor.getString(cursor.getColumnIndex("orderDate")));
+            } catch (ParseException e) {
+                int a =1;
+            }
             Order order = new Order( cursor.getInt(cursor.getColumnIndex("_id"))
                     , cursor.getInt(cursor.getColumnIndex("orderNumber"))
                     , cursor.getString(cursor.getColumnIndex("orderUUID")),
-                    new Date(orderDate.get(Calendar.YEAR)-1900,
-                            orderDate.get(Calendar.MONTH), orderDate.get(Calendar.DAY_OF_MONTH)),
+                    dbOrderDate,
                     0);
 
             order.set1COrderNumber(cursor.isNull(cursor.getColumnIndex("_1CDocNumber1")) ? "" : cursor.getString(cursor.getColumnIndex("_1CDocNumber1")))
@@ -253,12 +289,19 @@ public class ActivityOrderList extends TouchActivity implements IUpdateOrderList
         DbOpenHelper dbOpenHelper = new DbOpenHelper(this);
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
 
-
+        Calendar secondDate = (Calendar) orderDate.clone();
+        if (cbAllOrders.isChecked()) {
+            orderDate = Calendar.getInstance();
+            orderDate.setTime(new Date());
+            secondDate = (Calendar) orderDate.clone();
+            secondDate.add(Calendar.MONTH, -1);
+        }
         Cursor cursor = db.rawQuery("select  h._id,  h.orderUUID,DATETIME(h.orderDate) as orderDate,  h.outletId,  h.orderNumber , h.notes , " +
-                        " h.responseText, h._1CDocNumber1,  h._1CDocNumber2, h._send from orderHeader h " +
-                        " inner join (select distinct outletId from  route) r on r.outletId = h.outletId" +
-                        " where   DATETIME(h.orderDate) = ? and coalesce(h.orderType,0)="+ Integer.toString(orderType),
-                new String[] { wputils.getDateTime(orderDate)});
+                        " h.responseText, h._1CDocNumber1,  h._1CDocNumber2, h._send, r.outletDescription from orderHeader h " +
+                        " inner join (select distinct outletId, outletName as outletDescription from  route) r on r.outletId = h.outletId" +
+                        " where   DATETIME(h.orderDate) between ? and ? and coalesce(h.orderType,0)="+ Integer.toString(orderType)+
+                        " order by DATETIME(h.orderDate) desc",
+                new String[] { wputils.getDateTime(secondDate), wputils.getDateTime(orderDate)});
         //, wputils.getDateTime(orderDate)
         cursor.moveToFirst();
         maxOrderNumber = cursor.getCount();
@@ -268,12 +311,21 @@ public class ActivityOrderList extends TouchActivity implements IUpdateOrderList
 //        this.orderDate = orderDate;
 //        this.orderSum = orderSum;
         for (int i = 0; i < cursor.getCount(); i++) {
+            Date dbOrderDate = new Date();
+            SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                dbOrderDate = iso8601Format.parse(cursor.getString(cursor.getColumnIndex("orderDate")));
+            } catch (ParseException e) {
+                int a =1;
+            }
+
             Order order = new Order( cursor.getInt(cursor.getColumnIndex("_id"))
                     , cursor.getInt(cursor.getColumnIndex("orderNumber"))
                     , cursor.getString(cursor.getColumnIndex("orderUUID")),
-                    new Date(orderDate.get(Calendar.YEAR)-1900,
-                            orderDate.get(Calendar.MONTH), orderDate.get(Calendar.DAY_OF_MONTH)),
+                    dbOrderDate,
                     0);
+            order.onlyOneClient = false;
+            order.outletName = cursor.getString(cursor.getColumnIndex("outletDescription"));
             order.orderSum = (orderType == AppSettings.ORDER_TYPE_ORDER ? getOrderSum(db, order._id) : 0);
             order.outletId = cursor.getString(cursor.getColumnIndex("outletId"));
             if (cursor.getInt(cursor.getColumnIndex("_send"))==2)
@@ -317,7 +369,7 @@ public class ActivityOrderList extends TouchActivity implements IUpdateOrderList
 //            myMonth = monthOfYear;
 //            myDay = dayOfMonth;
             orderDate = new GregorianCalendar (year, monthOfYear, dayOfMonth);
-            tvOrderDate.setText("Дата: "+DateFormat.format("dd.MM.yyyy",orderDate));
+            tvOrderDate.setText(DateFormat.format("dd.MM.yyyy",orderDate));
 
             updateOrderList();
         }
@@ -326,7 +378,7 @@ public class ActivityOrderList extends TouchActivity implements IUpdateOrderList
     private void onClickAddNewOrder(View v)
     {
         appManager.getOurInstance().addNewOrder(this, outletid, maxOrderNumber+1, orderDate, orderType);
-        fillOrders();
+        updateOrderList();
     }
 
     private void onClickAddStocktemplateOrder(View v)
@@ -355,7 +407,7 @@ public class ActivityOrderList extends TouchActivity implements IUpdateOrderList
         this.startActivity(appManager.getOurInstance().getOrderActivityIntent(order, this,outletid));
     }
 
-    private void updateOrderList()
+    public void updateOrderList()
     {
         if (orderMode == OrderListMode.ordersByOutlets) {
             fillOrders();
