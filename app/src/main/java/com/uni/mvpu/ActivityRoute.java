@@ -269,9 +269,6 @@ public class ActivityRoute extends TouchActivity {
         Calendar currentDate = Calendar.getInstance();
         currentDate.setTime(new Date());
         boolean paymentExists = appManager.getOurInstance().checkAnnouncedSum(getBaseContext(), selectedOutlet.customerId.toString(), currentDate);
-
-
-
 //        try {
 //            if (appManager.getOurInstance().appSetupInstance.getAllowGpsLog() && LocationDatabase.getInstance() != null && LocationDatabase.getInstance().isLocated()) {
 //                if (appManager.getOurInstance().getYesNoWithExecutionStop("Отметка в торговой точке", "Отметить посещение " + selectedOutlet.outletName, currentContext, R.drawable.placeholder,
@@ -284,7 +281,7 @@ public class ActivityRoute extends TouchActivity {
 //        catch (Exception e)   { Toast.makeText(currentContext,e.getMessage(),Toast.LENGTH_SHORT).show();      }
 
         try {
-                if (!paymentExists && appManager.getOurInstance().appSetupInstance.getRouteType()!=1)
+                if (appManager.getOurInstance().appSetupInstance.isDebtControl() && !paymentExists && appManager.getOurInstance().appSetupInstance.getRouteType()!=1)
                 {
                     AlertDialog.Builder builder = new AlertDialog.Builder(currentContext);
                     builder.setTitle("Важное сообщение!")
@@ -309,7 +306,7 @@ public class ActivityRoute extends TouchActivity {
         OverdueExists =
                 (overdueSum - appManager.getOurInstance().appSetupInstance.getAllowOverdueSum()) >0 && appManager.getOurInstance().appSetupInstance.isDebtControl() ;
 
-        if (OverdueExists && orderType== AppSettings.ORDER_TYPE_ORDER &&  appManager.getOurInstance().appSetupInstance.getRouteType()!=1)
+         if (OverdueExists && orderType== AppSettings.ORDER_TYPE_ORDER &&  appManager.getOurInstance().appSetupInstance.getRouteType()!=1)
         {
             //Toast.makeText(getBaseContext(), "Просрочка "+Double.toString(overdueSum), Toast.LENGTH_LONG).show();
             AlertDialog.Builder builder = new AlertDialog.Builder(currentContext);
@@ -333,7 +330,7 @@ public class ActivityRoute extends TouchActivity {
         }
 
         if (
-                (paymentExists && !OverdueExists && orderType== AppSettings.ORDER_TYPE_ORDER)
+                (!appManager.getOurInstance().appSetupInstance.isDebtControl() || (paymentExists && !OverdueExists && orderType== AppSettings.ORDER_TYPE_ORDER))
                 ||
                         appManager.getOurInstance().appSetupInstance.getRouteType()==1
                 )
