@@ -180,6 +180,10 @@ public class appManager {
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select distinct PriceId, PriceName from contracts " +
                 " union" +
+                " select '75a9d611-cd75-11e4-826a-240a64c9314e', 'Вид 14'" +
+                " union" +
+                " select '75a9d613-cd75-11e4-826a-240a64c9314e', 'Вид 7'" +
+                " union" +
                 " select 'b07c23b6-ed8d-11e4-9bea-3640b58dd6a2', 'РЫНОК ОПТОВЫЙ'" +
                 " union" +
                 " select '11169df6-6987-11e8-82c8-3640b58dd6a2', 'крупы Ф'" +

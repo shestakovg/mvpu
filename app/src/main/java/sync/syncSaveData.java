@@ -234,7 +234,21 @@ public class syncSaveData {
         }
 
         db.execSQL("insert into PriceNames " +
-                "select distinct PriceId , PriceName from contracts con where not exists (select * from PriceNames pn where pn.PriceId = con.PriceId)");
+                "select PriceId, PriceName from " +
+                    " (select distinct PriceId , PriceName from contracts con" +
+                    " union" +
+                    " select '75a9d611-cd75-11e4-826a-240a64c9314e', 'Вид 14'" +
+                    " union" +
+                    " select '75a9d613-cd75-11e4-826a-240a64c9314e', 'Вид 7'" +
+                    " union" +
+                    " select 'b07c23b6-ed8d-11e4-9bea-3640b58dd6a2', 'РЫНОК ОПТОВЫЙ'" +
+                    " union" +
+                    " select '11169df6-6987-11e8-82c8-3640b58dd6a2', 'крупы Ф'" +
+                    " union" +
+                    " select 'e3c64316-daa6-11e4-826d-240a64c9314e', 'Крупный опт ФАКТ'" +
+                    " union" +
+                    " select '849d3a4e-f26e-11e5-900e-3640b58dd6a2', 'VIP Клиенты') a " +
+                " where not exists (select * from PriceNames pn where pn.PriceId = a.PriceId)");
         db.close();
         Toast.makeText(context, "Обновление прайса "+price.getPriceName()+" завершено", Toast.LENGTH_LONG).show();
     }

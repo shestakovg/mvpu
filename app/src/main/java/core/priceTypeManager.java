@@ -37,6 +37,9 @@ public class priceTypeManager {
         //this.priceList.add(new priceTypeObject("75a9d60f-cd75-11e4-826a-240a64c9314e", "Вид 1"));
         this.priceList.add(new priceTypeObject("75a9d611-cd75-11e4-826a-240a64c9314e", "Вид 14"));
         this.priceList.add(new priceTypeObject("75a9d613-cd75-11e4-826a-240a64c9314e", "Вид 7"));
+        this.priceList.add(new priceTypeObject("11169df6-6987-11e8-82c8-3640b58dd6a2", "крупы Ф"));
+        this.priceList.add(new priceTypeObject("e3c64316-daa6-11e4-826d-240a64c9314e", "Крупный опт ФАКТ"));
+        this.priceList.add(new priceTypeObject("849d3a4e-f26e-11e5-900e-3640b58dd6a2", "VIP Клиенты"));
         //this.priceList.add(new priceTypeObject("e3c64316-daa6-11e4-826d-240a64c9314e", "Крупный опт ФАКТ"));
     }
 

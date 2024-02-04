@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import Entitys.OrderExtra;
 import Entitys.OutletObject;
 import Entitys.orderSku;
+import Entitys.priceTypeObject;
 import core.AppSettings;
 import core.appManager;
 import core.checkRowSumEx;
@@ -176,7 +177,9 @@ public class orderSkuAdapter extends BaseAdapter  {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerPriceType.setAdapter(adapter);
         final int spinnerPosition = adapter.getPosition(cursku.priceName);
-        spinnerPriceType.setSelection(spinnerPosition);
+        if (spinnerPosition > 0) {
+            spinnerPriceType.setSelection(spinnerPosition);
+        }
 //        spinnerPriceType.post(new Runnable() {
 //            @Override
 //            public void run() {
@@ -457,9 +460,14 @@ public class orderSkuAdapter extends BaseAdapter  {
         String messageText = "";
         DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
+
         Cursor cursor = db.rawQuery("select priceTypes.PriceName, coalesce(p.pric,0)  from price p " +
                 " inner join " +
                 "(select distinct PriceId, PriceName from contracts " +
+                " union" +
+                " select '75a9d611-cd75-11e4-826a-240a64c9314e', 'Вид 14'" +
+                " union" +
+                " select '75a9d613-cd75-11e4-826a-240a64c9314e', 'Вид 7'" +
                 " union" +
                 " select '11169df6-6987-11e8-82c8-3640b58dd6a2', 'крупы Ф'" +
                 " union" +
