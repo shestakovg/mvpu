@@ -43,6 +43,7 @@ public class syncSaveData {
                 values.put("address", jsonObject.getString("Address"));
                 values.put("IsRoute", jsonObject.getInt("IsRoute"));
                 values.put("CustomerClass", jsonObject.getString("CustomerClass"));
+                values.put("DeliveryAreaId", jsonObject.getString("DeliveryAreaId"));
                 db.insert("route", null, values);
             } catch (Exception e) {
                 e.printStackTrace();

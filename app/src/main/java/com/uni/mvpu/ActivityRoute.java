@@ -34,6 +34,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import Adapters.RouteAdapter;
+import Entitys.DeliveryArea;
 import Entitys.NoResultReason;
 import Entitys.Order;
 import Entitys.OutletObject;
@@ -56,10 +57,10 @@ public class ActivityRoute extends TouchActivity {
     private String routeWhere = "";
     private String[] daysString = {"Все торговые точки", "Понедельник", "Вторник", "Среда", "Четверг","Пятница","Суббота","Воскресенье"};
     private int[] daysInt = {-1,0,1,2,3,4,5,6};
-//    public ActivityRoute() {
-//    }
+
     private Calendar orderDate;
     private final int IDD_THREE_BUTTONS = 0;
+    private List<DeliveryArea> deliveryAreas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,10 +81,17 @@ public class ActivityRoute extends TouchActivity {
 
 
         spinner = (Spinner) findViewById(R.id.spinnerDays);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, daysString);
+        deliveryAreas = appManager.getOurInstance().getDeliveryAreas(this);
+        String[] areas = new String[deliveryAreas.size()];
+        int i = 0;
+        for (DeliveryArea a : deliveryAreas) {
+            areas[i++] = a.getDescription();
+        }
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, areas);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        spinner.setPrompt("Дни визита");
+        spinner.setPrompt("Район");
 
         int currentSpinnerId = orderDate.get(Calendar.DAY_OF_WEEK) - 1;
         //if (currentSpinnerId == 0) currentSpinnerId=7;
@@ -212,13 +220,13 @@ public class ActivityRoute extends TouchActivity {
 
     private void fillWhereCondition(int position)
     {
-        if (daysInt[position] == -1) {
-            routeWhere = "";
-        }
-        else {
-            routeWhere = " where VisitDayId = "+ Integer.toString(daysInt[position]);
-        }
-
+//        if (daysInt[position] == -1) {
+//            routeWhere = "";
+//        }
+//        else {
+//            routeWhere = " where VisitDayId = "+ Integer.toString(daysInt[position]);
+//        }
+          routeWhere = position == 0 ? "" : " where DeliveryAreaId = '"+ deliveryAreas.get(position).getIdRef() + "'";
     }
 
     private void askForCheckIn()

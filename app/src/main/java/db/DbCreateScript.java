@@ -14,7 +14,7 @@ import java.util.ListIterator;
 public class DbCreateScript {
     // Create table
     private static String CREATE_BASEPARAMS="create table IF NOT EXISTS baseParams (ParamId text, paramValue text, PRIMARY KEY(ParamId ASC)) ";
-    private static String CREATE_ROUTE="create table if not exists route (outletId text, outletName text, VisitDay text , VisitDayId int,VisitOrder int, CustomerId text,CustomerName text, partnerId text, partnerName text, address text, IsRoute integer, CustomerClass text)";
+    private static String CREATE_ROUTE="create table if not exists route (outletId text, outletName text, VisitDay text , VisitDayId int,VisitOrder int, CustomerId text,CustomerName text, partnerId text, partnerName text, address text, IsRoute integer, CustomerClass text, DeliveryAreaId text)";
     private static String CREATE_ROUTE_IDX = "CREATE  INDEX idx_route_outlet ON route (outletId)";
     private static String CREATE_ROUTE_IDX_DAY = "CREATE  INDEX idx_route_day ON route (VisitDay)";
 

@@ -13,7 +13,7 @@
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
-                android:text="День визита"
+                android:text="Район"
                 android:textColor="#ff5a99ff"
                 android:textSize="10pt" />
         </TableRow>

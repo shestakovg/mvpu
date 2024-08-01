@@ -29,6 +29,7 @@ import java.util.ListIterator;
 import java.util.UUID;
 
 
+import Entitys.DeliveryArea;
 import Entitys.Order;
 import Entitys.OutletObject;
 import Entitys.priceType;
@@ -151,7 +152,7 @@ public class appManager {
         context.startActivity(intent);
     }
 
-    public void showPayList( Context context)
+    public void showPayList(Context context)
     {
         Intent intent = new Intent(context, ActivityDebt.class);
         intent.putExtra("onlyCustomer", "0");
@@ -385,5 +386,35 @@ public class appManager {
         return mResult;
     }
 
+    public ArrayList<DeliveryArea> getDeliveryAreas(Context context) {
+        ArrayList<DeliveryArea> lst = new ArrayList<DeliveryArea>();
+        if (context == null ) context =appManager.getOurInstance().getCurrentContext();
+        DbOpenHelper dbOpenHelper = new DbOpenHelper(context);
+        SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select idRef, Description from DeliveryArea order by Description", null);
+        cursor.moveToFirst();
+        lst.add(
+                new DeliveryArea(
+                        "00000000-0000-0000-0000-000000000001",
+                        "Все точки"
+                )
+        );
+        lst.add(
+                new DeliveryArea(
+                        "00000000-0000-0000-0000-000000000000",
+                        "Без района"
+                )
+        );
+        for (int i = 0; i < cursor.getCount(); i++) {
+            lst.add(
+                    new DeliveryArea(
+                            cursor.getString(0),
+                            cursor.getString(1)
+                    )
+            );
+            cursor.moveToNext();
+        }
+        return lst;
+    }
 }
 
