@@ -6,6 +6,10 @@
             android:icon="@drawable/document_32"
             android:title="Перейти к заказам"/>
         <item
+            android:id="@+id/checkIn"
+            android:icon="@drawable/placeholder"
+            android:title="Отметить посещение"/>
+        <item
             android:id="@+id/menuDebt"
             android:title="Долги"/>
         <item

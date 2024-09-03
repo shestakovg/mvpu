@@ -47,6 +47,9 @@ public class GPSLoggerService  extends Service {
         if (locationManager!=null)
         {
             Location loc = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (loc == null) {
+                loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            }
             if (loc!=null)
             {
                 LocationDatabase.getInstance().setLatitude(loc.getLatitude());
@@ -93,8 +96,6 @@ public class GPSLoggerService  extends Service {
 
     }
 
-
-
     private void shutdownLoggerService() {
         lm.removeUpdates(locationListener);
     }
@@ -113,55 +114,21 @@ public class GPSLoggerService  extends Service {
                     if (LocationDatabase.getInstance()!=null)
                     {
                         setLocation(loc);
-                        LocationDatabase.getInstance().SaveLocationData(loc.getLatitude(),loc.getLongitude(), loc.getTime() );
-
-//                        Toast.makeText(
-//                                getBaseContext(),
-//                                "Location  enough: \nLat: " + sevenSigDigits.format(loc.getLatitude())
-//                                        + " \nLon: " + sevenSigDigits.format(loc.getLongitude())
-//                                        + " \nAlt: " + (loc.hasAltitude() ? loc.getAltitude()+"m":"?")
-//                                        + " \nAcc: " + (loc.hasAccuracy() ? loc.getAccuracy()+"m":"?"),
-//                                Toast.LENGTH_SHORT).show();
+                        //LocationDatabase.getInstance().SaveLocationData(loc.getLatitude(),loc.getLongitude(), loc.getTime() );
                     }
                 }
                 else   if (loc.hasAccuracy() && loc.getAccuracy() <= minAccuracyMetersNETWORK && loc.getProvider().equals(LocationManager.NETWORK_PROVIDER))// && loc.getAccuracy() <= minAccuracyMetersCheckIn)
                 {
                    if (LocationDatabase.getInstance()!=null)
                     {
-                        LocationDatabase.getInstance().SaveLocationData(loc.getLatitude(),loc.getLongitude(), loc.getTime() );
+                        //LocationDatabase.getInstance().SaveLocationData(loc.getLatitude(),loc.getLongitude(), loc.getTime() );
                     }
                     LocationDatabase.getInstance().setLocated(false);
-//                    Toast.makeText(
-//                                getBaseContext(),
-//                                "Location  enough: \nLat: " + sevenSigDigits.format(loc.getLatitude())
-//                                        + " \nLon: " + sevenSigDigits.format(loc.getLongitude())
-//                                        + " \nAlt: " + (loc.hasAltitude() ? loc.getAltitude()+"m":"?")
-//                                        + " \nAcc: " + (loc.hasAccuracy() ? loc.getAccuracy()+"m":"?"),
-//                                Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
                     LocationDatabase.getInstance().setLocated(false);
                 }
-
-
-//                if (pointIsRecorded) {
-//                    if (showingDebugToast) Toast.makeText(
-//                            getBaseContext(),
-//                            "Location stored: \nLat: " + sevenSigDigits.format(loc.getLatitude())
-//                                    + " \nLon: " + sevenSigDigits.format(loc.getLongitude())
-//                                    + " \nAlt: " + (loc.hasAltitude() ? loc.getAltitude()+"m":"?")
-//                                    + " \nAcc: " + (loc.hasAccuracy() ? loc.getAccuracy()+"m":"?"),
-//                            Toast.LENGTH_SHORT).show();
-//                } else {
-//                    if (showingDebugToast) Toast.makeText(
-//                            getBaseContext(),
-//                            "Location not accurate enough: \nLat: " + sevenSigDigits.format(loc.getLatitude())
-//                                    + " \nLon: " + sevenSigDigits.format(loc.getLongitude())
-//                                    + " \nAlt: " + (loc.hasAltitude() ? loc.getAltitude()+"m":"?")
-//                                    + " \nAcc: " + (loc.hasAccuracy() ? loc.getAccuracy()+"m":"?"),
-//                            Toast.LENGTH_SHORT).show();
-//                }
             }
 
         }

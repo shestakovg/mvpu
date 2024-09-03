@@ -229,12 +229,12 @@ public class ActivityRoute extends TouchActivity {
           routeWhere = position == 0 ? "" : " where DeliveryAreaId = '"+ deliveryAreas.get(position).getIdRef() + "'";
     }
 
-    private void askForCheckIn()
+    private void askForCheckIn(final boolean reCheck)
     {
         final Calendar checkInDate = Calendar.getInstance();
         checkInDate.setTime(new Date());
 
-        if (appManager.getOurInstance().appSetupInstance.getAllowGpsLog() && LocationDatabase.getInstance() != null && LocationDatabase.getInstance().isLocated()) {
+        if (appManager.getOurInstance().appSetupInstance.getAllowGpsLog() && LocationDatabase.getInstance() != null) {// && LocationDatabase.getInstance().isLocated()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(currentContext);
             builder.setTitle("Отметка в торговой точке")
                     .setMessage("Отметить посещение " + selectedOutlet.outletName)
@@ -246,15 +246,15 @@ public class ActivityRoute extends TouchActivity {
                                     dialog.cancel();
                                     GPSLoggerService.updateLastLocation();
                                     LocationDatabase.getInstance().SaveOutletCheckIn(selectedOutlet.outletId.toString(), checkInDate);
-                                    showOrders(AppSettings.ORDER_TYPE_ORDER);
+                                    if (!reCheck) showOrders(AppSettings.ORDER_TYPE_ORDER);
                                 }
                             });
-            if (LocationDatabase.getInstance().IsOutletCheckIn(selectedOutlet.outletId.toString(), checkInDate)) {
+            if (LocationDatabase.getInstance().IsOutletCheckIn(selectedOutlet.outletId.toString(), checkInDate) || reCheck) {
                 builder.setNegativeButton("Нет", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
-                        showOrders(AppSettings.ORDER_TYPE_ORDER);
+                        if (!reCheck) showOrders(AppSettings.ORDER_TYPE_ORDER);
                     }
                 });
             }
@@ -263,7 +263,7 @@ public class ActivityRoute extends TouchActivity {
         }
         else
         {
-            showOrders(AppSettings.ORDER_TYPE_ORDER);
+           if (!reCheck) showOrders(AppSettings.ORDER_TYPE_ORDER);
         }
     }
 
@@ -369,13 +369,11 @@ public class ActivityRoute extends TouchActivity {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
-
+                            case R.id.checkIn:
+                                askForCheckIn(true);
+                                return true;
                             case R.id.menuOrders:
-//                                Toast.makeText(getApplicationContext(),
-//                                        "Вы выбрали PopupMenu 1",
-//                                        Toast.LENGTH_SHORT).show();
-                                //showOrders(AppSettings.ORDER_TYPE_ORDER);
-                                askForCheckIn();
+                                askForCheckIn(false);
                                 return true;
                             case R.id.menuStorecheck:
                                 showOrders(AppSettings.ORDER_TYPE_STORECHECK);

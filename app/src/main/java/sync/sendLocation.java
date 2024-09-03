@@ -1,10 +1,13 @@
 package sync;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.util.Base64;
 import android.widget.Toast;
 
 //import org.apache.http.HttpResponse;
@@ -83,9 +86,11 @@ public class sendLocation extends AsyncTask<String, Integer, List<JSONObject>> {
             try{
                 jsonCheckIn.put("routeId", chk.getRouteId());
                 jsonCheckIn.put("outletId", chk.getOutletId());
-                jsonCheckIn.put("longtitude", chk.getLongtitude());
+                jsonCheckIn.put("longitude", chk.getLongtitude());
                 jsonCheckIn.put("latitude",chk.getLatitude());
-                jsonCheckIn.put("sateliteTime", chk.getSateliteTime());
+                //jsonCheckIn.put("sateliteTime", chk.getSateliteTime());
+                jsonCheckIn.put("satelliteDate", chk.getSateliteTime());
+                jsonCheckIn.put("date", chk.getLogDate());
                 jsonArray.put(jsonCheckIn);
             }
             catch (JSONException e)
@@ -106,17 +111,22 @@ public class sendLocation extends AsyncTask<String, Integer, List<JSONObject>> {
         }
         try {
             JSONArray jsonArray = getJSONCheckIn(checkInArrayList);
-            URL myurl=new URL(appManager.getOurInstance().appSetupInstance.getServiceUrl()+"/dictionary/checkin");
+            URL myurl=new URL(appManager.getOurInstance().appSetupInstance.getServiceUrl1c()+"/dictionary/savecheckin");
             HttpURLConnection connection = (HttpURLConnection) myurl.openConnection();
+            String auth =new String(appManager.getOurInstance().appSetupInstance.getBasLogin() + ":" + appManager.getOurInstance().appSetupInstance.getBasPassword());
+            byte[] data1 = auth.getBytes(UTF_8);
+            String base64 = Base64.encodeToString(data1, Base64.NO_WRAP);
+            connection.setRequestProperty("Authorization", "Basic "+base64);
             connection.setDoOutput(true);
             connection.setDoInput(true);
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type", "application/json");
-            connection.setRequestProperty("Accept", "application/json");
+            //connection.setRequestProperty("Accept", "application/json");
             JSONObject checkInObj = new JSONObject();
             checkInObj.put("checkInArray", jsonArray);
             OutputStreamWriter streamWriter = new OutputStreamWriter(connection.getOutputStream());
-            streamWriter.write(checkInObj.toString());
+            //streamWriter.write(checkInObj.toString());
+            streamWriter.write(jsonArray.toString());
             streamWriter.flush();
            // StringBuilder stringBuilder = new StringBuilder();
             //http://stackoverflow.com/questions/34977911/android-post-request-to-wcf-service
@@ -200,7 +210,7 @@ public class sendLocation extends AsyncTask<String, Integer, List<JSONObject>> {
         sendResult result=new sendResult();
         DbOpenHelper dbOpenHelper=new DbOpenHelper(context);
         SQLiteDatabase db= dbOpenHelper.getReadableDatabase();
-        Cursor cursor =db.rawQuery("select * from outletCheckIn where _send = 0 limit 100", null);
+        Cursor cursor =db.rawQuery("select DATETIME(logDate) logDate,  _id, outletId, longtitude, latitude,  sateliteTime from outletCheckIn where _send = 0", null);
         cursor.moveToFirst();
 
         for (int i=0;i<cursor.getCount();i++) {
@@ -211,7 +221,9 @@ public class sendLocation extends AsyncTask<String, Integer, List<JSONObject>> {
             chk.setLongtitude(cursor.getDouble(cursor.getColumnIndex("longtitude")));
             chk.setId(cursor.getInt(cursor.getColumnIndex("_id")));
             long time = cursor.getLong(cursor.getColumnIndex("sateliteTime"));
-            chk.setSateliteTime( wputils.getDateStringFromLong(time)+" "+ DateFormat.getTimeInstance().format(time));
+            //chk.setSateliteTime( wputils.getDateStringFromLong2(time)+" "+ DateFormat.getTimeInstance().format(time));
+            chk.setSateliteTime( wputils.getDateStringFromLong2(time));
+            chk.setLogDate(cursor.getString(cursor.getColumnIndex("logDate")));
             sheckInList.add(chk);
             cursor.moveToNext();
         }

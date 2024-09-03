@@ -60,4 +60,14 @@ public class OutletCheckIn {
     }
 
     private int id;
+
+    private String logDate;
+
+    public String getLogDate() {
+        return logDate;
+    }
+
+    public void setLogDate(String logDate) {
+        this.logDate = logDate;
+    }
 }

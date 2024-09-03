@@ -28,6 +28,14 @@ public final class wputils {
         return cal;
     }
 
+    public static String getDate(Calendar calendar) {
+        int year = calendar.get(Calendar.YEAR);
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "yyyy-MM-dd", Locale.getDefault());
+        return dateFormat.format(new Date(year - 1900,
+                calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)));
+    }
+
     public static String getDateTime(Calendar calendar) {
         int year = calendar.get(Calendar.YEAR);
       //  if (year>3900) year-=1900;
@@ -46,6 +54,18 @@ public final class wputils {
         da = new Date(longDate);//-(long)offset);
         cal.setTime(da);
         SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+        String time =format.format(cal.getTime());//.toLocaleString();
+        return time;// cal.getTime().toLocaleString();// getDateTimeString2(cal);
+    }
+
+    public static String getDateStringFromLong2(Long longDate)
+    {
+        Calendar cal = Calendar.getInstance();
+        int offset = cal.getTimeZone().getOffset(cal.getTimeInMillis());
+        Date da = new Date();
+        da = new Date(longDate);//-(long)offset);
+        cal.setTime(da);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String time =format.format(cal.getTime());//.toLocaleString();
         return time;// cal.getTime().toLocaleString();// getDateTimeString2(cal);
     }
@@ -162,5 +182,11 @@ public final class wputils {
     public static String  withTwoDecimalPlaces(double value) {
         DecimalFormat df = new DecimalFormat("###,###,###.00");
         return df.format(value);
+    }
+
+    public static String dateToString(Date date) {
+        SimpleDateFormat simpleDate =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        return simpleDate.format(date);
     }
 }

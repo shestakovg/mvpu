@@ -1,11 +1,16 @@
 package com.uni.mvpu;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.Application;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -37,10 +42,12 @@ public class MainActivity extends TouchActivity implements IManagementGPSLogger 
 //        }
          if (appManager.getOurInstance().appSetupInstance.getAllowGpsLog())
          {
-             //appManager.getOurInstance().gpsLoggerManager.startGPSLogger();
+             appManager.getOurInstance().gpsLoggerManager.startGPSLogger();
+             //requestSelfPermissions();
          }
         setTitle("Mobile trade");
     }
+
 
     @Override
     protected void onDestroy() {
@@ -102,17 +109,59 @@ public class MainActivity extends TouchActivity implements IManagementGPSLogger 
     }
 
     private void turnGPSOn(){
-        String provider = Settings.Secure.getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-
-        if(!provider.contains("gps")){ //if gps is disabled
-            final Intent poke = new Intent();
-            poke.setClassName("com.android.settings", "com.android.settings.widget.SettingsAppWidgetProvider");
-            poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
-            poke.setData(Uri.parse("3"));
-            sendBroadcast(poke);
-            Toast.makeText(this, "Геолокация выключена. Включите в настройках планшета/смартфона",Toast.LENGTH_LONG).show();
+        CheckForCoarseLocationPermission();
+        if (android.os.Build.VERSION.SDK_INT < 23) {
+            String provider = Settings.Secure.getString(getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+            if (!provider.contains("gps")) { //if gps is disabled
+                final Intent poke = new Intent();
+                poke.setClassName("com.android.settings", "com.android.settings.widget.SettingsAppWidgetProvider");
+                poke.addCategory(Intent.CATEGORY_ALTERNATIVE);
+                poke.setData(Uri.parse("3"));
+                sendBroadcast(poke);
+                Toast.makeText(this, "Геолокация выключена. Включите в настройках планшета/смартфона", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
+    private void CheckForCoarseLocationPermission()
+    {
+        if (android.os.Build.VERSION.SDK_INT >= 23)
+        {
+            // ANDROID 6.0 AND UP!
+            boolean accessCoarseLocationAllowed = false;
+            try
+            {
+                // Invoke checkSelfPermission method from Android 6 (API 23 and UP)
+                java.lang.reflect.Method methodCheckPermission = Activity.class.getMethod("checkSelfPermission", java.lang.String.class);
+                Object resultObj = methodCheckPermission.invoke(this, Manifest.permission.ACCESS_COARSE_LOCATION);
+                int result = Integer.parseInt(resultObj.toString());
+                if (result == PackageManager.PERMISSION_GRANTED)
+                {
+                    accessCoarseLocationAllowed = true;
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+            if (accessCoarseLocationAllowed)
+            {
+                return;
+            }
+            try
+            {
+                // We have to invoke the method "void requestPermissions (Activity activity, String[] permissions, int requestCode) "
+                // from android 6
+                java.lang.reflect.Method methodRequestPermission = Activity.class.getMethod("requestPermissions", java.lang.String[].class, int.class);
+                methodRequestPermission.invoke(this, new String[]
+                        {
+                                Manifest.permission.ACCESS_COARSE_LOCATION,
+                                Manifest.permission.ACCESS_FINE_LOCATION
+                        }, 0x12345);
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+    }
 }
 

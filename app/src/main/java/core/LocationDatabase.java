@@ -102,18 +102,19 @@ public class LocationDatabase {
         values.put("outletId", outletId);
         values.put("longtitude", this.longtitude);
         values.put("latitude", this.latitude);
-        values.put("logDate",  wputils.getDateTime(date));
+        //values.put("logDate",  wputils.getDateTime(date));
+        values.put("logDate",  wputils.dateToString(date.getTime()));
         values.put("sateliteTime", this.sateliteTime);
         db.insert("outletCheckIn", null, values);
         db.close();
-        //Toast.makeText(this.context, "Saved", Toast.LENGTH_LONG).show();
+        //Toast.makeText(this.context, wputils.withTwoDecimalPlaces(this.longtitude), Toast.LENGTH_LONG).show();
     }
 
     public boolean IsOutletCheckIn(String outletId,  Calendar date)
     {
         DbOpenHelper dbOpenHelper = new DbOpenHelper(this.context);
         SQLiteDatabase db = dbOpenHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select count(*) cnt from outletCheckIn where outletId = ? and DATETIME(logDate) = ?", new String[] {outletId, wputils.getDateTime(date)});
+        Cursor cursor = db.rawQuery("select count(*) cnt from outletCheckIn where outletId = ? and DATE(logDate) = ?", new String[] {outletId, wputils.getDate(date)});
         cursor.moveToFirst();
         int count = cursor.getInt(0);
         db.close();
