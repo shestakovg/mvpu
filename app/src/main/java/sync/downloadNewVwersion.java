@@ -40,7 +40,7 @@ public class downloadNewVwersion extends AsyncTask<String, Integer, String> {
 
     @Override
     protected String doInBackground(String... params) {
-        ServiceManager serviceManager = new ServiceManager(appManager.getOurInstance().appSetupInstance.getServiceUrl());
+        ServiceManager4 serviceManager = new ServiceManager4(appManager.getOurInstance().appSetupInstance.getServiceUrl());
         JSONObject verOb = serviceManager.CallSingle("dictionary/getversion");
 
         if (verOb == null)

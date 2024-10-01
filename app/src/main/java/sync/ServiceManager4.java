@@ -69,4 +69,35 @@ public class ServiceManager4 {
         }
         return null;
     }
+
+    public JSONObject CallSingle(String methodNameAndVariable)
+    {
+        JSONObject jsonObj;
+        try {
+            URL url = new URL(SERVICE_URI + "/"+methodNameAndVariable);
+
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            String auth =new String(appManager.getOurInstance().appSetupInstance.getBasLogin() + ":" + appManager.getOurInstance().appSetupInstance.getBasPassword());
+            byte[] data1 = auth.getBytes(UTF_8);
+            String base64 = Base64.encodeToString(data1, Base64.NO_WRAP);
+            conn.setRequestProperty("Authorization", "Basic "+base64);
+            conn.connect();
+
+            InputStream is = conn.getInputStream();
+            BufferedReader streamReader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+            StringBuilder responseStrBuilder = new StringBuilder();
+
+            String inputStr;
+            while ((inputStr = streamReader.readLine()) != null)
+                responseStrBuilder.append(inputStr);
+
+            jsonObj = new JSONObject(responseStrBuilder.toString());
+
+            return jsonObj;
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+            lastException=e;
+        }
+        return null;
+    }
 }
