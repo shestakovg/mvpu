@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.constraint.BuildConfig;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -128,7 +129,7 @@ public class MainActivityFragment extends Fragment {
             }
         });
 
-        String versionName ="Версия:  "+BuildConfig.VERSION_NAME;
+        String versionName ="Версия:  "+ BuildConfig.VERSION_NAME;
         appManager.getOurInstance().appSetupInstance.version = BuildConfig.VERSION_NAME;
                 //parentView.getContext().getPackageManager().getPackageInfo(parentView.getContext().getPackageName(), 0).versionName;
                 ((TextView) parentView.findViewById(R.id.textViewVersion)).setText(versionName);

@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 android {
+    namespace="com.uni.mvpu"
     lintOptions {
         checkReleaseBuilds false
         // Or, if you prefer, you can continue to check for errors in release builds,
@@ -8,12 +9,12 @@ android {
     }
 
     compileOptions.encoding = 'windows-1251'
-    compileSdkVersion 23
+    compileSdkVersion 29
     buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "com.uni.mvpu"
-        minSdkVersion 15
-        targetSdkVersion 23
+        minSdkVersion 27
+        targetSdkVersion 29
         versionCode 1
         versionName '2.9'
     }
@@ -30,12 +31,12 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:1.1.2'
     implementation 'com.android.support:design:22.2.1'
     implementation 'com.android.support:support-v4:22.2.1'
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:22.2.1'
-    compile 'com.google.android.gms:play-services:4.2.42'
-    compile project(':activation')
-    compile project(':additionnal')
-    compile project(':mail')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:22.2.1'
+    implementation 'com.google.android.gms:play-services:4.2.42'
+    implementation project(':activation')
+    implementation project(':additionnal')
+    implementation project(':mail')
 }
 
 repositories {
