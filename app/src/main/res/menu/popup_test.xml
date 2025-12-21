@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:id="@+id/menugroup_route2" >
+        <item
+            android:id="@+id/checkIn2"
+            android:icon="@drawable/placeholder"
+            android:title="Отметить посещение"/>
+    </group>
+</menu>

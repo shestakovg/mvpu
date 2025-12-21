@@ -21,7 +21,7 @@ import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 import android.widget.PopupMenu;
-
+//import android.R;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -363,40 +363,39 @@ public class ActivityRoute extends TouchActivity {
         }
         //popupMenu.inflate(R.menu.popupmenu_route);
 
-        popupMenu
-                .setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-
-                    @Override
-                    public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.checkIn:
-                                askForCheckIn(true);
-                                return true;
-                            case R.id.menuOrders:
-                                askForCheckIn(false);
-                                return true;
-                            case R.id.menuStorecheck:
-                                showOrders(AppSettings.ORDER_TYPE_STORECHECK);
-                                return true;
-                            case R.id.menuDebt:
-                                appManager.getOurInstance().showDebtList(selectedOutlet, ActivityRoute.this);
-                                return true;
-//                            case R.id.menu3:
-//                                Toast.makeText(getApplicationContext(),
-//                                        "Вы выбрали PopupMenu 3",
-//                                        Toast.LENGTH_SHORT).show();
+//        popupMenu
+//                .setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+//                    @Override
+//                    public boolean onMenuItemClick(MenuItem item) {
+//                        switch (item.getItemId()) {
+//                            case R.id.checkIn:
+//                                askForCheckIn(true);
 //                                return true;
-                            case R.id.menuOutletInfo:
-                                showOutletInfo(selectedOutlet);
-                                return true;
-                            case R.id.menuNoResult:
-                                showNoResultActivity(selectedOutlet);
-                                return true;
-                            default:
-                                return false;
-                        }
-                    }
-                });
+//                            case R.id.menuOrders:
+//                                askForCheckIn(false);
+//                                return true;
+//                            case R.id.menuStorecheck:
+//                                showOrders(AppSettings.ORDER_TYPE_STORECHECK);
+//                                return true;
+//                            case R.id.menuDebt:
+//                                appManager.getOurInstance().showDebtList(selectedOutlet, ActivityRoute.this);
+//                                return true;
+////                            case R.id.menu3:
+////                                Toast.makeText(getApplicationContext(),
+////                                        "Вы выбрали PopupMenu 3",
+////                                        Toast.LENGTH_SHORT).show();
+////                                return true;
+//                            case R.id.menuOutletInfo:
+//                                showOutletInfo(selectedOutlet);
+//                                return true;
+//                            case R.id.menuNoResult:
+//                                showNoResultActivity(selectedOutlet);
+//                                return true;
+//                            default:
+//                                return false;
+//                        }
+//                    }
+//                });
         // Force icons to show
         Object menuHelper;
         Class[] argTypes;
