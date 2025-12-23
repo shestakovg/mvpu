@@ -39,7 +39,7 @@
                         android:id="@+id/spinnerPriceType"
                         android:layout_width="wrap_content"
                         android:layout_height="20dp"
-                        android:foreground="@android:color/black"
+
                         android:spinnerMode="dialog"
                         android:text="Price type"
 

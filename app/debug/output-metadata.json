@@ -5,14 +5,14 @@
     "kind": "Directory"
   },
   "applicationId": "com.uni.mvpu",
-  "variantName": "processReleaseResources",
+  "variantName": "processDebugResources",
   "elements": [
     {
       "type": "SINGLE",
       "filters": [],
       "versionCode": 1,
-      "versionName": "1.120",
-      "outputFile": "app-release.apk"
+      "versionName": "1.118",
+      "outputFile": "app-debug.apk"
     }
   ]
 }

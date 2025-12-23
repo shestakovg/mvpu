@@ -333,8 +333,7 @@ public class ActivityOrderList extends TouchActivity implements IUpdateOrderList
         Order order = new Order( cursor.getInt(cursor.getColumnIndex("_id"))
                 , cursor.getInt(cursor.getColumnIndex("orderNumber"))
                 , cursor.getString(cursor.getColumnIndex("orderUUID")),
-                new Date(orderDate.get(Calendar.YEAR)-1900,
-                        orderDate.get(Calendar.MONTH), orderDate.get(Calendar.DAY_OF_MONTH)),
+                new Date(orderDate.get(Calendar.YEAR)-1900, orderDate.get(Calendar.MONTH), orderDate.get(Calendar.DAY_OF_MONTH)),
                 0);
         order.outletId = cursor.getString(cursor.getColumnIndex("outletId"));
         order.orderType = AppSettings.ORDER_TYPE_STOCK_TEMPLATE;

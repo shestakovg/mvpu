@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system"/>
+        </trust-anchors>
+    </base-config>
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">91.196.92.38</domain>
+        <domain includeSubdomains="true">gs-laptop.local</domain>
+<!--        <trust-anchors>-->
+<!--            <certificates src="system"/>-->
+<!--            <certificates src="@raw/android_debug"/>-->
+<!--        </trust-anchors>-->
+    </domain-config>
+</network-security-config>

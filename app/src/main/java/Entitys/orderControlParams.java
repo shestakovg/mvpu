@@ -50,8 +50,6 @@ public class orderControlParams {
         cursor.moveToFirst();
         orderSumControl.clear();
         for (int i = 0; i < cursor.getCount(); i++) {
-//            this.orderSum = cursor.getDouble(0);
-//            this.orderRows = cursor.getInt(1);
             orderSumControl.AddRow(cursor.getDouble(0), cursor.getString(1));
             cursor.moveToNext();
         }
