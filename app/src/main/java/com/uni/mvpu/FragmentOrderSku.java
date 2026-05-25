@@ -72,7 +72,7 @@ public class FragmentOrderSku extends Fragment implements IOrderTotal{
         return parentView;
     }
 
-    public void fillSku( String skuGroup, Boolean showClientCard, boolean onlyStock, boolean onlyHoreca)
+    public void fillSku(String skuGroup, Boolean showClientCard, boolean onlyStock, boolean onlyHoreca)
     {
         String orderByClause = " s.SkuName ";
         String whereClause = " where s.skuParentId = ? "+ (onlyStock ? " and  (st.StockG + st.StockR) > 0 " : "") + (onlyHoreca? " and s.IsHoreca = 1 " : "");

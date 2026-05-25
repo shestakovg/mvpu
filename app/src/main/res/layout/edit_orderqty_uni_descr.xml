@@ -39,10 +39,24 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Заказ: " />
+                    android:text="ОД: " />
 
                 <EditText
                     android:id="@+id/editDialogMWH"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberSigned"
+                    android:numeric="integer"
+                    android:singleLine="true"
+                    android:textSize="20dp"
+                    android:textStyle="bold|italic" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="БД: " />
+
+                <EditText
+                    android:id="@+id/editDialogRWH"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:inputType="numberSigned"
@@ -86,7 +100,7 @@
                 android:paddingLeft="2dp"
                 android:paddingRight="2dp"
                 android:singleLine="false"
-                android:text="epdfkwdefksdfjkaposdfjpodsjfpdsjafssssssssssssssssssssssssssssssssssssssssssssssssssssssssss"
+                android:text="epdfkwdefksdfjkaposdfjp"
                 android:textColor="#0000BE"
                 android:textSize="14dp" />
         </LinearLayout>>

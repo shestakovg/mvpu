@@ -6,6 +6,9 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/activation/mvpu.activation.iml" filepath="$PROJECT_DIR$/.idea/modules/activation/mvpu.activation.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/additionnal/mvpu.additionnal.iml" filepath="$PROJECT_DIR$/.idea/modules/additionnal/mvpu.additionnal.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/mvpu.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/mvpu.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/mvpu.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/mvpu.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/mvpu.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/mvpu.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/mvpu.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/mvpu.app.unitTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/javax.mail/mvpu.javax.mail.iml" filepath="$PROJECT_DIR$/.idea/modules/javax.mail/mvpu.javax.mail.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/mail/mvpu.mail.iml" filepath="$PROJECT_DIR$/.idea/modules/mail/mvpu.mail.iml" />
     </modules>

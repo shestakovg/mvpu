@@ -28,6 +28,19 @@
             android:layout_height="wrap_content"
             android:text=">"
             android:id="@+id/btnMarkToSendOrderListItem"/>
+<!--        <Button-->
+<!--            android:layout_width="45dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="V"-->
+<!--            android:id="@+id/btnSendMsgOrderListItem"/>-->
+        <ImageButton
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:src="@drawable/icon_new___white__purple_bg"
+            android:scaleType="fitCenter"
+            android:padding="1dp"
+            android:id="@+id/btnSendMsgOrderListItem"
+            android:contentDescription="Send via Viber" />
         <!--<ImageButton-->
             <!--android:layout_width="wrap_content"-->
             <!--android:layout_height="wrap_content"-->

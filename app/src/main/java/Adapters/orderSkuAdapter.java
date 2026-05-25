@@ -129,7 +129,7 @@ public class orderSkuAdapter extends BaseAdapter  {
         //((TextView) view.findViewById(R.id.textViewSum)).setText(String.format("%.2f",   cursku.rowSum));
         ((TextView) view.findViewById(R.id.textViewSum)).setText(wputils.withTwoDecimalPlaces(cursku.rowSum));
         ((TextView) view.findViewById(R.id.textViewMWH)).setText(String.format("%d", (long) cursku.stockG));
-        ///((TextView) view.findViewById(R.id.textViewRWH)).setText(String.format("%d", (long) cursku.stockR));
+        ((TextView) view.findViewById(R.id.textViewRWH)).setText(String.format("%d", (long) cursku.stockR));
         ((TextView) view.findViewById(R.id.textPrevOrderDate)).setText(cursku.PreviousOrderDate);
         //((TextView) view.findViewById(R.id.textPrevQty)).setText(String.format("%d", (long) cursku.PreviousOrderQty));
         ((TextView) view.findViewById(R.id.textPrevQty)).setText(Integer.toString(cursku.PreviousOrderQty));
@@ -302,7 +302,7 @@ public class orderSkuAdapter extends BaseAdapter  {
         dlgEditQty.setContentView(R.layout.edit_orderqty_uni_descr);
 
         final EditText dlgEditMWH = (EditText) dlgEditQty.findViewById(R.id.editDialogMWH);
-        //final EditText dlgEditRWH = (EditText) dlgEditQty.findViewById(R.id.editDialogRWH);
+        final EditText dlgEditRWH = (EditText) dlgEditQty.findViewById(R.id.editDialogRWH);
         //final TextView txtRWHname = (TextView) dlgEditQty.findViewById(R.id.textRWHname);
         final TextView skuDescription = (TextView) dlgEditQty.findViewById(R.id.skuDescription);
 
@@ -314,7 +314,7 @@ public class orderSkuAdapter extends BaseAdapter  {
        // int height = (int)(context.getResources().getDisplayMetrics().heightPixels*0.50);
 
         //((TextView) dlgEditQty.findViewById(R.id.tvEtitQtyDescription)).setText(sku.skuName);
-        String stockStr =context.getText(R.string.StringStock)+": "+String.format("%d", (long)  sku.stockG);
+        String stockStr =context.getText(R.string.StringStock)+"    нд: "+String.format("%d", (long)  sku.stockG) + "      ад: "+String.format("%d", (long)  sku.stockR);
                 //+ "     "+ context.getText(R.string.StringInBox)+" "+String.format("%d", (int)  sku.getCountInBox());
         ((TextView) dlgEditQty.findViewById(R.id.tvEtitQtyStock)).setText(stockStr);
 
@@ -325,7 +325,7 @@ public class orderSkuAdapter extends BaseAdapter  {
 //        final int  maxOrderQty =  chrs.getMaxOrderQty();
 
         dlgEditMWH.setText(sku.getQtyMWHForEditText());
-        //dlgEditRWH.setText(sku.getQtyRWHForEditText());
+        dlgEditRWH.setText(sku.getQtyRWHForEditText());
         //.setText(sku.skuDescription);
         //skuDescription.setText(sku.skuName);
         skuDescription.setVisibility(View.INVISIBLE);
@@ -371,18 +371,20 @@ public class orderSkuAdapter extends BaseAdapter  {
                     if (sku.qtyMWH > 0) sku.setQtyMWH(0);
                 }
 
-//                if (!dlgEditRWH.getText().toString().trim().isEmpty() ) {
-//                    int enteredQty = Integer.parseInt(dlgEditRWH.getText().toString());
-//                    locQtyRWH = enteredQty;
+                if (!dlgEditRWH.getText().toString().trim().isEmpty() ) {
+                    int enteredQty = Integer.parseInt(dlgEditRWH.getText().toString());
+                    locQtyRWH = enteredQty;
 //                    if (!appManager.getOurInstance().appSetupInstance.checkPriceTypeForRestrictions(sku.priceName) || ((locQtyMWH+locQtyRWH) >= minOrderQty) )
 //                    {
 //                        sku.setQtyRWH(locQtyRWH);
 //                        if (sku.qtyRWH % sku.getCountInBox() != 0)
 //                            Toast.makeText(context, context.getText(R.string.non_multiply_rvh), Toast.LENGTH_LONG).show();
 //                    }
-//                } else {
-//                    if (sku.qtyRWH > 0) sku.setQtyRWH(0);
-//                }
+                    if (allowClose)
+                        sku.setQtyRWH(Integer.parseInt(dlgEditRWH.getText().toString()));
+                } else {
+                    if (sku.qtyRWH > 0) sku.setQtyRWH(0);
+                }
                 //
 
 //                if (appManager.getOurInstance().appSetupInstance.checkPriceTypeForRestrictions(sku.priceName)

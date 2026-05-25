@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,17 +20,23 @@ import android.widget.Toast;
 import com.uni.mvpu.ActivityOrderList;
 import com.uni.mvpu.R;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import Entitys.Order;
 import Entitys.OrderExtra;
 import Entitys.OutletObject;
+import Helpers.pdfService;
 import core.OrderListMode;
 import core.appManager;
 import core.wputils;
+import services.pdfOrderService;
+import services.viberService;
 
 /**
  * Created by shestakov.g on 02.06.2015.
@@ -136,6 +143,43 @@ public class orderListAdapter extends BaseAdapter {
             }
         });
         //((TextView) view.findViewById(R.id.txtViewListOrderName)).setText(order.orderDescription);
+
+        ImageButton btnSendMsgOrder = (ImageButton) view.findViewById(R.id.btnSendMsgOrderListItem);
+        btnSendMsgOrder.setTag(position);
+        btnSendMsgOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+//                List<pdfService.OrderItem> lst =new ArrayList<pdfService.OrderItem>();
+//                lst.add(new pdfService.OrderItem("Sku1", 2, 0, 10f));
+//                lst.add(new pdfService.OrderItem("Sku2", 1, 0, 5f));
+//                lst.add(new pdfService.OrderItem("Sku3", 3, 1, 4.2f));
+                final Order currentOrder = (Order) getItem((Integer) v.getTag());
+                AlertDialog.Builder ad = new AlertDialog.Builder(context);
+                ad.setMessage("Відправити заказ чере Viber?");
+                ad.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int arg1) {
+                        try {
+                            if (viberService.isViberInstalled(context)) {
+                                pdfService.Order orderDetail = new pdfOrderService(context, currentOrder).getOrder();
+                                File pdfFile = new pdfService().createPdf(context, orderDetail);
+                                viberService.sendPdfViaViber(context, pdfFile, orderDetail.orderName);
+                            } else {
+                                Toast.makeText(context, "Viber не інстальовано!!!", Toast.LENGTH_SHORT).show();
+                            }
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                });
+                ad.setNegativeButton("Отмена", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int arg1) {
+
+                    }
+                });
+                ad.show();
+            }
+        });
 
         if (order.onlyOneClient) {
             ((TextView) view.findViewById(R.id.tvAdditionalInfo)).setVisibility(View.INVISIBLE);
